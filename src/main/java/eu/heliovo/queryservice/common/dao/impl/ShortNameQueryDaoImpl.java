@@ -1,5 +1,5 @@
 /* #ident	"%W%" */
-package com.org.helio.common.dao.impl;
+package eu.heliovo.queryservice.common.dao.impl;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
