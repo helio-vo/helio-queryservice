@@ -1,5 +1,5 @@
 /* #ident	"%W%" */
-package eu.heliovo.queryservice.common.dao.impl;
+package com.org.helio.common.dao.impl;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -20,16 +20,17 @@ import uk.ac.starlink.table.StarTable;
 import uk.ac.starlink.table.ValueInfo;
 import uk.ac.starlink.table.jdbc.SequentialResultSetStarTable;
 
-import eu.heliovo.queryservice.common.dao.exception.DetailsNotFoundException;
-import eu.heliovo.queryservice.common.dao.exception.ShortNameQueryException;
-import eu.heliovo.queryservice.common.dao.interfaces.ShortNameQueryDao;
-import eu.heliovo.queryservice.common.transfer.CommonTO;
-import eu.heliovo.queryservice.common.transfer.criteriaTO.CommonCriteriaTO;
-import eu.heliovo.queryservice.common.util.CommonUtils;
-import eu.heliovo.queryservice.common.util.ConfigurationProfiler;
-import eu.heliovo.queryservice.common.util.ConnectionManager;
-import eu.heliovo.queryservice.common.util.StandardTypeTable;
-import eu.heliovo.queryservice.common.util.VOTableMaker;
+import com.org.helio.common.dao.exception.DetailsNotFoundException;
+import com.org.helio.common.dao.exception.ShortNameQueryException;
+import com.org.helio.common.dao.interfaces.ShortNameQueryDao;
+import com.org.helio.common.transfer.CommonTO;
+import com.org.helio.common.transfer.criteriaTO.CommonCriteriaTO;
+import com.org.helio.common.util.CommonUtils;
+import com.org.helio.common.util.ConfigurationProfiler;
+import com.org.helio.common.util.ConnectionManager;
+import com.org.helio.common.util.QueryWhereClauseParser;
+import com.org.helio.common.util.StandardTypeTable;
+import com.org.helio.common.util.VOTableMaker;
 
 
 public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
@@ -42,7 +43,7 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see eu.heliovo.queryservice.common.dao.interfaces.ShortNameQueryDao#generateVOTableDetails(eu.heliovo.queryservice.common.transfer.criteriaTO.CommonCriteriaTO)
+	 * @see com.org.helio.common.dao.interfaces.ShortNameQueryDao#generateVOTableDetails(com.org.helio.common.transfer.criteriaTO.CommonCriteriaTO)
 	 */
 	public void generateVOTableDetails(CommonCriteriaTO comCriteriaTO) throws DetailsNotFoundException,Exception {
 		Connection con = null;
@@ -234,6 +235,7 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 	@SuppressWarnings("unused")
 	private String  generateQuery(String listName,CommonCriteriaTO comCriteriaTO) throws Exception{
 			 String queryConstraint="";
+			 String queryWhereClause="";
 			 String query="";
 		
 			 HashMap<String,String> params  = new HashMap<String,String>();
@@ -246,11 +248,25 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 			 comCriteriaTO.setParamData(params);
 			 query="SELECT "+getColumnNamesFromProperty(listName)+" FROM "+listName;
 			 logger.info(" : Query String with 'Select' and 'From' : "+query);
+			 //Getting where clause.
+			 if(comCriteriaTO.getWhereClause()!=null && !comCriteriaTO.getWhereClause().equals("")){
+				 queryWhereClause=QueryWhereClauseParser.generateWhereClause(comCriteriaTO.getWhereClause());
+			 }
+			 
+			 //Setting all declared string to null;
+			 QueryWhereClauseParser.deAllocateStringToNull();
 			 
 			 //Appending Time clause.
 			 String queryTimeContraint=ConfigurationProfiler.getInstance().getProperty("sql.query.time.constraint."+listName);
 			 if(queryTimeContraint!=null && !queryTimeContraint.equals("") ){
-				 queryConstraint=queryConstraint+" "+queryTimeContraint;
+				 //Checking if it has where clause.
+				 if(!queryWhereClause.equals("")){
+					 queryConstraint=queryConstraint+" "+queryWhereClause+" AND "+queryTimeContraint;
+				 }else{
+					 queryConstraint=queryConstraint+" "+queryTimeContraint;
+				 }
+			 }else{
+				 queryConstraint=queryConstraint+" "+queryWhereClause;
 			 }
 			 
 			 logger.info(" : Appending Time Constraint If Avialable : "+queryConstraint);
@@ -301,4 +317,6 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 			 
 		 return query;
 	}
+	
+	
 }
