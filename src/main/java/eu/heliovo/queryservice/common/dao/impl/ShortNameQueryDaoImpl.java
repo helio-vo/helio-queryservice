@@ -232,6 +232,7 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 	}
 	
 	
+	
 	@SuppressWarnings("unused")
 	private String  generateQuery(String listName,CommonCriteriaTO comCriteriaTO) throws Exception{
 			 String queryConstraint="";
@@ -246,7 +247,15 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 					
 			 //Setting parameter value
 			 comCriteriaTO.setParamData(params);
-			 query="SELECT "+getColumnNamesFromProperty(listName)+" FROM "+listName;
+			 //Checking for Where Clause 
+			 if(comCriteriaTO.getWhereClause()!=null && !comCriteriaTO.getWhereClause().equals("")){
+				 //Method to get joined query.( Select items ).
+				 query=getJoinSelectClause(comCriteriaTO);
+			 }else{
+				 //Normal query
+				 query="SELECT "+getColumnNamesFromProperty(listName)+" FROM "+listName;
+			 }
+			 
 			 logger.info(" : Query String with 'Select' and 'From' : "+query);
 			 //Getting where clause.
 			 if(comCriteriaTO.getWhereClause()!=null && !comCriteriaTO.getWhereClause().equals("")){
@@ -318,5 +327,29 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 		 return query;
 	}
 	
+	
+	private String getJoinSelectClause(CommonCriteriaTO comCriteriaTO) throws Exception{
+		String joinSelectList="";
+		 String joinTableName="";
+		 String query="";
+		 String[] joinListName=comCriteriaTO.getListName().split(",");
+		 //looping for Table Names.
+		 for(int intCnt=0;intCnt<joinListName.length;intCnt++){
+			 joinSelectList=joinSelectList+getColumnNamesFromProperty(joinListName[intCnt])+",";
+			 joinTableName=joinTableName+joinListName[intCnt]+",";
+		 }
+		 //join select list name.
+		 if(joinSelectList.endsWith(",")){
+			 joinSelectList=joinSelectList.substring(0, joinSelectList.length()-1);
+		 }
+		 //Join table name
+		 if(joinTableName.endsWith(",")){
+			 joinTableName=joinTableName.substring(0, joinTableName.length()-1); 
+		 }
+		 //Join query
+		 query="SELECT "+joinSelectList+" FROM "+joinTableName;
+		 
+		 return query;
+	}
 	
 }
