@@ -95,6 +95,7 @@ public class SoapDispatcher {
 		 logger.fatal("   : Exception in SoapDispatcher:invoke : ", e);
 	 }
 	 
+	 /*
 	 finally
 	 {
 		 try{
@@ -111,7 +112,7 @@ public class SoapDispatcher {
 		 }catch (Exception e) {
 			 logger.fatal("   : Exception in SoapDispatcher:invoke : ", e);
 		}
-	 }
+	 }*/
 	 
 	 return null;
   }
