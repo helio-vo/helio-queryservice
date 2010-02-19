@@ -364,10 +364,29 @@ function commonColumnAJAXRequest()
 function addColumnsOfSelectedTable()
 {
 	var selectedColumnValues="";
+	var strColumnDesc="";
+	var strColumnUcd="";
 	var sColNameDt=document.forms[0].sColumnName;
+	var sColDesc=document.forms[0].columnDescription;
+	var sColUcd=document.forms[0].columnUcd;
+	
 	for (i=0;i<sColNameDt.length;i++){
-		if(sColNameDt[i].checked){										 
-			selectedColumnValues+= sColNameDt[i].value+'::';										
+		if(sColNameDt[i].checked){		
+			var sColDes="";
+			var sColUcdValue="";
+			selectedColumnValues+= sColNameDt[i].value+'::';	
+			if(sColDesc[i].value!=null && sColDesc[i].value!=""){
+				sColDes=sColDesc[i].value;
+			}else{
+				sColDes=" ";
+			}
+			if(sColUcd[i].value!=null && sColUcd[i].value!=""){
+				sColUcdValue=sColUcd[i].value;
+			}else{
+				sColUcdValue=" ";
+			}
+			strColumnDesc+=sColDes+'::';
+			strColumnUcd+=sColUcdValue+'::';
 		}
 	}
 	
@@ -375,6 +394,7 @@ function addColumnsOfSelectedTable()
 	var instrumentConstraint=document.forms[0].instrumentConstraint.value;
 	var coordinateConstraint=document.forms[0].coordinateConstraint.value;
 	var orderByConstraint=document.forms[0].orderByConstraint.value;
+	var limitConstraint=document.forms[0].limitConstraint.value;
 	var tableName=document.forms[0].cmbDatabaseTableList.value;
 	//alert(" selectedColumnValues : "+selectedColumnValues +"timeConstraint "+timeConstraint+"instrumentConstraint "+instrumentConstraint+"coordinateConstraint "+coordinateConstraint );
 	
@@ -383,6 +403,16 @@ function addColumnsOfSelectedTable()
 		return true;
 	}else{
 		selectedColumnValues=selectedColumnValues.substring(0,selectedColumnValues.length-2);
+	}
+	
+	//Coulumn description.
+	if(strColumnDesc!=null && strColumnDesc!=""){
+		strColumnDesc=strColumnDesc.substring(0,strColumnDesc.length-2);
+	}
+	
+	//Coulumn ucd's.
+	if(strColumnUcd!=null && strColumnUcd!=""){
+		strColumnUcd=strColumnUcd.substring(0,strColumnUcd.length-2);
 	}
 	
 	//create the Filter Row
@@ -414,8 +444,13 @@ function addColumnsOfSelectedTable()
 	if(orderByConstraint==null || orderByConstraint==""){
 		orderByConstraint=" ";
 	}
+	
+	//Checking for limit constraint
+	if(limitConstraint==null || limitConstraint==""){
+		limitConstraint=" ";
+	}
 	//alert(" rowsCount : "+rowsCount);
-	var hiddenValue=tableName+"^$$^"+selectedColumnValues+"^$$^"+timeConstraint+"^$$^"+instrumentConstraint+"^$$^"+coordinateConstraint+"^$$^"+orderByConstraint;
+	var hiddenValue=tableName+"^$$^"+selectedColumnValues+"^$$^"+timeConstraint+"^$$^"+instrumentConstraint+"^$$^"+coordinateConstraint+"^$$^"+orderByConstraint+"^$$^"+limitConstraint+"^$$^"+strColumnDesc+"^$$^"+strColumnUcd;
 	var columnHidValue= '<input type="hidden" name="addedTableDetails" id="addedTableDetails'+rowsCount+'" value="'+hiddenValue+'">';
 	
 	var previousRowClassName="";
@@ -460,24 +495,36 @@ function addColumnsOfSelectedTable()
 	oCell.width=300;
 	
 	oCell = newRow.insertCell(3);
-	oCell.innerHTML =trim(timeConstraint);
+	oCell.innerHTML =trim(replaceAll(strColumnDesc,"::", ","));
 	oCell.align="left";
 	oCell.style.paddingLeft="10px";
 	oCell.width=300;
 	
 	oCell = newRow.insertCell(4);
-	oCell.innerHTML =trim(instrumentConstraint);
+	oCell.innerHTML =trim(replaceAll(strColumnUcd,"::", ","));
 	oCell.align="left";
 	oCell.style.paddingLeft="10px";
 	oCell.width=300;
 	
 	oCell = newRow.insertCell(5);
-	oCell.innerHTML =trim(coordinateConstraint);
+	oCell.innerHTML =trim(timeConstraint);
 	oCell.align="left";
 	oCell.style.paddingLeft="10px";
 	oCell.width=300;
 	
 	oCell = newRow.insertCell(6);
+	oCell.innerHTML =trim(instrumentConstraint);
+	oCell.align="left";
+	oCell.style.paddingLeft="10px";
+	oCell.width=300;
+	
+	oCell = newRow.insertCell(7);
+	oCell.innerHTML =trim(coordinateConstraint);
+	oCell.align="left";
+	oCell.style.paddingLeft="10px";
+	oCell.width=300;
+	
+	oCell = newRow.insertCell(8);
 	oCell.innerHTML =trim(orderByConstraint)+columnHidValue;
 	oCell.align="left";
 	oCell.style.paddingLeft="10px";
