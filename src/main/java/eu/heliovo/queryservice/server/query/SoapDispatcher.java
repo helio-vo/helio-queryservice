@@ -78,12 +78,33 @@ public class SoapDispatcher {
 				 logger.info(" : startDateTime : "+dateTime[0]+" : startEndTime : "+dateTime[1]);			
 				 comCriteriaTO.setStartDateTime(dateTime[0]);
 				 comCriteriaTO.setEndDateTime(dateTime[1]);	
-				 //Setting for Instrument parameter.
-				 String instruments = inputDoc.getDocumentElement().getElementsByTagNameNS("*","INSTRUMENT").item(0).getFirstChild().getNodeValue();
-				 comCriteriaTO.setInstruments(instruments);
-				 //Setting for ListName parameter.
-				 String listName = inputDoc.getDocumentElement().getElementsByTagNameNS("*","LISTNAME").item(0).getFirstChild().getNodeValue();
+				//Setting for ListName parameter.
+				 String listName = inputDoc.getDocumentElement().getElementsByTagNameNS("*","FROM").item(0).getFirstChild().getNodeValue();
 				 comCriteriaTO.setListName(listName);
+				 
+				 //Setting for Instrument parameter.
+				 if(inputDoc.getDocumentElement().getElementsByTagNameNS("*","INSTRUMENT").getLength()>0){
+					 String instruments = inputDoc.getDocumentElement().getElementsByTagNameNS("*","INSTRUMENT").item(0).getFirstChild().getNodeValue();
+					 comCriteriaTO.setInstruments(instruments);
+				 }
+				 
+				//Setting for Start Row parameter.
+				 if(inputDoc.getDocumentElement().getElementsByTagNameNS("*","STARTINDEX").getLength()>0){
+					 String startRow = inputDoc.getDocumentElement().getElementsByTagNameNS("*","STARTINDEX").item(0).getFirstChild().getNodeValue();
+					 comCriteriaTO.setStartRow(startRow);
+				 }
+				 
+				//Setting for No Of Rows parameter.
+				 if(inputDoc.getDocumentElement().getElementsByTagNameNS("*","MAXRECORDS").getLength()>0){
+					 String noOfRows = inputDoc.getDocumentElement().getElementsByTagNameNS("*","MAXRECORDS").item(0).getFirstChild().getNodeValue();
+					 comCriteriaTO.setNoOfRows(noOfRows);
+				 }
+				 
+				//Setting for WHERE parameter.
+				 if(inputDoc.getDocumentElement().getElementsByTagNameNS("*","WHERE").getLength()>0){
+					 String whereClause = inputDoc.getDocumentElement().getElementsByTagNameNS("*","WHERE").item(0).getFirstChild().getNodeValue();
+					 comCriteriaTO.setWhereClause(whereClause);
+				 }
 				 //Thread created to load data into PipeReader.
 				 new QueryThreadAnalizer(comCriteriaTO).start();				
 				 logger.info(" : Done VOTABLE : ");												
