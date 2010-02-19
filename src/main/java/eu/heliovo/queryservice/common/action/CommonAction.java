@@ -315,14 +315,14 @@ public class CommonAction  extends ActionSupport
 						fileResultTO[i].setJdbcPassword("jdbc.password="+jdbcPassword);
 						fileResultTO[i].setJdbcUser("jdbc.user="+jdbcUser);
 						fileResultTO[i].setColumnNames("sql.columnnames."+details[0]+"="+details[1]);
-						fileResultTO[i].setColumnUCD("sql.columnucd."+details[0]+"=");
+						fileResultTO[i].setColumnUCD("sql.columnucd."+details[0]+"="+details[8]);
 						fileResultTO[i].setColumnUType("sql.columnutypes."+details[0]+"=");
-						fileResultTO[i].setColumnDesc("sql.columndesc."+details[0]+"=");
+						fileResultTO[i].setColumnDesc("sql.columndesc."+details[0]+"="+details[7]);
 						fileResultTO[i].setTimeConstraint("sql.query.time.constraint."+details[0]+"="+details[2]);
 						fileResultTO[i].setCoordinateConstraint("sql.query.coordinates.constraint."+details[0]+"="+details[4]);
 						fileResultTO[i].setInstrumentConstraint("sql.query.instr.constraint."+details[0]+"="+details[3]);
 						fileResultTO[i].setOrderByConstraint("sql.query.orderby.constraint."+details[0]+"="+details[5]);
-						fileResultTO[i].setLimitConstraint("sql.query.limit.constraint."+details[0]+"="+details[5]);
+						fileResultTO[i].setLimitConstraint("sql.query.limit.constraint."+details[0]+"="+details[6]);
 					}
 				}
 			}
