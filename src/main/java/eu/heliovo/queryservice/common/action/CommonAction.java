@@ -35,6 +35,11 @@ public class CommonAction  extends ActionSupport
 		this.statusDisplay = statusDisplay;
 	}	
 	
+	public String showConfigurationDetials()
+	{
+		return "SUCCESS";
+	}
+	
 	public String display() throws SQLException{ 
 		String sReturnStatus="ERROR";
 		Connection con=null;
