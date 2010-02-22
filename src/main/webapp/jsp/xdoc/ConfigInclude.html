@@ -1,0 +1,616 @@
+<div>
+    <h1>
+        <a name=140307704></a>
+        <a name=146560036></a>
+        <a name=178252788></a>
+        <a name=128461337>1.              Introduction</a>
+        <p>
+        </p>
+    </h1>
+    <h2>
+        <a name=146560037></a>
+        <a name=178252789></a>
+        <a name=128461338>1.1.           Document Background</a>
+        <p>
+        </p>
+    </h2>
+    <h3>
+        <a name=146560038></a>
+        <a name=178252790></a>
+        <a name=128461339>1.1.1.                 Purpose of Document</a>
+        <p>
+        </p>
+    </h3>
+    <p>
+        <p>
+             
+        </p>
+    </p>
+    <p>
+        The purpose of this document is to explain Helio Query Service Property File.
+        <p>
+        </p>
+    </p>
+    <p>
+        This document is intended for HELIO IT team members responsible for deployment and configuration of HELIO Query Service.
+        <p>
+        </p>
+    </p>
+    <h3>
+        <a name=128461340>1.1.2.                 Assumptions Dependencies and Constrains</a>
+        <p>
+        </p>
+    </h3>
+    <p>
+        <b>
+            <p>
+                 
+            </p>
+        </b>
+    </p>
+    <p>
+        1.     In Release 1 we are testing this service with HEC.
+        <p>
+        </p>
+    </p>
+    <h3>
+        <a name=128461341>1.1.3.                 Abbreviation Used</a>
+        <p>
+        </p>
+    </h3>
+    <p>
+              1.  HEC: Helio Event Catalogue Service.
+        <p>
+        </p>
+    </p>
+    <h3>
+        <a name=128461342>1.1.4.                 Step To Follow For Deployment</a>
+        <p>
+        </p>
+    </h3>
+    <p>
+        <p>
+             
+        </p>
+    </p>
+    <p>
+        2.     Find an appropriate JDBC library i.e mysql-connector-java-3.0.16-ga-bin.jar and place in location for webapp to find it. i.e tomcat/common/lib
+        or WEB-INF/lib.
+        <p>
+        </p>
+    </p>
+    <p>
+        3.     Create a property file xxxxxx.txt. Refer section 2, 3 and 4 for more details.
+        <p>
+        </p>
+    </p>
+    <p>
+        4.     Save the property file to the system.
+        <p>
+        </p>
+    </p>
+    <p>
+        5.     Change JNDI environment (env) entry name in web.xml pointing to your property file. Refer section 4 for configuration of property file per
+        context in tomcat.
+        <p>
+        </p>
+    </p>
+    <p>
+       <b> &nbsp;env-entry&nbsp;</b>
+        <p>
+        </p>
+    </p>
+    <p>
+           <b>&nbsp;env-entry-name&nbsp;property/context&nbsp;/env-entry-name&nbsp;</b>
+        <p>
+        </p>
+    </p>
+    <p>
+           <b>&nbsp;env-entry-type&nbsp;java.lang.String&nbsp;/env-entry-type&nbsp;</b>
+        <p>
+        </p>
+    </p>
+    <p>
+           <b>&nbsp;env-entry-value&nbsp;/Users/<u>vineethtshetty</u>/HELIO/<u>sec</u>-hessi.txt&nbsp;/env-entry-value&nbsp;</b>
+        <p>
+        </p>
+    </p>
+    <p>
+          <b>&nbsp;/env-entry&nbsp;</b>
+        <p>
+        </p>
+    </p>
+    <p>
+        6.     Done. May required to restart the app server depending on which server you are using.
+    </p>
+    <p>
+        <br/>
+    </p>
+    <p>
+    </p>
+    <h2>
+        2. Helio Query Service Property File
+        <p>
+        </p>
+    </h2>
+    <p>
+        <p>
+             
+        </p>
+    </p>
+    <p>
+        <p>
+             
+        </p>
+        <b>jdbc.driver=</b>
+        com.mysql.jdbc.Driver
+        <p>
+        </p>
+    </p>
+    <p>
+        <b>
+            <p>
+                 
+            </p>
+        </b>
+    </p>
+    <p>
+        <b>jdbc.url=</b>
+        jdbc:mysql://msslxt.mssl.ucl.ac.uk:3306/solarevent
+        <p>
+        </p>
+    </p>
+    <p>
+        <b>
+            <p>
+                 
+            </p>
+        </b>
+    </p>
+    <p>
+        <b>jdbc.user=</b>
+        sec
+        <b>
+            <p>
+            </p>
+        </b>
+    </p>
+    <p>
+        <b>
+            <p>
+                 
+            </p>
+        </b>
+    </p>
+    <p>
+        <b>jdbc.password=</b>
+        solareventpwd
+        <p>
+        </p>
+    </p>
+    <p>
+        <p>
+             
+        </p>
+    </p>
+    <p>
+        //Section for configuration of query.
+        <b>
+            <p>
+            </p>
+        </b>
+    </p>
+    <p>
+        <b>
+            <p>
+                 
+            </p>
+        </b>
+    </p>
+    <p>
+        <b>sql.query.tablename=</b>
+        select * from hessi_flare where time_start&nbsp;=[:kwstartdate.tablename:] AND time_end&nbsp;=[:kwenddate:]
+        <p>
+        </p>
+    </p>
+    <p>
+        <b>
+            <p>
+                 
+            </p>
+        </b>
+    </p>
+    <p>
+        <b>
+            sql.query.instr.constraint.tablename=
+            <p>
+            </p>
+        </b>
+    </p>
+    <p>
+        <b>
+            <p>
+                 
+            </p>
+        </b>
+    </p>
+    <p>
+        <b>sql.query.orderby.constraint.tablename=</b>
+        ORDER BY time_start
+        <p>
+        </p>
+    </p>
+    <p>
+        <p>
+             
+        </p>
+    </p>
+    <p>
+        <b>sql.query.limit. constraint.tablename=</b>
+        LIMIT 5,50
+        <b>
+            <p>
+            </p>
+        </b>
+    </p>
+    <p>
+        <b>
+            <p>
+                 
+            </p>
+        </b>
+    </p>
+    <p>
+        <b>sql.columnnames.tablename=</b>
+        hef_id::time_start::time_peak::time_end::nar::x_arcsec::y_arcsec::radial_arcsec::duration::count_sec_peak
+        <p>
+        </p>
+    </p>
+    <p>
+        <b>
+                 
+            <p>
+            </p>
+        </b>
+    </p>
+    <p>
+        <b>sql.columndesc.tablename =</b>
+        Sec hess Id::Time Start::Peak Time::End Time::Active Region::X sec::Y sec::Radial sec::Duration::Count sec peek::Total count::energy kev::flare number
+        <p>
+        </p>
+    </p>
+    <p>
+        <p>
+             
+        </p>
+    </p>
+    <p>
+        <b>sql.columnucd.tablename = </b>
+        ::time.start::time.phase::time.end:: :: :: :: :: :: :: :: :: ::
+        <p>
+        </p>
+    </p>
+    <p>
+        <p>
+             
+        </p>
+    </p>
+    <p>
+        <b>sql.votable.head.desc=</b>
+        Helio Sec time based query
+        <p>
+        </p>
+    </p>
+     
+    <p>
+    </p>
+    <h2>
+        <a name=128461344>3. Property File Element Description</a>
+        <p>
+        </p>
+    </h2>
+    <table border=1 cellpadding=0 cellspacing=0>
+        <tbody>
+            <tr>
+                <td valign=top width=221>
+                    <p>
+                        <b>Jdbc.driver</b>
+                        <p>
+                        </p>
+                    </p>
+                </td>
+                <td valign=top width=221>
+                    <p>
+                        JDBC driver name.
+                        <p>
+                        </p>
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td valign=top width=221>
+                    <p>
+                        <b>Jdbc.url</b>
+                        <p>
+                        </p>
+                    </p>
+                </td>
+                <td valign=top width=221>
+                    <p>
+                        JDBC URL with database name.
+                        <p>
+                        </p>
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td valign=top width=221>
+                    <p>
+                        <b>jdbc.user</b>
+                        <p>
+                        </p>
+                    </p>
+                </td>
+                <td valign=top width=221>
+                    <p>
+                        Database User Name.
+                        <p>
+                        </p>
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td valign=top width=221>
+                    <p>
+                        <b>jdbc.password</b>
+                        <p>
+                        </p>
+                    </p>
+                </td>
+                <td valign=top width=221>
+                    <p>
+                        Database password.
+                        <p>
+                        </p>
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td valign=top width=221>
+                    <p>
+                        <b>sql.query.tablename</b>
+                        <p>
+                        </p>
+                    </p>
+                </td>
+                <td valign=top width=221>
+                    <p>
+                        SQL query string with time constrain.
+                        <p>
+                        </p>
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td valign=top width=221>
+                    <p>
+                        <b>sql.query.instr.constraint.tablename</b>
+                        <p>
+                        </p>
+                    </p>
+                </td>
+                <td valign=top width=221>
+                    <p>
+                        Where clause with Instrument.
+                        <p>
+                        </p>
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td valign=top width=221>
+                    <p>
+                        <b>sql.query.orderby.constraint.tablename</b>
+                        <p>
+                        </p>
+                    </p>
+                </td>
+                <td valign=top width=221>
+                    <p>
+                        Oder by clause of the query.
+                        <p>
+                        </p>
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td valign=top width=221>
+                    <p>
+                        <b>sql.query.limit.constraint.tablename</b>
+                        <p>
+                        </p>
+                    </p>
+                </td>
+                <td valign=top width=221>
+                    <p>
+                        Limit clause of the query. (defining both start row and max row).
+                        <p>
+                        </p>
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td valign=top width=221>
+                    <p>
+                        <b>sql.columnnames.tablename</b>
+                        <p>
+                        </p>
+                    </p>
+                </td>
+                <td valign=top width=221>
+                    <p>
+                        VOTABLE column names.  Separated by
+                        <p>
+                        </p>
+                    </p>
+                    <p>
+                         <b>:: </b> .
+                        <p>
+                        </p>
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td valign=top width=221>
+                    <p>
+                        <b>sql.columndesc.tablename</b>
+                        <p>
+                        </p>
+                    </p>
+                </td>
+                <td valign=top width=221>
+                    <p>
+                        VOTable column description. Separated by  <b>:: </b> .
+                        <p>
+                        </p>
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td valign=top width=221>
+                    <p>
+                        <b>sql.columnucd.tablename</b>
+                        <p>
+                        </p>
+                    </p>
+                </td>
+                <td valign=top width=221>
+                    <p>
+                        VOTable column UCD names. Separated by  <b>:: </b> .
+                        <p>
+                        </p>
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td valign=top width=221>
+                    <p>
+                        <b>sql.votable.head.desc</b>
+                        <p>
+                        </p>
+                    </p>
+                </td>
+                <td valign=top width=221>
+                    <p>
+                        VOTable heading (Description of heading).
+                        <p>
+                        </p>
+                    </p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <p>
+        <p>
+             
+        </p>
+    </p>
+    <p>
+        <b><u>IMPORTANT NOTE</u></b>
+        :
+    </p>
+    <p>
+        [:kwstartdate:] is representation of start date/time. While defining start time this key word should be used (cannot be changed).
+    </p>
+    <p>
+        [:kwenddate:] is representation of end date/time. While defining end time this key word should be used (cannot be changed).
+    </p>
+    <p>
+        In all the property above table name should be replaced with actual value. While creating the property file.
+    </p>
+    <p>
+        For Example: Configuring the property file for INSTRUMENTS table. Then the tablename in the property should be replaced with ÒINSTRUMENTSÓ .
+    </p>
+    <p>
+        So now the property will look like (<b>sql.query.</b> <b>INSTRUMENTS, </b>similar changes should be done for all other property) .
+    </p>
+    <p>
+       You can configure any no of tables. Provided you are passing FROM value in wsdl with both the table names.
+    </p>
+    <p>
+       [:kwinstrument:] is representation of INSTRUMENT. While defining Instrument column. In order to add instrument constraint, this key word should
+        be used (cannot be changed).
+    </p>
+    <p>
+        <p>
+             
+        </p>
+    </p>
+    <h2>
+        <a name=128461345>4. Configuration of property file per context</a>
+        <p>
+        </p>
+    </h2>
+    <p>
+        Bellow is the steps to be followed to configure property file per context.
+        <p>
+        </p>
+    </p>
+    <p>
+        <p>
+             
+        </p>
+    </p>
+    <p>
+        1.     Add &nbsp;Resource&nbsp; tag inside &nbsp;context&nbsp; tag. As shown bellow
+        <p>
+        </p>
+    </p>
+    <p>
+        &nbsp;Resource name=<i>property/context</i> auth=<i>Container</i>
+        <p>
+        </p>
+    </p>
+    <p>
+                                                           type=<i>java.lang.String</i>
+        <p>
+        </p>
+    </p>
+    <p>
+                                                           factory=<i>com.org.helio.common.util.BeanFactory</i>
+        <p>
+        </p>
+    </p>
+    <p>
+                        propertyValue=<i>C:/log/helio.txt</i>/&nbsp;
+        <p>
+        </p>
+    </p>
+    <p>
+        2.     In the above &nbsp;Resource&nbsp; tag you can see a factory element referring to a Bean Factory class. Code for retrieving property Value is
+        implemented in this class.
+        <p>
+        </p>
+    </p>
+    <p>
+        3.     propertyValue element in &nbsp;Resource&nbsp; tag is the actual path of the property file. When I say path it is path appended with file name as
+        shown.
+      </p>
+        <p>
+        </p>
+   
+    <p>
+        4.     type element in &nbsp;Resource&nbsp; tag defines the return type which is a String in our case.
+        <p>
+        </p>
+    </p>
+    <p>
+        5.     If you are configuring in Tomcat server, &nbsp;Resource&nbsp; tag should be included in server.xml under &nbsp;context&nbsp; tag
+        <p>
+        </p>
+    </p>
+    <p>
+    
+    </p>
+    
+</div>
