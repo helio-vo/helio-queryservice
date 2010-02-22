@@ -22,7 +22,7 @@
 			           			&nbsp;&nbsp;Helio Admin System > 
 											<a href="<%=contextPath%>/display.action">
 											<!-- <s:text name="heading.MenuAdminPage"/>-->
-											Admin Page
+											Admin Home Page
 										</a>							
           				</td>
           				<td width="10">&nbsp;</td>
