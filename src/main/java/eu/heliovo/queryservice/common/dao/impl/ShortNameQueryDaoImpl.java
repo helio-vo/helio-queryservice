@@ -240,9 +240,9 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 		
 			 HashMap<String,String> params  = new HashMap<String,String>();
 			 
-			 params.put("kwstartdate."+listName, comCriteriaTO.getStartDateTime());
-			 params.put("kwenddate."+listName, comCriteriaTO.getEndDateTime());
-			 params.put("kwinstrument."+listName, comCriteriaTO.getInstruments());
+			 params.put("kwstartdate", comCriteriaTO.getStartDateTime());
+			 params.put("kwenddate", comCriteriaTO.getEndDateTime());
+			 params.put("kwinstrument", comCriteriaTO.getInstruments());
 					
 			 //Setting parameter value
 			 comCriteriaTO.setParamData(params);
