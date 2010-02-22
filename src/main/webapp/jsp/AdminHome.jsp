@@ -55,7 +55,15 @@ cellspacing="0">
          </td>
          </tr>
          <tr><td>&nbsp;</td></tr>
+         <tr class="txtblackBP" > 
+           <td>
+              <ul>
+                  <li><a href="javascript:doSub('showConfigurationDetials.action')"> How to configure a property file </a></li>		             
+              </ul>            
+          </td>
+         </tr> 
          <s:if test="statusDisplay == true">
+         
          <tr class="txtblackBP" > 
            <td>
               <ul>
