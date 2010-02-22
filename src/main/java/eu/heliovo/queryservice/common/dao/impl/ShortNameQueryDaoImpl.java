@@ -1,5 +1,5 @@
 /* #ident	"%W%" */
-package eu.heliovo.queryservice.common.dao.impl;
+package com.org.helio.common.dao.impl;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -232,7 +232,6 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 	}
 	
 	
-	
 	@SuppressWarnings("unused")
 	private String  generateQuery(String listName,CommonCriteriaTO comCriteriaTO) throws Exception{
 			 String queryConstraint="";
@@ -309,14 +308,8 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 			 String querylimitContraint=ConfigurationProfiler.getInstance().getProperty("sql.query.limit.constraint."+listName);
 			 
 			 if(querylimitContraint==null || querylimitContraint.trim().equals("")){
-				 //Setting start row.
-				 if(comCriteriaTO.getNoOfRows()!=null && !comCriteriaTO.getNoOfRows().equals("")){
-					 querylimitContraint=" LIMIT "+comCriteriaTO.getNoOfRows();
-				 }
-				 //Setting No Of Rows
-				 if(comCriteriaTO.getStartRow()!=null && !comCriteriaTO.getStartRow().equals("") && querylimitContraint!=null && !querylimitContraint.equals("")){
-					 querylimitContraint=querylimitContraint+" OFFSET "+comCriteriaTO.getStartRow();
-				 }
+				//Getting Limit Constraint. 
+				querylimitContraint=generateLimitConstraintBasedOnDatabase(comCriteriaTO);
 			 }
 			 //Appending ; 'Limit Constraints' .
 			 query=query+" "+querylimitContraint;
@@ -350,6 +343,35 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 		 query="SELECT "+joinSelectList+" FROM "+joinTableName;
 		 
 		 return query;
+	}
+	
+	
+	@SuppressWarnings("unused")
+	private String generateLimitConstraintBasedOnDatabase(CommonCriteriaTO comCriteriaTO) throws Exception{
+		String sDrive= ConfigurationProfiler.getInstance().getProperty("jdbc.driver");
+		String querylimitConstarint="";
+		if(sDrive.contains("mysql")){
+			//Setting start row.
+			 if(comCriteriaTO.getNoOfRows()!=null && !comCriteriaTO.getNoOfRows().equals("")){
+				 querylimitConstarint=" LIMIT "+comCriteriaTO.getNoOfRows();
+			 }
+			 //Setting No Of Rows
+			 if(comCriteriaTO.getStartRow()!=null && !comCriteriaTO.getStartRow().equals("") && querylimitConstarint!=null && !querylimitConstarint.equals("")){
+				 querylimitConstarint=querylimitConstarint+" OFFSET "+comCriteriaTO.getStartRow();
+			 }
+			
+		}else if(sDrive.contains("oracle")){
+			//Setting start row.
+			 if(comCriteriaTO.getNoOfRows()!=null && !comCriteriaTO.getNoOfRows().equals("")){
+				 querylimitConstarint=" ROWNUM>="+comCriteriaTO.getStartRow();
+			 }
+			 //Setting No Of Rows
+			 if(comCriteriaTO.getStartRow()!=null && !comCriteriaTO.getStartRow().equals("") && querylimitConstarint!=null && !querylimitConstarint.equals("")){
+				 querylimitConstarint=querylimitConstarint+" AND ROWNUM<="+comCriteriaTO.getNoOfRows();
+			 }
+		}
+		
+		return querylimitConstarint;
 	}
 	
 }
