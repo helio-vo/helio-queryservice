@@ -266,7 +266,7 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 			 
 			 //Appending Time clause.
 			 String queryTimeContraint=ConfigurationProfiler.getInstance().getProperty("sql.query.time.constraint."+listName);
-			 if(queryTimeContraint!=null && !queryTimeContraint.equals("") ){
+			 if(queryTimeContraint!=null && !queryTimeContraint.trim().equals("") ){
 				 //Checking if it has where clause.
 				 if(!queryWhereClause.equals("")){
 					 queryConstraint=queryConstraint+" "+queryWhereClause+" AND "+queryTimeContraint;
@@ -281,7 +281,7 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 			 
 			 //Appending Instrument clause.
 			 String queryInstContraint=ConfigurationProfiler.getInstance().getProperty("sql.query.instr.constraint."+listName);
-			 if(queryInstContraint!=null && !queryInstContraint.equals("")){
+			 if(queryInstContraint!=null && !queryInstContraint.trim().equals("")){
 				 if(queryConstraint!="")
 					 queryConstraint=queryConstraint+" AND "+queryInstContraint; 
 				 else
@@ -295,7 +295,7 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 			 String queryOrderByContraint=ConfigurationProfiler.getInstance().getProperty("sql.query.orderby.constraint."+listName);
 			
 			 //Appending 'Select Part' ; 'Where Constraints' .
-			 if(queryConstraint!=null && queryConstraint!=""){
+			 if(queryConstraint!=null && !queryConstraint.trim().equals("")){
 				 query=query+" WHERE "+queryConstraint;
 			 }
 			 
