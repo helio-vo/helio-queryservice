@@ -1,20 +1,19 @@
-package eu.heliovo.queryservice.server.query;
+package com.org.helio.server.query;
+
+import javax.xml.stream.*;
+import javax.xml.parsers.DocumentBuilder;
+import org.w3c.dom.Document;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 import java.io.PipedReader;
 import java.io.PipedWriter;
 import java.util.Hashtable;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.stream.XMLStreamReader;
-
 import org.apache.log4j.Logger;
+import org.codehaus.xfire.util.STAXUtils; 
 import org.codehaus.xfire.MessageContext;
-import org.codehaus.xfire.util.STAXUtils;
-import org.w3c.dom.Document;
-
-import eu.heliovo.queryservice.common.transfer.criteriaTO.CommonCriteriaTO;
-import eu.heliovo.queryservice.server.util.QueryThreadAnalizer;
+import com.org.helio.common.transfer.criteriaTO.CommonCriteriaTO;
+import com.org.helio.server.util.QueryThreadAnalizer;
 
 /**
  * Class: SoapDispatcher
@@ -73,11 +72,13 @@ public class SoapDispatcher {
 	    		 //Indicator to define VOTABLE for Web Service request
 	    		 comCriteriaTO.setStatus("WebService");
 	    		 //Setting for TIME parameter.
-	    		 String time = inputDoc.getDocumentElement().getElementsByTagNameNS("*","TIME").item(0).getFirstChild().getNodeValue();
-	    		 String[] dateTime= time.split("/");			
-				 logger.info(" : startDateTime : "+dateTime[0]+" : startEndTime : "+dateTime[1]);			
-				 comCriteriaTO.setStartDateTime(dateTime[0]);
-				 comCriteriaTO.setEndDateTime(dateTime[1]);	
+	    		 if(inputDoc.getDocumentElement().getElementsByTagNameNS("*","TIME").getLength()>0){
+		    		 String time = inputDoc.getDocumentElement().getElementsByTagNameNS("*","TIME").item(0).getFirstChild().getNodeValue();
+		    		 String[] dateTime= time.split("/");			
+					 logger.info(" : startDateTime : "+dateTime[0]+" : startEndTime : "+dateTime[1]);			
+					 comCriteriaTO.setStartDateTime(dateTime[0]);
+					 comCriteriaTO.setEndDateTime(dateTime[1]);	
+	    		 }
 				//Setting for ListName parameter.
 				 String listName = inputDoc.getDocumentElement().getElementsByTagNameNS("*","FROM").item(0).getFirstChild().getNodeValue();
 				 comCriteriaTO.setListName(listName);
@@ -116,8 +117,7 @@ public class SoapDispatcher {
 		 logger.fatal("   : Exception in SoapDispatcher:invoke : ", e);
 	 }
 	 
-	 /*
-	 finally
+	 /*finally
 	 {
 		 try{
 			 if(pr!=null){
