@@ -8,7 +8,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.PipedReader;
 import java.io.PipedWriter;
 import java.util.Hashtable;
-
+import com.org.helio.common.util.DomHelper;
 import org.apache.log4j.Logger;
 import org.codehaus.xfire.util.STAXUtils; 
 import org.codehaus.xfire.MessageContext;
@@ -48,7 +48,8 @@ public class SoapDispatcher {
   public XMLStreamReader invoke(MessageContext context) {
 	  PipedReader pr=null;
 	  PipedWriter pw=null;
-	 try {
+	  CommonCriteriaTO comCriteriaTO=null;
+	  try {
 		 logger.info("  : Starting Webservice Call :  ");
 		 //get the soap request.
 	     XMLStreamReader reader = context.getInMessage().getXMLStreamReader();
@@ -57,20 +58,23 @@ public class SoapDispatcher {
 		 DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 	     DocumentBuilder builder = dbf.newDocumentBuilder();
 	     Document inputDoc = STAXUtils.read(builder,reader,true);
+	     logger.info(" : Soap input values : "+DomHelper.getStringFromDoc(inputDoc));	
 	     //all the soap requests in the body will have a namespaceuri that      
 	     String inputURI = inputDoc.getDocumentElement().getNamespaceURI();
 	    
 	     XMLStreamReader responseReader = null;	        	 	    	
 	     String interfaceName = inputDoc.getDocumentElement().getLocalName().intern();
-	    	 //since this service will be used a lot, supposedly .intern() can be quicker
-   	    	 //each method should return a XMLStreamReader that is streamed back to the client.
+	     //since this service will be used a lot, supposedly .intern() can be quicker
+   	     //each method should return a XMLStreamReader that is streamed back to the client.
+	     comCriteriaTO=new CommonCriteriaTO(); 
+		 pr = new PipedReader();
+		 pw = new PipedWriter(pr);	    		   		   		  		   	 
+		 comCriteriaTO.setPrintWriter(pw);
+		 
+		 //Indicator to define VOTABLE for Web Service request
+		 comCriteriaTO.setStatus("WebService");
+		 
 	    	 if(interfaceName == "Query".intern()) {
-	    		 CommonCriteriaTO comCriteriaTO=new CommonCriteriaTO(); 
-	    		 pr = new PipedReader();
-	    		 pw = new PipedWriter(pr);	    		   		   		  		   	 
-	    		 comCriteriaTO.setPrintWriter(pw);
-	    		 //Indicator to define VOTABLE for Web Service request
-	    		 comCriteriaTO.setStatus("WebService");
 	    		 //Setting for START TIME parameter.
 	    		 if(inputDoc.getDocumentElement().getElementsByTagNameNS("*","STARTTIME").getLength()>0){
 		    		 String startTime = inputDoc.getDocumentElement().getElementsByTagNameNS("*","STARTTIME").item(0).getFirstChild().getNodeValue();
@@ -110,17 +114,9 @@ public class SoapDispatcher {
 					 String whereClause = inputDoc.getDocumentElement().getElementsByTagNameNS("*","WHERE").item(0).getFirstChild().getNodeValue();
 					 comCriteriaTO.setWhereClause(whereClause);
 				 }
-				 //Thread created to load data into PipeReader.
-				 new QueryThreadAnalizer(comCriteriaTO).start();				
-				 logger.info(" : Done VOTABLE : ");												
-				 responseReader = STAXUtils.createXMLStreamReader(pr);									
+											
 	    	 }else if(interfaceName == "TimeQuery".intern()) {
-	    		 CommonCriteriaTO comCriteriaTO=new CommonCriteriaTO(); 
-	    		 pr = new PipedReader();
-	    		 pw = new PipedWriter(pr);	    		   		   		  		   	 
-	    		 comCriteriaTO.setPrintWriter(pw);
-	    		 //Indicator to define VOTABLE for Web Service request
-	    		 comCriteriaTO.setStatus("WebService");
+	    		
 	    		 //Setting for START TIME parameter.
 	    		 if(inputDoc.getDocumentElement().getElementsByTagNameNS("*","STARTTIME").getLength()>0){
 		    		 String startTime = inputDoc.getDocumentElement().getElementsByTagNameNS("*","STARTTIME").item(0).getFirstChild().getNodeValue();
@@ -147,12 +143,12 @@ public class SoapDispatcher {
 					 String noOfRows = inputDoc.getDocumentElement().getElementsByTagNameNS("*","MAXRECORDS").item(0).getFirstChild().getNodeValue();
 					 comCriteriaTO.setNoOfRows(noOfRows);
 				 }
-				
-				 //Thread created to load data into PipeReader.
-				 new QueryThreadAnalizer(comCriteriaTO).start();				
-				 logger.info(" : Done VOTABLE : ");												
-				 responseReader = STAXUtils.createXMLStreamReader(pr);									
-	    	 }	  	  
+	    	 }	 
+	    	 
+	    	 //Thread created to load data into PipeReader.
+			 new QueryThreadAnalizer(comCriteriaTO).start();				
+			 logger.info(" : Done VOTABLE : ");												
+			 responseReader = STAXUtils.createXMLStreamReader(pr);	
 	 	 logger.info(" : returning response reader soap output : ");
 	 	 return responseReader;
 	 }catch(Exception e) {
