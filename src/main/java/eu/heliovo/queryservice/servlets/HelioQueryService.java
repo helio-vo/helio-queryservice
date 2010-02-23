@@ -1,4 +1,4 @@
-package eu.heliovo.queryservice.servlets;
+package com.org.helio.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -11,9 +11,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import eu.heliovo.queryservice.common.dao.CommonDaoFactory;
-import eu.heliovo.queryservice.common.dao.interfaces.CommonDao;
-import eu.heliovo.queryservice.common.transfer.criteriaTO.CommonCriteriaTO;
+import com.org.helio.common.dao.CommonDaoFactory;
+import com.org.helio.common.dao.interfaces.CommonDao;
+import com.org.helio.common.transfer.criteriaTO.CommonCriteriaTO;
 
 /**
  * Servlet implementation class HelioQueryService
@@ -40,22 +40,17 @@ public class HelioQueryService extends HttpServlet {
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		    dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
 		    comCriteriaTO.setPrintWriter(printWriter);
-		    //Setting time parameter
-		    String sTime=request.getParameter("TIME");
-		    if(sTime!=null && !sTime.equals("")){
-				String[] dateTime= sTime.split("/");			
-				System.out.println(" startDateTime : "+dateTime[0]+" startEndTime : "+dateTime[1]);			
-				comCriteriaTO.setStartDateTime(dateTime[0]);
-				comCriteriaTO.setEndDateTime(dateTime[1]);						
-		    }else{ 
-		    	comCriteriaTO.setStartDateTime(dateFormat.format(new Date()));
-				comCriteriaTO.setEndDateTime(dateFormat.format(new Date()));
-		    }
+		    //Setting start time & end time parameter
+		    String sStartTime=request.getParameter("STARTTIME");
+		    String sEndTime=request.getParameter("ENDTIME");
+		   	System.out.println(" sStartTime : "+sStartTime+" sEndTime : "+sEndTime);			
+			comCriteriaTO.setStartDateTime(sStartTime);
+			comCriteriaTO.setEndDateTime(sEndTime);					
 		    //Setting for Instrument parameter.
 		    String sInstrument=request.getParameter("INSTRUMENT");
 		    comCriteriaTO.setInstruments(sInstrument);
 		    //Setting for List Name parameter.
-		    String sListName=request.getParameter("LISTNAME");
+		    String sListName=request.getParameter("FROM");
 		    comCriteriaTO.setListName(sListName);
 		    //Setting where cluase parameter
 		    String whereClause=request.getParameter("WHERE");
