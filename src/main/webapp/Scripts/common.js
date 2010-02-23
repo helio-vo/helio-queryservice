@@ -566,6 +566,8 @@ function doneDatabaseConnection()
 			return true;
 		}
 		
+		
+		
 		document.forms[0].target="_self";
 		document.forms[0].action="getConfigurationPropertyFilePage.action";
 		document.forms[0].method="post";
@@ -603,7 +605,8 @@ function doneColumnAdd()
 	   var jdbcUser=document.forms[0].jdbcUser.value;
 	   var jdbcPassword=document.forms[0].jdbcPassword.value;
 	   var fileNamePath=document.forms[0].fileNamePath.value;
-		   
+	   var sAddedTableDetails=document.forms[0].addedTableDetails;
+	  
 		if(jdbcDriverName==null || jdbcDriverName==""){
 			alert("Please enter Jdbc Driver Name.");
 			return true;
@@ -626,6 +629,11 @@ function doneColumnAdd()
 		
 		if(fileNamePath==null || fileNamePath==""){
 			alert("Please enter file name and path.");
+			return true;
+		}		
+	
+		if(typeof sAddedTableDetails == "undefined"){
+			alert("you connot create configuration file with no tables or columns. Please add some columns.");
 			return true;
 		}
 		
