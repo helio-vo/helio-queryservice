@@ -82,8 +82,10 @@ public class SoapDispatcher {
 					 comCriteriaTO.setEndDateTime(endTime);	
 	    		 }
 				//Setting for ListName parameter.
-				 String listName = inputDoc.getDocumentElement().getElementsByTagNameNS("*","FROM").item(0).getFirstChild().getNodeValue();
-				 comCriteriaTO.setListName(listName);
+	    		 if(inputDoc.getDocumentElement().getElementsByTagNameNS("*","FROM").getLength()>0){
+	    			 String listName = inputDoc.getDocumentElement().getElementsByTagNameNS("*","FROM").item(0).getFirstChild().getNodeValue();
+	    			 comCriteriaTO.setListName(listName);
+	    		 }
 				 
 				 //Setting for Instrument parameter.
 				 if(inputDoc.getDocumentElement().getElementsByTagNameNS("*","INSTRUMENT").getLength()>0){
