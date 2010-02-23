@@ -71,13 +71,15 @@ public class SoapDispatcher {
 	    		 comCriteriaTO.setPrintWriter(pw);
 	    		 //Indicator to define VOTABLE for Web Service request
 	    		 comCriteriaTO.setStatus("WebService");
+	    		 //Setting for START TIME parameter.
+	    		 if(inputDoc.getDocumentElement().getElementsByTagNameNS("*","STARTTIME").getLength()>0){
+		    		 String startTime = inputDoc.getDocumentElement().getElementsByTagNameNS("*","STARTTIME").item(0).getFirstChild().getNodeValue();
+		    		 comCriteriaTO.setStartDateTime(startTime);
+				 }
 	    		 //Setting for TIME parameter.
-	    		 if(inputDoc.getDocumentElement().getElementsByTagNameNS("*","TIME").getLength()>0){
-		    		 String time = inputDoc.getDocumentElement().getElementsByTagNameNS("*","TIME").item(0).getFirstChild().getNodeValue();
-		    		 String[] dateTime= time.split("/");			
-					 logger.info(" : startDateTime : "+dateTime[0]+" : startEndTime : "+dateTime[1]);			
-					 comCriteriaTO.setStartDateTime(dateTime[0]);
-					 comCriteriaTO.setEndDateTime(dateTime[1]);	
+	    		 if(inputDoc.getDocumentElement().getElementsByTagNameNS("*","ENDTIME").getLength()>0){
+		    		 String endTime = inputDoc.getDocumentElement().getElementsByTagNameNS("*","ENDTIME").item(0).getFirstChild().getNodeValue();
+					 comCriteriaTO.setEndDateTime(endTime);	
 	    		 }
 				//Setting for ListName parameter.
 				 String listName = inputDoc.getDocumentElement().getElementsByTagNameNS("*","FROM").item(0).getFirstChild().getNodeValue();
@@ -110,7 +112,45 @@ public class SoapDispatcher {
 				 new QueryThreadAnalizer(comCriteriaTO).start();				
 				 logger.info(" : Done VOTABLE : ");												
 				 responseReader = STAXUtils.createXMLStreamReader(pr);									
-	    	 }	  
+	    	 }else if(interfaceName == "TimeQuery".intern()) {
+	    		 CommonCriteriaTO comCriteriaTO=new CommonCriteriaTO(); 
+	    		 pr = new PipedReader();
+	    		 pw = new PipedWriter(pr);	    		   		   		  		   	 
+	    		 comCriteriaTO.setPrintWriter(pw);
+	    		 //Indicator to define VOTABLE for Web Service request
+	    		 comCriteriaTO.setStatus("WebService");
+	    		 //Setting for START TIME parameter.
+	    		 if(inputDoc.getDocumentElement().getElementsByTagNameNS("*","STARTTIME").getLength()>0){
+		    		 String startTime = inputDoc.getDocumentElement().getElementsByTagNameNS("*","STARTTIME").item(0).getFirstChild().getNodeValue();
+		    		 comCriteriaTO.setStartDateTime(startTime);
+				 }
+	    		 //Setting for TIME parameter.
+	    		 if(inputDoc.getDocumentElement().getElementsByTagNameNS("*","ENDTIME").getLength()>0){
+		    		 String endTime = inputDoc.getDocumentElement().getElementsByTagNameNS("*","ENDTIME").item(0).getFirstChild().getNodeValue();
+					 comCriteriaTO.setEndDateTime(endTime);	
+	    		 }
+				//Setting for ListName parameter.
+	    		 if(inputDoc.getDocumentElement().getElementsByTagNameNS("*","FROM").getLength()>0){
+	    			 String listName = inputDoc.getDocumentElement().getElementsByTagNameNS("*","FROM").item(0).getFirstChild().getNodeValue();
+	    			 comCriteriaTO.setListName(listName);
+	    		 }	 
+				//Setting for Start Row parameter.
+				 if(inputDoc.getDocumentElement().getElementsByTagNameNS("*","STARTINDEX").getLength()>0){
+					 String startRow = inputDoc.getDocumentElement().getElementsByTagNameNS("*","STARTINDEX").item(0).getFirstChild().getNodeValue();
+					 comCriteriaTO.setStartRow(startRow);
+				 }
+				 
+				//Setting for No Of Rows parameter.
+				 if(inputDoc.getDocumentElement().getElementsByTagNameNS("*","MAXRECORDS").getLength()>0){
+					 String noOfRows = inputDoc.getDocumentElement().getElementsByTagNameNS("*","MAXRECORDS").item(0).getFirstChild().getNodeValue();
+					 comCriteriaTO.setNoOfRows(noOfRows);
+				 }
+				
+				 //Thread created to load data into PipeReader.
+				 new QueryThreadAnalizer(comCriteriaTO).start();				
+				 logger.info(" : Done VOTABLE : ");												
+				 responseReader = STAXUtils.createXMLStreamReader(pr);									
+	    	 }	  	  
 	 	 logger.info(" : returning response reader soap output : ");
 	 	 return responseReader;
 	 }catch(Exception e) {
