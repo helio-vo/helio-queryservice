@@ -75,7 +75,7 @@
 				<TD nowrap class="txtblackBP" width="15%"> Database tables : </TD>
 				<TD nowrap class="txtblackBP"  >		
 					<s:select name="cmbDatabaseTableList" id="cmbDatabaseTableList" cssClass="stylecombo" list="hmbDatabaseTableList" onchange="javascript:getTableColumns();" headerKey="s" headerValue="-Select-" listKey="key" listValue="value" theme="simple"  />	
-					&nbsp;&nbsp;&nbsp;<a onclick="javascript:doneColumnAdd();" onMouseOver="MM_swapImage('=done','','<%=contextPath%>/Images/but_done_click.gif',1)" onMouseOut="MM_swapImgRestore()"><img src="<%=contextPath%>/Images/but_done_normal.gif" name="Done"  border="0" align="absmiddle" id="done"></a>&nbsp;
+					&nbsp;&nbsp;&nbsp;<a onclick="javascript:doneColumnAdd();" onMouseOver="MM_swapImage('done','','<%=contextPath%>/Images/but_done_click.gif',1)" onMouseOut="MM_swapImgRestore()"><img src="<%=contextPath%>/Images/but_done_normal.gif" name="Done"  border="0" align="absmiddle" id="done"></a>&nbsp;
 		 	   </TD>
 	   		  <!--  <TD nowrap class="txtblackBP" > File Name and Path : </TD>
 	   		   <TD nowrap class="txtblackBP" >
