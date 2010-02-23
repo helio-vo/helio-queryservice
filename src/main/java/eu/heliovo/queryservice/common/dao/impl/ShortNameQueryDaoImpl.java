@@ -81,8 +81,8 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 		} catch (Exception e) {		
 			//Writing all details into table.
 			comCriteriaTO.setQueryStatus("ERROR");
-			VOTableMaker.writeTables(comCriteriaTO);
 			comCriteriaTO.setQueryDescription(e.getMessage());
+			VOTableMaker.writeTables(comCriteriaTO);
 			throw new DetailsNotFoundException("EXCEPTION ", e);
 		}
 		finally
@@ -259,11 +259,13 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 			 //Getting where clause.
 			 if(comCriteriaTO.getWhereClause()!=null && !comCriteriaTO.getWhereClause().equals("")){
 				 queryWhereClause=QueryWhereClauseParser.generateWhereClause(comCriteriaTO.getWhereClause());
+				 
+				 //Setting all declared string to null;
+				 QueryWhereClauseParser.deAllocateStringToNull();
+				 
 			 }
 			 
-			 //Setting all declared string to null;
-			 QueryWhereClauseParser.deAllocateStringToNull();
-			 
+			
 			 //Appending Time clause.
 			 String queryTimeContraint=ConfigurationProfiler.getInstance().getProperty("sql.query.time.constraint."+listName);
 			 if(queryTimeContraint!=null && !queryTimeContraint.trim().equals("") ){
