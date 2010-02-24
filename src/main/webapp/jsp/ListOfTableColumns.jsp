@@ -5,12 +5,12 @@
   				 
     				 		<TR width="100%" height=20 class="PopupAltDataRow">
 								<TD nowrap class="txtblackBP" width="15%">Time Constraint:</TD>
-								<td colspan="3" > &nbsp;&nbsp;&nbsp;<s:textfield id="timeConstraint" name="timeConstraint" cssClass="textfield" size="20" maxlength="200" value="" theme="simple"/></td>				
+								<td colspan="3" > &nbsp;&nbsp;&nbsp;<s:textfield id="timeConstraint" name="timeConstraint" cssClass="textfield" size="20" maxlength="200" value="" theme="simple"/>( Example: start_date>='[:kwstartdate:]' and end_date<='[:kwstartdate:]' )</td>				
 							</TR>
 							
 							<TR width="100%" height=20 class="PopupAltDataRow">
 								<TD nowrap class="txtblackBP" >Instrument Constraint:</TD>
-								<td colspan="3" >&nbsp;&nbsp;&nbsp;<s:textfield id="instrumentConstraint" name="instrumentConstraint" cssClass="textfield" size="20" maxlength="200" value="" theme="simple"/></td>				
+								<td colspan="3" >&nbsp;&nbsp;&nbsp;<s:textfield id="instrumentConstraint" name="instrumentConstraint" cssClass="textfield" size="20" maxlength="200" value="" theme="simple"/>( Example: ins_id='[:kwinstrument:]')</td>				
 							</TR>
 							
 							<TR width="100%" height=20 class="PopupAltDataRow">
@@ -20,12 +20,12 @@
 							
 							<TR width="100%" height=20 class="PopupAltDataRow">
 								<TD nowrap class="txtblackBP" >Oder By Constraint:</TD>
-								<td colspan="3" >&nbsp;&nbsp;&nbsp;<s:textfield id="orderByConstraint" name="orderByConstraint" cssClass="textfield" size="20" maxlength="200" value="" theme="simple"/></td>				
+								<td colspan="3" >&nbsp;&nbsp;&nbsp;<s:textfield id="orderByConstraint" name="orderByConstraint" cssClass="textfield" size="20" maxlength="200" value="" theme="simple"/>(Example : order by ins_id)</td>				
 							</TR>
 						
 							<TR width="100%" height=20 class="PopupAltDataRow">
 								<TD nowrap class="txtblackBP" >Limit Constraint:</TD>
-								<td colspan="3" >&nbsp;&nbsp;&nbsp;<s:textfield id="limitConstraint" name="limitConstraint" cssClass="textfield" size="20" maxlength="200" value="" theme="simple"/></td>				
+								<td colspan="3" >&nbsp;&nbsp;&nbsp;<s:textfield id="limitConstraint" name="limitConstraint" cssClass="textfield" size="20" maxlength="200" value="" theme="simple"/>(Example : limit 10,20)</td>				
 							</TR>
 							
 						 	<TR width="100%" class="txtPopupGridHeading">
