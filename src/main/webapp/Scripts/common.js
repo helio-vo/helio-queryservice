@@ -54,7 +54,7 @@ function rtrim(stringToTrim) {
 
 function confirmYesNo(str)
 {
-    execScript('n = msgbox("'+str+'","4132","Display/Export")', "vbscript");
+    execScript('n = msgbox("'+str+'","4132","Yes/No")', "vbscript");
     return(n == 6);
 }
 
@@ -555,7 +555,7 @@ function doneDatabaseConnection()
 			alert("Please enter Jdbc URL.");
 			return true;
 		}
-		
+		/*
 		if(jdbcUser==null || jdbcUser==""){
 			alert("Please enter Jdbc User Name.");
 			return true;
@@ -565,7 +565,7 @@ function doneDatabaseConnection()
 			alert("Please enter Jdbc Password.");
 			return true;
 		}
-		
+		*/
 		
 		
 		document.forms[0].target="_self";
