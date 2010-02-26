@@ -604,9 +604,12 @@ function doneColumnAdd()
 	   var jdbcUrl=document.forms[0].jdbcUrl.value;
 	   var jdbcUser=document.forms[0].jdbcUser.value;
 	   var jdbcPassword=document.forms[0].jdbcPassword.value;
-	   var fileNamePath=document.forms[0].fileNamePath.value;
+	   var serviceDesc=document.forms[0].serviceDesc.value;
 	   var sAddedTableDetails=document.forms[0].addedTableDetails;
-	  
+	   var fileNamePath=document.forms[0].fileNamePath.value;
+	   
+	   //alert(jdbcDriverName);
+	   
 		if(jdbcDriverName==null || jdbcDriverName==""){
 			alert("Please enter Jdbc Driver Name.");
 			return true;
@@ -627,6 +630,11 @@ function doneColumnAdd()
 			return true;
 		}
 		
+		if(serviceDesc==null || serviceDesc==""){
+			alert("Please enter service description.");
+			return true;
+		}
+		
 		if(fileNamePath==null || fileNamePath==""){
 			alert("Please enter file name and path.");
 			return true;
@@ -638,7 +646,7 @@ function doneColumnAdd()
 		}
 		
 		document.forms[0].target="_self";
-		document.forms[0].action="createConfigurationFile.action";
+		document.forms[0].action="createConfigurationFile.action?jdbcDriverName="+jdbcDriverName+"&jdbcUrl="+jdbcUrl+"&jdbcUser="+jdbcUser+"&jdbcPassword="+jdbcPassword;
 		document.forms[0].method="post";
 		document.forms[0].submit();
 	
