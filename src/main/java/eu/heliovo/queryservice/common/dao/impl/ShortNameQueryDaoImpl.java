@@ -57,7 +57,6 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 		for(int intCnt=0;intCnt<listName.length;intCnt++){
 			String sRepSql = CommonUtils.replaceParams(generateQuery(listName[intCnt],comCriteriaTO), comCriteriaTO.getParamData());
 			logger.info(" : Query String After Replacing Value :"+sRepSql);	
-			comCriteriaTO.setUpdatedQuery(sRepSql);
 			//Setting Table Name.
 			comCriteriaTO.setTableName(listName[intCnt]);
 			//Setting query with values.
@@ -217,15 +216,18 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 	{
 		String[] columnNames=ConfigurationProfiler.getInstance().getProperty("sql.columnnames."+tableName).split("::");
 		String colNamesForTable="";
-				
-		for(int i=0;i<columnNames.length;i++)
-		{
-			colNamesForTable=colNamesForTable+columnNames[i]+",";
+		
+		if(columnNames!=null){		
+			for(int i=0;i<columnNames.length;i++)
+			{
+				colNamesForTable=colNamesForTable+columnNames[i]+",";
+			}
 		}
 		
 		if(colNamesForTable.endsWith(",")){
 			colNamesForTable=colNamesForTable.substring(0, colNamesForTable.length()-1);
 		}
+		
 		logger.info(" : Table Name : "+tableName +" List of columns "+colNamesForTable);
 		
 		return colNamesForTable;
