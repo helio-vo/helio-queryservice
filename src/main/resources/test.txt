@@ -1,0 +1,17 @@
+jdbc.driver=org.hsqldb.jdbcDriver
+jdbc.url=jdbc:hsqldb:file:kwpath/HelioDB/testdb
+jdbc.user=sa
+jdbc.password=
+
+sql.query.time.constraint.helio=
+sql.query.instr.constraint.helio=
+sql.query.coordinates.constraint.helio= 
+sql.query.orderby.constraint.helio=
+sql.query.limit.constraint.helio=
+
+sql.columnnames.helio=url::start_date::end_date
+sql.columndesc.helio=URL for VOTABLE::Start Time::End Time
+sql.columnucd.helio=url::time.start::time.end
+sql.columnutypes.helio=
+
+sql.votable.head.desc=Helio Query Service Connected to TestDB
