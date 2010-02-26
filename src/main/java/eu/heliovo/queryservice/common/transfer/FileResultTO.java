@@ -1,5 +1,5 @@
 /* #ident	"%W%" */
-package eu.heliovo.queryservice.common.transfer;
+package com.org.helio.common.transfer;
 
 import java.io.Serializable;
 
@@ -21,6 +21,7 @@ public class FileResultTO implements Serializable {
 	private String columnDesc;
 	private String orderByConstraint;
 	private String limitConstraint;
+	private String serviceDesc;
 	
 	public String getJdbcDriverName() {
 		return jdbcDriverName;
@@ -105,6 +106,12 @@ public class FileResultTO implements Serializable {
 	}
 	public void setLimitConstraint(String limitConstraint) {
 		this.limitConstraint = limitConstraint;
+	}
+	public String getServiceDesc() {
+		return serviceDesc;
+	}
+	public void setServiceDesc(String serviceDesc) {
+		this.serviceDesc = serviceDesc;
 	}
 	
 	
