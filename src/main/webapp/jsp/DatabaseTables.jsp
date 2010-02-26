@@ -87,20 +87,24 @@
 	     <TABLE width="100%" border="0" cellspacing="1" cellpadding="0" >
 	   		<TR height=20 class="PopupAltDataRow">
 				<TD nowrap class="txtblackBP" width="15%">Jdbc Driver Name:</TD>
-				<td >&nbsp;&nbsp;&nbsp;<s:textfield id="jdbcDriverName" name="jdbcDriverName" cssClass="textfield" size="20" maxlength="100"  theme="simple"/></td>				
+				<td >&nbsp;&nbsp;&nbsp;<s:textfield id="jdbcDriverName" name="jdbcDriverName" cssClass="textfield" size="20" maxlength="100" disabled="true"  theme="simple"/></td>				
 			</TR>
 			<TR height=20 class="PopupAltDataRow">
 				<TD nowrap class="txtblackBP" >Jdbc URL:</TD>
-				<td>&nbsp;&nbsp;&nbsp;<s:textfield id="jdbcUrl" name="jdbcUrl" cssClass="textfield" size="20" maxlength="100"  theme="simple"/></td>				
+				<td>&nbsp;&nbsp;&nbsp;<s:textfield id="jdbcUrl" name="jdbcUrl" cssClass="textfield" size="20" maxlength="100" disabled="true"  theme="simple"/></td>				
 			</TR>
 				<TR height=20 class="PopupAltDataRow">
 				<TD nowrap class="txtblackBP" >Jdbc User:</TD>
-				<td>&nbsp;&nbsp;&nbsp;<s:textfield id="jdbcUser" name="jdbcUser" cssClass="textfield" size="20" maxlength="100"  theme="simple"/></td>				
+				<td>&nbsp;&nbsp;&nbsp;<s:textfield id="jdbcUser" name="jdbcUser" cssClass="textfield" size="20" maxlength="100" disabled="true"  theme="simple"/></td>				
 			</TR>
 			<TR height=20 class="PopupAltDataRow">
 				<TD nowrap class="txtblackBP" >Jdbc Password:</TD>
-				<td>&nbsp;&nbsp;&nbsp;<s:textfield id="jdbcPassword" name="jdbcPassword" cssClass="textfield" size="20" maxlength="100"  theme="simple"/></td>				
-			</TR>			
+				<td>&nbsp;&nbsp;&nbsp;<s:textfield id="jdbcPassword" name="jdbcPassword" cssClass="textfield" size="20" maxlength="100" disabled="true"  theme="simple"/></td>				
+			</TR>	
+			<TR height=20 class="PopupAltDataRow">
+				<TD nowrap class="txtblackBP" >Service description</TD>
+				<td>&nbsp;&nbsp;&nbsp;<s:textfield id="serviceDesc" name="serviceDesc" cssClass="textfield"  size="20" maxlength="100"  theme="simple"/> ( Description for this service.)</td>				
+			</TR>		
 			<TR height=20 class="PopupAltDataRow">
 				<TD nowrap class="txtblackBP" >File Name & Path:</TD>
 				<td>&nbsp;&nbsp;&nbsp;<s:textfield id="fileNamePath" name="fileNamePath" cssClass="textfield"  size="20" maxlength="100"  theme="simple"/> ( Please enter File name and path.)</td>				
