@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app id="WebApp_ID" version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 	<display-name>HelioQueryService</display-name>
+	<servlet>
+		<servlet-name>StartUpServlet</servlet-name>
+		<servlet-class>com.org.helio.service.StartupServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>	
 	 <filter>
         <filter-name>struts2</filter-name>
         <filter-class>org.apache.struts2.dispatcher.FilterDispatcher</filter-class>        
@@ -59,7 +64,7 @@
   <env-entry>
    <env-entry-name>property/context</env-entry-name>
    <env-entry-type>java.lang.String</env-entry-type>
-   <env-entry-value>/Users/vineethtshetty/HELIO/Helio-ICS.txt</env-entry-value>
+   <env-entry-value>test.txt</env-entry-value>
   </env-entry>
   
   <welcome-file-list>		
