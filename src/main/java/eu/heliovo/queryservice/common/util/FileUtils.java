@@ -1,13 +1,8 @@
-package eu.heliovo.queryservice.common.util;
+package com.org.helio.common.util;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
+import java.io.*;
 
-import eu.heliovo.queryservice.common.transfer.FileResultTO;
+import com.org.helio.common.transfer.FileResultTO;
 
 public class FileUtils {
 	
@@ -106,6 +101,8 @@ public class FileUtils {
 	    	 contents.append(System.getProperty("line.separator"));
 	    	 contents.append(fileResultTO[i].getColumnUType());
 	    	 contents.append(System.getProperty("line.separator"));
+	    	 contents.append(System.getProperty("line.separator"));
+	    	 contents.append(fileResultTO[i].getServiceDesc());
 	    	 contents.append(System.getProperty("line.separator"));
 	    	 
 	     }

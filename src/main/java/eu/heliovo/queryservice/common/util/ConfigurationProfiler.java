@@ -1,5 +1,5 @@
 /* #ident	"%W%" */
-package eu.heliovo.queryservice.common.util;
+package com.org.helio.common.util;
 
 
 import java.io.File;
@@ -11,7 +11,10 @@ import java.util.Properties;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.log4j.Logger;
+import org.apache.struts2.ServletActionContext;
 
 public class ConfigurationProfiler {
 
@@ -22,11 +25,22 @@ public class ConfigurationProfiler {
 	private ConfigurationProfiler()
 	{
 		try
-		{							 
+		{				
+			
 			if(sProfileFilePath==null || sProfileFilePath.equals("")){			
 				sProfileFilePath=CommonUtils.getPropertyFilePath();
-				logger.info("  : Property File Path  : "+sProfileFilePath);
 			}
+			
+			
+			if(sProfileFilePath!=null && sProfileFilePath.trim().equals("test.txt")){
+				//Configuring test.txt inside the webapp.
+				ClassLoader loader = this.getClass().getClassLoader();
+				sProfileFilePath=loader.getResource(sProfileFilePath).getFile();	
+			}
+			
+			logger.info("  : Property File Path  : "+sProfileFilePath);
+	
+			
 			loadPropertyValues();			
 			TimerTask task = new FileWatcher(new File(sProfileFilePath)) {
 			      protected void onChange( File file ){
