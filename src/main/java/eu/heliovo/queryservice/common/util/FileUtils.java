@@ -67,6 +67,7 @@ public class FileUtils {
 	   static public String getContents(FileResultTO[] fileResultTO) {
 	     //...checks on aFile are elided
 	     StringBuilder contents = new StringBuilder();
+	     if(fileResultTO!=null && fileResultTO.length>0){
 	     for(int i=0;i<fileResultTO.length;i++){
 	    	 
 	    	 if(i==0){
@@ -79,6 +80,9 @@ public class FileUtils {
 	    		 contents.append(fileResultTO[i].getJdbcPassword());
 	    		 contents.append(System.getProperty("line.separator"));
 	    		 contents.append(System.getProperty("line.separator"));
+	    		 contents.append(fileResultTO[i].getServiceDesc());
+	        	 contents.append(System.getProperty("line.separator"));
+	        	 contents.append(System.getProperty("line.separator"));
 	    	  }
 	    	 
 	    	 contents.append(fileResultTO[i].getTimeConstraint());
@@ -102,11 +106,10 @@ public class FileUtils {
 	    	 contents.append(fileResultTO[i].getColumnUType());
 	    	 contents.append(System.getProperty("line.separator"));
 	    	 contents.append(System.getProperty("line.separator"));
-	    	 contents.append(fileResultTO[i].getServiceDesc());
-	    	 contents.append(System.getProperty("line.separator"));
-	    	 
 	     }
-	      
+	     
+	     
+	     }
 	     return contents.toString();
 	   }
 
