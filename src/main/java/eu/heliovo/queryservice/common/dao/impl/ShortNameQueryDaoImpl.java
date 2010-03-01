@@ -239,7 +239,7 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 			 String queryConstraint="";
 			 String queryWhereClause="";
 			 String query="";
-		
+			 int maxRecordsAllowed=0;
 			 HashMap<String,String> params  = new HashMap<String,String>();
 			 
 			 params.put("kwstartdate", comCriteriaTO.getStartDateTime());
@@ -309,12 +309,15 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 			 logger.info(" : Appending OderBy Constraint If Avialable : "+query);
 			 
 			 //Appending limit clause.
-			 String querylimitContraint=ConfigurationProfiler.getInstance().getProperty("sql.query.limit.constraint."+listName);
-			 
-			 if(querylimitContraint==null || querylimitContraint.trim().equals("")){
-				//Getting Limit Constraint. 
-				querylimitContraint=generateLimitConstraintBasedOnDatabase(comCriteriaTO);
+			 String queryMaxRecords=ConfigurationProfiler.getInstance().getProperty("sql.query.maxrecord.constraint."+listName);
+			 if(queryMaxRecords!=null && !queryMaxRecords.trim().equals("")){
+				 maxRecordsAllowed=Integer.parseInt(queryMaxRecords);
 			 }
+			 //Setting max record
+			 comCriteriaTO.setMaxRecordsAllowed(maxRecordsAllowed);
+			//Getting Limit Constraint. 
+			String querylimitContraint=generateLimitConstraintBasedOnDatabase(comCriteriaTO);
+			
 			 //Appending ; 'Limit Constraints' .
 			 query=query+" "+querylimitContraint;
 			 
@@ -354,7 +357,10 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 	private String generateLimitConstraintBasedOnDatabase(CommonCriteriaTO comCriteriaTO) throws Exception{
 		String sDrive= ConfigurationProfiler.getInstance().getProperty("jdbc.driver");
 		String querylimitConstarint="";
-		if(sDrive.contains("mysql")){
+		//check for property max records.
+		checkMaxRecordAllowedValue(comCriteriaTO);
+		
+		if(sDrive.contains("mysql") || sDrive.contains("hsqldb") || sDrive.contains("postgresql")){
 			//Setting start row.
 			 if(comCriteriaTO.getNoOfRows()!=null && !comCriteriaTO.getNoOfRows().equals("")){
 				 querylimitConstarint=" LIMIT "+comCriteriaTO.getNoOfRows();
@@ -362,6 +368,11 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 			 //Setting No Of Rows
 			 if(comCriteriaTO.getStartRow()!=null && !comCriteriaTO.getStartRow().equals("") && querylimitConstarint!=null && !querylimitConstarint.equals("")){
 				 querylimitConstarint=querylimitConstarint+" OFFSET "+comCriteriaTO.getStartRow();
+			 }
+			 
+			 if(querylimitConstarint==null || querylimitConstarint.equals("") || querylimitConstarint.equals("0")){
+				 
+				 querylimitConstarint=" LIMIT "+comCriteriaTO.getNoOfRows();
 			 }
 			
 		}else if(sDrive.contains("oracle")){
@@ -371,11 +382,38 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 			 }
 			 //Setting No Of Rows
 			 if(comCriteriaTO.getStartRow()!=null && !comCriteriaTO.getStartRow().equals("") && querylimitConstarint!=null && !querylimitConstarint.equals("")){
-				 querylimitConstarint=querylimitConstarint+" AND ROWNUM<="+comCriteriaTO.getNoOfRows();
+				 querylimitConstarint="ROWNUM"+" BETWEEN "+comCriteriaTO.getStartRow()+" AND "+comCriteriaTO.getNoOfRows();
+			 }
+			 
+			 if(querylimitConstarint==null || querylimitConstarint.equals("") || querylimitConstarint.equals("0")){
+				 
+				 querylimitConstarint=" ROWNUM<="+comCriteriaTO.getNoOfRows();
 			 }
 		}
 		
+		 logger.info(" : Limit constraints in method generateLimitConstraintBasedOnDatabase(), limit constraints based on database : "+querylimitConstarint);
+		
 		return querylimitConstarint;
 	}
+	
+	/*
+	 * Setting max record allowed to query.
+	 */
+	private void checkMaxRecordAllowedValue(CommonCriteriaTO comCriteriaTO){
+		int userMaxRecord=0;
+		if(comCriteriaTO.getNoOfRows()!=null && !comCriteriaTO.getNoOfRows().equals("")){
+			userMaxRecord=Integer.parseInt(comCriteriaTO.getNoOfRows());
+		}else{
+			//No value setting max record.
+			userMaxRecord=comCriteriaTO.getMaxRecordsAllowed();
+			comCriteriaTO.setNoOfRows(""+userMaxRecord);
+		}
+		//Changing the no of row value.
+		if(userMaxRecord>comCriteriaTO.getMaxRecordsAllowed()){
+			userMaxRecord=comCriteriaTO.getMaxRecordsAllowed();
+			comCriteriaTO.setNoOfRows(""+userMaxRecord);
+		}
+	}
+	
 	
 }
