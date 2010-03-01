@@ -107,7 +107,7 @@
 			</TR>		
 			<TR height=20 class="PopupAltDataRow">
 				<TD nowrap class="txtblackBP" >File Name & Path:</TD>
-				<td>&nbsp;&nbsp;&nbsp;<s:textfield id="fileNamePath" name="fileNamePath" cssClass="textfield"  size="20" maxlength="100"  theme="simple"/> ( Please enter File name and path.)</td>				
+				<td>&nbsp;&nbsp;&nbsp;<s:textfield id="fileNamePath" name="fileNamePath" cssClass="textfield"  size="20" maxlength="100"  theme="simple"/> ( Please enter File name and path, where the property file should be saved.)</td>				
 			</TR>	
 	     </TABLE>
 	     <TABLE width="100%" border="0" cellspacing="1" cellpadding="0" >
