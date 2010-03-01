@@ -336,7 +336,7 @@ public class CommonAction  extends ActionSupport
 						fileResultTO[i].setCoordinateConstraint("sql.query.coordinates.constraint."+details[0]+"="+details[4]);
 						fileResultTO[i].setInstrumentConstraint("sql.query.instr.constraint."+details[0]+"="+details[3]);
 						fileResultTO[i].setOrderByConstraint("sql.query.orderby.constraint."+details[0]+"="+details[5]);
-						fileResultTO[i].setLimitConstraint("sql.query.limit.constraint."+details[0]+"="+details[6]);
+						fileResultTO[i].setLimitConstraint("sql.query.maxrecord.constraint."+details[0]+"="+details[6]);
 					}
 				}
 			}
