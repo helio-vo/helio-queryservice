@@ -1,12 +1,14 @@
 /* #ident	"%W%" */
-package eu.heliovo.queryservice.common.transfer.criteriaTO;
+package com.org.helio.common.transfer.criteriaTO;
 
+import java.io.PrintWriter;
 import java.io.Serializable;
 import java.io.Writer;
 import java.util.HashMap;
 
 import uk.ac.starlink.table.StarTable;
-import eu.heliovo.queryservice.common.transfer.CommonTO;
+
+import com.org.helio.common.transfer.CommonTO;
 
 public class CommonCriteriaTO implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -38,6 +40,7 @@ public class CommonCriteriaTO implements Serializable{
 	private String startRow;
 	private String noOfRows;
 	private String updatedQuery;
+	private int maxRecordsAllowed;
 	
 	public CommonCriteriaTO(){
 		this.setIPageNumber(0);
@@ -238,4 +241,15 @@ public class CommonCriteriaTO implements Serializable{
 	public void setUpdatedQuery(String updatedQuery) {
 		this.updatedQuery = updatedQuery;
 	}
+
+	public int getMaxRecordsAllowed() {
+		return maxRecordsAllowed;
+	}
+
+	public void setMaxRecordsAllowed(int maxRecordsAllowed) {
+		this.maxRecordsAllowed = maxRecordsAllowed;
+	}
+	
+	
+	
 }
