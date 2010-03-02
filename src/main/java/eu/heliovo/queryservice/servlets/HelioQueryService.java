@@ -1,4 +1,4 @@
-package com.org.helio.servlets;
+package eu.heliovo.queryservice.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
