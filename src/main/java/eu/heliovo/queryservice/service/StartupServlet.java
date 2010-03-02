@@ -1,5 +1,5 @@
 /* #ident	"%W%" */
-package com.org.helio.service;
+package eu.heliovo.queryservice.service;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
