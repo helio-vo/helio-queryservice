@@ -1,37 +1,27 @@
 /* #ident	"%W%" */
 package eu.heliovo.queryservice.common.dao.impl;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import org.apache.log4j.Logger;
-import uk.ac.starlink.table.ColumnInfo;
-import uk.ac.starlink.table.DescribedValue;
-import uk.ac.starlink.table.StarTable;
-import uk.ac.starlink.table.ValueInfo;
-import uk.ac.starlink.table.jdbc.SequentialResultSetStarTable;
 
+import org.apache.log4j.Logger;
+
+import uk.ac.starlink.table.StarTable;
+import uk.ac.starlink.table.jdbc.SequentialResultSetStarTable;
 import eu.heliovo.queryservice.common.dao.exception.DetailsNotFoundException;
-import eu.heliovo.queryservice.common.dao.exception.ShortNameQueryException;
 import eu.heliovo.queryservice.common.dao.interfaces.ShortNameQueryDao;
-import eu.heliovo.queryservice.common.CommonTO;
-import eu.heliovo.queryservice.common.criteriaTO.CommonCriteriaTO;
+import eu.heliovo.queryservice.common.transfer.CommonTO;
+import eu.heliovo.queryservice.common.transfer.criteriaTO.CommonCriteriaTO;
 import eu.heliovo.queryservice.common.util.CommonUtils;
 import eu.heliovo.queryservice.common.util.ConfigurationProfiler;
 import eu.heliovo.queryservice.common.util.ConnectionManager;
 import eu.heliovo.queryservice.common.util.QueryWhereClauseParser;
 import eu.heliovo.queryservice.common.util.StandardTypeTable;
 import eu.heliovo.queryservice.common.util.VOTableMaker;
-
 
 public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 		

@@ -1,26 +1,17 @@
-package com.org.helio.common.util;
+package eu.heliovo.queryservice.common.util;
 
 import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
 import org.apache.log4j.Logger;
 
-import com.org.helio.common.transfer.criteriaTO.CommonCriteriaTO;
-
 import uk.ac.starlink.table.StarTable;
-
-import uk.ac.starlink.table.ColumnInfo;
-import uk.ac.starlink.table.DescribedValue;
-import uk.ac.starlink.table.RowListStarTable;
 import uk.ac.starlink.table.Tables;
-import uk.ac.starlink.table.formats.HTMLTableWriter;
 import uk.ac.starlink.table.jdbc.SequentialResultSetStarTable;
 import uk.ac.starlink.votable.DataFormat;
 import uk.ac.starlink.votable.VOSerializer;
 import uk.ac.starlink.votable.VOTableWriter;
+import eu.heliovo.queryservice.common.transfer.criteriaTO.CommonCriteriaTO;
 
 public class VOTableMaker {
   

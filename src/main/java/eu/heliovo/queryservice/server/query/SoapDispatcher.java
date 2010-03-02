@@ -1,19 +1,21 @@
 package eu.heliovo.queryservice.server.query;
 
-import javax.xml.stream.*;
-import javax.xml.parsers.DocumentBuilder;
-import org.w3c.dom.Document;
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import java.io.PipedReader;
 import java.io.PipedWriter;
 import java.util.Hashtable;
-import com.org.helio.common.util.DomHelper;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.stream.XMLStreamReader;
+
 import org.apache.log4j.Logger;
-import org.codehaus.xfire.util.STAXUtils; 
 import org.codehaus.xfire.MessageContext;
-import com.org.helio.common.transfer.criteriaTO.CommonCriteriaTO;
-import com.org.helio.server.util.QueryThreadAnalizer;
+import org.codehaus.xfire.util.STAXUtils;
+import org.w3c.dom.Document;
+
+import eu.heliovo.queryservice.common.transfer.criteriaTO.CommonCriteriaTO;
+import eu.heliovo.queryservice.common.util.DomHelper;
+import eu.heliovo.queryservice.server.util.QueryThreadAnalizer;
 
 /**
  * Class: SoapDispatcher

@@ -1,5 +1,5 @@
 /* #ident	"%W%" */
-package com.org.helio.common.transfer;
+package eu.heliovo.queryservice.common.transfer;
 
 import java.io.Serializable;
 

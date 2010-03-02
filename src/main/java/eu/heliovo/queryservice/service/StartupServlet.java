@@ -4,7 +4,7 @@ package eu.heliovo.queryservice.service;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 
-import com.org.helio.common.util.InstanceHolders;
+import eu.heliovo.queryservice.common.util.InstanceHolders;
 
 
 public class StartupServlet extends HttpServlet {

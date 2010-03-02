@@ -1,14 +1,12 @@
 /* #ident	"%W%" */
 package eu.heliovo.queryservice.common.transfer.criteriaTO;
 
-import java.io.PrintWriter;
 import java.io.Serializable;
 import java.io.Writer;
 import java.util.HashMap;
 
 import uk.ac.starlink.table.StarTable;
-
-import com.org.helio.common.transfer.CommonTO;
+import eu.heliovo.queryservice.common.transfer.CommonTO;
 
 public class CommonCriteriaTO implements Serializable{
 	private static final long serialVersionUID = 1L;

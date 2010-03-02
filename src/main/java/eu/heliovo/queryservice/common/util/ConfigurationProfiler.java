@@ -11,10 +11,7 @@ import java.util.Properties;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.log4j.Logger;
-import org.apache.struts2.ServletActionContext;
 
 public class ConfigurationProfiler {
 

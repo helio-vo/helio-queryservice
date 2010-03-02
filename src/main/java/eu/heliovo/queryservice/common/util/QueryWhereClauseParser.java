@@ -1,6 +1,6 @@
-package com.org.helio.common.util;
+package eu.heliovo.queryservice.common.util;
 
-import com.org.helio.common.transfer.criteriaTO.CommonCriteriaTO;
+import eu.heliovo.queryservice.common.transfer.criteriaTO.CommonCriteriaTO;
 
 public class QueryWhereClauseParser {
 	

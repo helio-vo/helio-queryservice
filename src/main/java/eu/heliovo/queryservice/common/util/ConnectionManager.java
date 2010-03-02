@@ -2,11 +2,8 @@
 package eu.heliovo.queryservice.common.util;
 
 import java.sql.Connection;
-import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
-import javax.naming.InitialContext;
 
 public class ConnectionManager {
 		

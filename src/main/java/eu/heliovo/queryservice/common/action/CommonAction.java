@@ -1,13 +1,16 @@
-package eu.heliovo.queryservice.action;
+package eu.heliovo.queryservice.common.action;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
-import javax.servlet.http.HttpServletRequest;
+
 import com.opensymphony.xwork2.ActionSupport;
+
 import eu.heliovo.queryservice.common.dao.CommonDaoFactory;
 import eu.heliovo.queryservice.common.dao.interfaces.ShortNameQueryDao;
 import eu.heliovo.queryservice.common.transfer.CommonTO;
@@ -15,6 +18,7 @@ import eu.heliovo.queryservice.common.transfer.FileResultTO;
 import eu.heliovo.queryservice.common.util.ConnectionManager;
 import eu.heliovo.queryservice.common.util.FileUtils;
 import eu.heliovo.queryservice.common.util.InstanceHolders;
+
  
 public class CommonAction  extends ActionSupport
 {	
