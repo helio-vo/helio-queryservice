@@ -1,4 +1,4 @@
-package com.org.helio.server.query;
+package eu.heliovo.queryservice.server.query;
 
 import javax.xml.stream.*;
 import javax.xml.parsers.DocumentBuilder;
