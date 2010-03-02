@@ -135,6 +135,7 @@
 			              <td class="txtblackBP">Instrument Constraint</td>                       
 			              <td class="txtblackBP">Coordinate Constraint</td>
 			              <td class="txtblackBP">Order By Constraint</td>
+			              <td class="txtblackBP">Max Record Allowed</td>
 					  </tr>
 					 </TABLE>
 				 

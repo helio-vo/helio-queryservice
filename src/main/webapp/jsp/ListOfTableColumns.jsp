@@ -24,7 +24,7 @@
 							</TR>
 						
 							<TR width="100%" height=20 class="PopupAltDataRow">
-								<TD nowrap class="txtblackBP" >Max Record:</TD>
+								<TD nowrap class="txtblackBP" >Max Record Allowed:</TD>
 								<td colspan="3" >&nbsp;&nbsp;&nbsp;<s:textfield id="limitConstraint" name="limitConstraint" cssClass="textfield" size="20" maxlength="200" value="" theme="simple"/>(Example : 500)</td>				
 							</TR>
 							
