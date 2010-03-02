@@ -1,4 +1,4 @@
-package com.org.helio.common.action;
+package eu.heliovo.queryservice.action;
 
 import java.sql.Connection;
 import java.sql.SQLException;
