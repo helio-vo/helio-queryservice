@@ -1,5 +1,5 @@
 /* #ident	"%W%" */
-package com.org.helio.common.transfer.criteriaTO;
+package eu.heliovo.queryservice.common.transfer.criteriaTO;
 
 import java.io.PrintWriter;
 import java.io.Serializable;
