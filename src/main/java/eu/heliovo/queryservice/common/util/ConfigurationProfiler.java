@@ -1,5 +1,5 @@
 /* #ident	"%W%" */
-package com.org.helio.common.util;
+package eu.heliovo.queryservice.common.util;
 
 
 import java.io.File;
