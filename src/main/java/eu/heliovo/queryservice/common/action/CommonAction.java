@@ -8,13 +8,13 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import javax.servlet.http.HttpServletRequest;
 import com.opensymphony.xwork2.ActionSupport;
-import com.org.helio.common.dao.CommonDaoFactory;
-import com.org.helio.common.dao.interfaces.ShortNameQueryDao;
-import com.org.helio.common.transfer.CommonTO;
-import com.org.helio.common.transfer.FileResultTO;
-import com.org.helio.common.util.ConnectionManager;
-import com.org.helio.common.util.FileUtils;
-import com.org.helio.common.util.InstanceHolders;
+import eu.heliovo.queryservice.common.dao.CommonDaoFactory;
+import eu.heliovo.queryservice.common.dao.interfaces.ShortNameQueryDao;
+import eu.heliovo.queryservice.common.transfer.CommonTO;
+import eu.heliovo.queryservice.common.transfer.FileResultTO;
+import eu.heliovo.queryservice.common.util.ConnectionManager;
+import eu.heliovo.queryservice.common.util.FileUtils;
+import eu.heliovo.queryservice.common.util.InstanceHolders;
  
 public class CommonAction  extends ActionSupport
 {	
