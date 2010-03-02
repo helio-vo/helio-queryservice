@@ -83,16 +83,7 @@ var dtCh= "/";
 var minYear=1900;
 var maxYear=2100;
 
-function isInteger(s){
-	var i;
-    for (i = 0; i < s.length; i++){   
-        // Check that current character is number.
-        var c = s.charAt(i);
-        if (((c < "0") || (c > "9"))) return false;
-    }
-    // All characters are numbers.
-    return true;
-}
+
 
 function stripCharsInBag(s, bag){
 	var i;
@@ -397,9 +388,15 @@ function addColumnsOfSelectedTable()
 	var limitConstraint=document.forms[0].limitConstraint.value;
 	var tableName=document.forms[0].cmbDatabaseTableList.value;
 	//alert(" selectedColumnValues : "+selectedColumnValues +"timeConstraint "+timeConstraint+"instrumentConstraint "+instrumentConstraint+"coordinateConstraint "+coordinateConstraint );
-	
+	if(limitConstraint!=null && limitConstraint!=""){
+		if(IsNumeric(limitConstraint)==false){
+			alert("Max record allowed should be a numeric value.");
+			document.forms[0].limitConstraint.focus();
+			return true;
+		}
+	}
 	if(selectedColumnValues==null || selectedColumnValues==""){
-		alert("Please select atleast one column name.");
+		alert("Please select atleast one column name and then click on AddColumn button.");
 		return true;
 	}else{
 		selectedColumnValues=selectedColumnValues.substring(0,selectedColumnValues.length-2);
@@ -489,19 +486,19 @@ function addColumnsOfSelectedTable()
 	oCell.width=300;
    	
 	oCell = newRow.insertCell(2);
-	oCell.innerHTML =trim(replaceAll(selectedColumnValues,"::", ","));
+	oCell.innerHTML =checkIfValueEmpty(selectedColumnValues);
 	oCell.align="left";
 	oCell.style.paddingLeft="10px";
 	oCell.width=300;
 	
 	oCell = newRow.insertCell(3);
-	oCell.innerHTML =trim(replaceAll(strColumnDesc,"::", ","));
+	oCell.innerHTML =checkIfValueEmpty(strColumnDesc);
 	oCell.align="left";
 	oCell.style.paddingLeft="10px";
 	oCell.width=300;
 	
 	oCell = newRow.insertCell(4);
-	oCell.innerHTML =trim(replaceAll(strColumnUcd,"::", ","));
+	oCell.innerHTML =checkIfValueEmpty(strColumnUcd);
 	oCell.align="left";
 	oCell.style.paddingLeft="10px";
 	oCell.width=300;
@@ -530,6 +527,12 @@ function addColumnsOfSelectedTable()
 	oCell.style.paddingLeft="10px";
 	oCell.width=300;
 	
+	oCell = newRow.insertCell(9);
+	oCell.innerHTML =trim(limitConstraint);
+	oCell.align="left";
+	oCell.style.paddingLeft="10px";
+	oCell.width=300;
+	
 	var cmbTableList = document.getElementById("cmbDatabaseTableList");
 	cmbTableList.remove(cmbTableList.selectedIndex);
 	
@@ -548,11 +551,13 @@ function doneDatabaseConnection()
 		   
 		if(jdbcDriverName==null || jdbcDriverName==""){
 			alert("Please enter Jdbc Driver Name.");
+			document.forms[0].jdbcDriverName.focus();
 			return true;
 		}
 		
 		if(jdbcUrl==null || jdbcUrl==""){
 			alert("Please enter Jdbc URL.");
+			document.forms[0].jdbcUrl.focus();
 			return true;
 		}
 		/*
@@ -582,13 +587,13 @@ function deleteTable(rowIndex){
     var Row = document.getElementById("columnRow"+rowIndex);
     var tableName = Row.cells[1].innerHTML;
 	//alert("tableName "+tableName)
-	table.deleteRow(rowIndex);
+	table.deleteRow(Row.rowIndex);
 	var cmbTableList = document.getElementById("cmbDatabaseTableList");
 	var opt=document.createElement('option');
 	opt.value=tableName;
 	opt.text=tableName;
 	try {
-		cmbTableList.add(opt,null); // standards compliant; doesn't work in IE
+		cmbTableList.add(opt,null); // standard compliant; doesn't work in IE
 	  }
 	  catch(ex) {
 		  cmbTableList.add(opt); // IE only
@@ -620,7 +625,7 @@ function doneColumnAdd()
 			return true;
 		}
 		
-		if(jdbcUser==null || jdbcUser==""){
+		/*if(jdbcUser==null || jdbcUser==""){
 			alert("Please enter Jdbc User Name.");
 			return true;
 		}
@@ -628,20 +633,22 @@ function doneColumnAdd()
 		if(jdbcPassword==null || jdbcPassword==""){
 			alert("Please enter Jdbc Password.");
 			return true;
-		}
+		}*/
 		
 		if(serviceDesc==null || serviceDesc==""){
 			alert("Please enter service description.");
+			document.forms[0].serviceDesc.focus();
 			return true;
 		}
 		
 		if(fileNamePath==null || fileNamePath==""){
 			alert("Please enter file name and path.");
+			document.forms[0].fileNamePath.focus();
 			return true;
 		}		
 	
 		if(typeof sAddedTableDetails == "undefined"){
-			alert("you connot create configuration file with no tables or columns. Please add some columns.");
+			alert("you connot create configuration file with no tables or columns. Please click on AddColumn button.");
 			return true;
 		}
 		
@@ -654,7 +661,7 @@ function doneColumnAdd()
 
 
 function trim(stringToTrim) {
-	return stringToTrim.replace(/^\s+|\s+$/g,"");
+	 return stringToTrim.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
 }
 function ltrim(stringToTrim) {
 	return stringToTrim.replace(/^\s+/,"");
@@ -662,15 +669,85 @@ function ltrim(stringToTrim) {
 function rtrim(stringToTrim) {
 	return stringToTrim.replace(/\s+$/,"");
 }
+
 function replaceAll( str, from, to ) {
-
-    var idx = str.indexOf( from );
-
-
-    while ( idx > -1 ) {
-        str = str.replace( from, to ); 
-        idx = str.indexOf( from );
-    }
-
-    return str;
+	    var idx = str.indexOf( from );
+	    while ( idx > -1 ) {
+	        str = str.replace( from, to ); 
+	        idx = str.indexOf( from );
+	    }
+	 return str;
 }
+
+function alphanumeric(alphane)
+{
+	var numaric = alphane;
+	var count=0;
+	for(var j=0; j<numaric.length; j++)
+		{
+		  var alphaa = numaric.charAt(j);
+		  var hh = alphaa.charCodeAt(0);
+		  if((hh > 47 && hh<58) || (hh > 64 && hh<91) || (hh > 96 && hh<123))
+		  {
+		  }
+		else	{
+                      
+			 return false;
+		  }
+ 		}
+
+ return true;
+}
+
+function checkIfValueEmpty(value){
+	//alert(value);
+	var mytool_array=value.split("::");
+	//alert(mytool_array);
+	var sNoEmptyValue="";
+	var count=0;
+	for(var j=0; j<mytool_array.length; j++)
+	{
+		 var alphaa = trim(mytool_array[j]);
+		 //alert(alphaa);
+		 if(alphaa!=null && alphaa!="" && alphaa!=" ")
+		 {
+			 if(count==0){
+				 sNoEmptyValue=sNoEmptyValue+alphaa+",";
+			 }else{
+				 sNoEmptyValue=sNoEmptyValue+","+alphaa;
+			 }
+			 count++;
+			 //alert("sNoEmptyValue "+sNoEmptyValue+" count "+count);
+		 }
+		 if(count==1){
+			 sNoEmptyValue=sNoEmptyValue.substring(0,sNoEmptyValue.length-1);
+		 }
+	}
+	
+	return sNoEmptyValue;
+	
+}
+
+
+function IsNumeric(strString)
+//  check for valid numeric strings	
+{
+var strValidChars = "0123456789";
+var strChar;
+var blnResult = true;
+
+if (strString.length == 0) return false;
+
+//  test strString consists of valid characters listed above
+for (i = 0; i < strString.length && blnResult == true; i++)
+   {
+   strChar = strString.charAt(i);
+   if (strValidChars.indexOf(strChar) == -1)
+      {
+      blnResult = false;
+      }
+   }
+return blnResult;
+}
+
+
