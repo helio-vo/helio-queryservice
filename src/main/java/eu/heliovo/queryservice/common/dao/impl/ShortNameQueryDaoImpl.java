@@ -20,17 +20,17 @@ import uk.ac.starlink.table.StarTable;
 import uk.ac.starlink.table.ValueInfo;
 import uk.ac.starlink.table.jdbc.SequentialResultSetStarTable;
 
-import com.org.helio.common.dao.exception.DetailsNotFoundException;
-import com.org.helio.common.dao.exception.ShortNameQueryException;
-import com.org.helio.common.dao.interfaces.ShortNameQueryDao;
-import com.org.helio.common.transfer.CommonTO;
-import com.org.helio.common.transfer.criteriaTO.CommonCriteriaTO;
-import com.org.helio.common.util.CommonUtils;
-import com.org.helio.common.util.ConfigurationProfiler;
-import com.org.helio.common.util.ConnectionManager;
-import com.org.helio.common.util.QueryWhereClauseParser;
-import com.org.helio.common.util.StandardTypeTable;
-import com.org.helio.common.util.VOTableMaker;
+import eu.heliovo.queryservice.common.dao.exception.DetailsNotFoundException;
+import eu.heliovo.queryservice.common.dao.exception.ShortNameQueryException;
+import eu.heliovo.queryservice.common.dao.interfaces.ShortNameQueryDao;
+import eu.heliovo.queryservice.common.CommonTO;
+import eu.heliovo.queryservice.common.criteriaTO.CommonCriteriaTO;
+import eu.heliovo.queryservice.common.util.CommonUtils;
+import eu.heliovo.queryservice.common.util.ConfigurationProfiler;
+import eu.heliovo.queryservice.common.util.ConnectionManager;
+import eu.heliovo.queryservice.common.util.QueryWhereClauseParser;
+import eu.heliovo.queryservice.common.util.StandardTypeTable;
+import eu.heliovo.queryservice.common.util.VOTableMaker;
 
 
 public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
@@ -43,7 +43,7 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see com.org.helio.common.dao.interfaces.ShortNameQueryDao#generateVOTableDetails(com.org.helio.common.transfer.criteriaTO.CommonCriteriaTO)
+	 * @see eu.heliovo.queryservice.common.dao.interfaces.ShortNameQueryDao#generateVOTableDetails(eu.heliovo.queryservice.common.criteriaTO.CommonCriteriaTO)
 	 */
 	public void generateVOTableDetails(CommonCriteriaTO comCriteriaTO) throws DetailsNotFoundException,Exception {
 		Connection con = null;
