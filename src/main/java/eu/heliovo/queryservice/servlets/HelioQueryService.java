@@ -11,9 +11,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.org.helio.common.dao.CommonDaoFactory;
-import com.org.helio.common.dao.interfaces.CommonDao;
-import com.org.helio.common.transfer.criteriaTO.CommonCriteriaTO;
+import eu.heliovo.queryservice.common.dao.CommonDaoFactory;
+import eu.heliovo.queryservice.common.dao.interfaces.CommonDao;
+import eu.heliovo.queryservice.common.transfer.criteriaTO.CommonCriteriaTO;
 
 /**
  * Servlet implementation class HelioQueryService
@@ -36,7 +36,6 @@ public class HelioQueryService extends HttpServlet {
 		 CommonCriteriaTO comCriteriaTO=new CommonCriteriaTO();
 		 PrintWriter printWriter = response.getWriter(); 
 		try{
-			System.out.println(System.getenv("file.path"));
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		    dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
 		    comCriteriaTO.setPrintWriter(printWriter);
