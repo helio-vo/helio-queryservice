@@ -362,22 +362,17 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 		
 		if(sDrive.contains("mysql") || sDrive.contains("hsqldb") || sDrive.contains("postgresql")){
 			//Setting start row.
-			 if(comCriteriaTO.getNoOfRows()!=null && !comCriteriaTO.getNoOfRows().equals("")){
+			 if(comCriteriaTO.getNoOfRows()!=null && !comCriteriaTO.getNoOfRows().equals("") && !comCriteriaTO.getNoOfRows().equals("0")){
 				 querylimitConstarint=" LIMIT "+comCriteriaTO.getNoOfRows();
 			 }
 			 //Setting No Of Rows
 			 if(comCriteriaTO.getStartRow()!=null && !comCriteriaTO.getStartRow().equals("") && querylimitConstarint!=null && !querylimitConstarint.equals("")){
 				 querylimitConstarint=querylimitConstarint+" OFFSET "+comCriteriaTO.getStartRow();
 			 }
-			 
-			 if(querylimitConstarint==null || querylimitConstarint.equals("") || querylimitConstarint.equals("0")){
-				 
-				 querylimitConstarint=" LIMIT "+comCriteriaTO.getNoOfRows();
-			 }
-			
+			 		 
 		}else if(sDrive.contains("oracle")){
 			//Setting start row.
-			 if(comCriteriaTO.getNoOfRows()!=null && !comCriteriaTO.getNoOfRows().equals("")){
+			 if(comCriteriaTO.getNoOfRows()!=null && !comCriteriaTO.getNoOfRows().equals("") && !comCriteriaTO.getNoOfRows().equals("0")){
 				 querylimitConstarint=" ROWNUM>="+comCriteriaTO.getStartRow();
 			 }
 			 //Setting No Of Rows
@@ -385,10 +380,6 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 				 querylimitConstarint="ROWNUM"+" BETWEEN "+comCriteriaTO.getStartRow()+" AND "+comCriteriaTO.getNoOfRows();
 			 }
 			 
-			 if(querylimitConstarint==null || querylimitConstarint.equals("") || querylimitConstarint.equals("0")){
-				 
-				 querylimitConstarint=" ROWNUM<="+comCriteriaTO.getNoOfRows();
-			 }
 		}
 		
 		 logger.info(" : Limit constraints in method generateLimitConstraintBasedOnDatabase(), limit constraints based on database : "+querylimitConstarint);
@@ -406,12 +397,12 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 		}else{
 			//No value setting max record.
 			userMaxRecord=comCriteriaTO.getMaxRecordsAllowed();
-			comCriteriaTO.setNoOfRows(""+userMaxRecord);
+			comCriteriaTO.setNoOfRows(Integer.toString(userMaxRecord));
 		}
 		//Changing the no of row value.
 		if(userMaxRecord>comCriteriaTO.getMaxRecordsAllowed()){
 			userMaxRecord=comCriteriaTO.getMaxRecordsAllowed();
-			comCriteriaTO.setNoOfRows(""+userMaxRecord);
+			comCriteriaTO.setNoOfRows(Integer.toString(userMaxRecord));
 		}
 	}
 	
