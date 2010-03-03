@@ -23,6 +23,8 @@ import eu.heliovo.queryservice.common.util.QueryWhereClauseParser;
 import eu.heliovo.queryservice.common.util.StandardTypeTable;
 import eu.heliovo.queryservice.common.util.VOTableMaker;
 
+
+
 public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 		
 	public ShortNameQueryDaoImpl() { 
@@ -33,7 +35,7 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see eu.heliovo.queryservice.common.dao.interfaces.ShortNameQueryDao#generateVOTableDetails(eu.heliovo.queryservice.common.criteriaTO.CommonCriteriaTO)
+	 * @see com.org.helio.common.dao.interfaces.ShortNameQueryDao#generateVOTableDetails(com.org.helio.common.transfer.criteriaTO.CommonCriteriaTO)
 	 */
 	public void generateVOTableDetails(CommonCriteriaTO comCriteriaTO) throws DetailsNotFoundException,Exception {
 		Connection con = null;
@@ -66,12 +68,14 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 		VOTableMaker.setColInfoProperty(tables, listName);
 		//Writing all details into table.
 		VOTableMaker.writeTables(comCriteriaTO);
-				
+		logger.info(" : VOTable succesfully created :");	
 		} catch (Exception e) {		
 			//Writing all details into table.
 			comCriteriaTO.setQueryStatus("ERROR");
 			comCriteriaTO.setQueryDescription(e.getMessage());
 			VOTableMaker.writeTables(comCriteriaTO);
+			logger.info(" Exception occured while generating VOTABLE: ",e);
+			logger.fatal(" Exception occured while generating VOTABLE: ",e);
 			throw new DetailsNotFoundException("EXCEPTION ", e);
 		}
 		finally
@@ -390,10 +394,14 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 			comCriteriaTO.setNoOfRows(Integer.toString(userMaxRecord));
 		}
 		//Changing the no of row value.
-		if(userMaxRecord>comCriteriaTO.getMaxRecordsAllowed()){
-			userMaxRecord=comCriteriaTO.getMaxRecordsAllowed();
-			comCriteriaTO.setNoOfRows(Integer.toString(userMaxRecord));
+		if(comCriteriaTO.getMaxRecordsAllowed()>0){
+			if(userMaxRecord>comCriteriaTO.getMaxRecordsAllowed()){
+				userMaxRecord=comCriteriaTO.getMaxRecordsAllowed();
+				comCriteriaTO.setNoOfRows(Integer.toString(userMaxRecord));
+			}
 		}
+		
+		logger.info(" : Max allowed record/ Limit constriant value : "+comCriteriaTO.getNoOfRows());
 	}
 	
 	
