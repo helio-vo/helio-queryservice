@@ -18,11 +18,11 @@
 	
     <dependencies>
 		<!-- internal libraries -->
-        <dependency>
+       <!--  <dependency>
             <groupId>eu.heliovo</groupId>
             <artifactId>helio-contracts</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-        </dependency>
+        </dependency>-->
 
 		<!-- third party libraries -->
         <dependency>
