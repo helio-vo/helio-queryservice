@@ -5,6 +5,8 @@ import java.sql.ResultSet;
 
 import org.apache.log4j.Logger;
 
+import eu.heliovo.queryservice.common.util.ConfigurationProfiler;
+
 import uk.ac.starlink.table.StarTable;
 import uk.ac.starlink.table.Tables;
 import uk.ac.starlink.table.jdbc.SequentialResultSetStarTable;
@@ -58,6 +60,7 @@ public class VOTableMaker {
 				 out.write("</helio:queryResponse>");
 			}
     	}catch (Exception e) {
+    		System.out.println(" Exception occured writeTables() "+e.getMessage());
     		throw new Exception("Couldn't create VO TABLE.");
 		}
         out.flush();
@@ -92,6 +95,7 @@ public class VOTableMaker {
     	}
     	
     }catch(Exception e){
+    	System.out.println(" Exception occured setColInfoProperty() "+e.getMessage());
     	throw new Exception("Couldn't set ucd's||Desc||UTypes. Please check configuration property file.");
     }
     	
