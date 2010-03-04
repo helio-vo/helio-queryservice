@@ -30,7 +30,7 @@ public class ConnectionManager {
 			      noConnection = false;    
 			}catch(SQLException sqlex) {  
 				//logger.info(" SQLException Occoured in Connection Manager :getConnection()"+sqlex.getMessage()+" trying to reconeect for "+i+" time ");
-				if(i < 3){
+				if(i < 3){ 
 					i++;
 					noConnection = true;
 				}else {
