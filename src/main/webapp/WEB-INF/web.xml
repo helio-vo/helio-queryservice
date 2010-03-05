@@ -3,7 +3,7 @@
 	<display-name>HelioQueryService</display-name>
 	<servlet>
 		<servlet-name>StartUpServlet</servlet-name>
-		<servlet-class>com.org.helio.service.StartupServlet</servlet-class>
+		<servlet-class>eu.heliovo.queryservice.service.StartupServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>	
 	 <filter>
@@ -64,7 +64,7 @@
   <env-entry>
    <env-entry-name>property/context</env-entry-name>
    <env-entry-type>java.lang.String</env-entry-type>
-   <env-entry-value>/Users/vineethtshetty/HELIO/HelioDB.txt</env-entry-value>
+   <env-entry-value>test.txt</env-entry-value>
   </env-entry>
   
   <welcome-file-list>		
