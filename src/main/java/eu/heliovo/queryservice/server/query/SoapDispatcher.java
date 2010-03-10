@@ -2,33 +2,18 @@ package eu.heliovo.queryservice.server.query;
 
 import java.io.PipedReader;
 import java.io.PipedWriter;
-import java.util.Hashtable;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMResult;
-import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.ws.Provider;
 import javax.xml.ws.ServiceMode; 
 import javax.xml.ws.WebServiceProvider;
 import org.w3c.dom.Document;
 import org.apache.log4j.Logger; 
-
 import org.w3c.dom.Element;
-
-
-
-import com.sun.xml.registry.common.util.XMLUtil;
-import com.sun.xml.ws.encoding.StreamSOAPCodec;
-
 import eu.heliovo.queryservice.common.transfer.criteriaTO.CommonCriteriaTO;
 import eu.heliovo.queryservice.server.util.QueryThreadAnalizer;
 
@@ -178,7 +163,7 @@ public class SoapDispatcher implements Provider<Source> {
 	}
 	
 	/*
-	 * Method used to convery Source to dom object.
+	 * Method used to convert Source to dom object.
 	 */
 	private synchronized Element toDocument(Source src) throws TransformerException {
         DOMResult result = new DOMResult();
