@@ -29,11 +29,16 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.w3c.dom.Document;
 
-import eu.heliovo.queryservice.common.dao.impl.CommonDaoImpl;
-
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
+
+import org.apache.catalina.Context;
+import org.apache.catalina.Engine;
+import org.apache.catalina.Host;
+import org.apache.catalina.connector.Connector;
+import org.apache.catalina.startup.Embedded;
+import org.apache.catalina.realm.MemoryRealm;
 
 @SuppressWarnings("unused")
 public class JunitWebserveTest {
@@ -43,115 +48,67 @@ public class JunitWebserveTest {
 	   protected static URL wsdlURL;
 	   protected static QName serviceName;
 	   protected static QName portName;
-
-	   //@BeforeClass
+	   protected static Embedded server;
+	   
+	   @BeforeClass
 	   public static void setUp() throws Exception {
-	      address = "http://localhost:8080/HelioQueryService/services/HelioService";
+	      address = "http://localhost:9090/helio-queryservice/HelioService";
 	      wsdlURL = new URL(address + "?wsdl");
-	      serviceName = new QName("http://helio-vo.eu/xml/QueryService/v0.1",
-	         "HelioService");
-	      portName = new QName("http://www.example.org/DoubleIt", "DoubleItPort");
-	      ep = Endpoint.publish(address ,new CommonDaoImpl());
+	      serviceName = new QName("http://helio-vo.eu/xml/QueryService/v0.1","HelioQueryServiceService");
+	      portName = new QName("http://helio-vo.eu/xml/QueryService/v0.1", "HelioQueryServicePort");
+	      server = new Embedded();
+	      //server.setRealm(new MemoryRealm());  // if using the tomcat-users.xml file.
+	      Engine baseEngine = server.createEngine();
+	      baseEngine.setDefaultHost("helio-queryservice");
+	      Host baseHost = server.createHost("helio-queryservice","/Users/vineethtshetty/HELIO/workspace/helio-queryservice/target");
+	      baseEngine.addChild(baseHost);
+	      Context appCtx = server.createContext("/helio-queryservice", "helio-queryservice");
+	      baseHost.addChild(appCtx);      
+	      server.addEngine(baseEngine);
+	      Connector httpConnector = server.createConnector((java.net.InetAddress) null, 9090, false);
+	      server.addConnector(httpConnector);      
+
+	      try {
+	          server.start();
+	      } catch (Exception e) {
+	          e.printStackTrace();
+	      }     
 	   }
 
-	   //@AfterClass
-	   public static void tearDown() {
-	      try {
-	         ep.stop();
-	      } catch (Throwable t) {
-	         System.out.println("Error thrown: " + t.getMessage());
+	   @AfterClass
+	   public static void tearDown() throws Exception {
+		  if (server != null) {
+	           server.stop();
+	           server = null;
 	      }
 	   }
 	   
 	   @Test
-	   public void testDummy() {
+	   public void testWeService() throws MalformedURLException {
+		 try{
+			 
+		   Service jaxwsService = Service.create(wsdlURL, serviceName);
+		   DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		      factory.setNamespaceAware(true);
+		      DocumentBuilder builder = factory.newDocumentBuilder();
+		      InputStream is = getClass().getClassLoader().getResourceAsStream(
+		            "reqSOAPMessage.xml");
+		      Document newDoc = builder.parse(is);
+		      DOMSource request = new DOMSource(newDoc);
+		      // Both CXF and Metro:
+		      Dispatch disp = jaxwsService.createDispatch(portName,Source.class, Service.Mode.PAYLOAD);
+		      Source result = (Source) disp.invoke(request);
+		      DOMResult domResponse = new DOMResult();
+		      Transformer trans = TransformerFactory.newInstance().newTransformer();
+		      trans.transform(result, domResponse);
+		      System.out.println("  : Response Result :  "+domResponse.getNode().getFirstChild().getTextContent().trim());
+
+		  }catch(Exception e){
+			   e.printStackTrace();
+		  }
 		   
+		   
+		   System.out.println(" Testing results ");
 	   }
-
-	   /*
-	    * This test uses raw Service class for service, wsimport/wsdl2java
-	    * generated SEI
-	    */
-	   // @Test
-	   public void testDoubleItWithNegativeNumbers() {
-	      Service jaxwsService = Service.create(wsdlURL, serviceName);
-	      
-	   }
-
-	   /*
-	    * This test uses raw Service class for service, Dispatch<SOAPMessage> for
-	    * client No wsimport/wsdl2java needed. Note works with full SOAP message
-	    * (Service.Mode.MESSAGE)
-	    */
-	   // @Test
-	   public void doubleItWorksForZero() throws Exception {
-	      Service jaxwsService = Service.create(wsdlURL, serviceName);
-	      Dispatch<SOAPMessage> disp = jaxwsService.createDispatch(portName,
-	            SOAPMessage.class, Service.Mode.MESSAGE);
-	      InputStream is = getClass().getClassLoader().getResourceAsStream("fullSOAPMessage.xml");
-	      SOAPMessage reqMsg = MessageFactory.newInstance().createMessage(null,is);
-	      assertNotNull(reqMsg);
-	      SOAPMessage response = (SOAPMessage) disp.invoke(reqMsg);
-	      assertEquals("Double-It not doubling zero correctly", "0", response
-	            .getSOAPBody().getTextContent().trim());
-	   }
-
-	   /*
-	    * This test uses raw Service class for service, Dispatch<Source> for
-	    * client. No wsimport/wsdl2java run needed. Uses payload (soap:body contents)
-	    * only (Service.Mode.PAYLOAD), but can be configured to use MESSAGE. Note
-	    * CXF supports other options such as Dispatch<DOMSource>, Dispatch<SAXSource>,
-	    * and Dispatch<StreamSource>, search CXF source code for examples.
-	    */
-	   // @Test
-	   public void doubleItWorksForPrimeNumbers() throws Exception {
-	      Service jaxwsService = Service.create(wsdlURL, serviceName);
-	      DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-	      factory.setNamespaceAware(true);
-	      DocumentBuilder builder = factory.newDocumentBuilder();
-	      InputStream is = getClass().getClassLoader().getResourceAsStream(
-	            "justPayload.xml");
-	      Document newDoc = builder.parse(is);
-	      DOMSource request = new DOMSource(newDoc);
-	      // Both CXF and Metro:
-	      Dispatch<Source> disp = jaxwsService.createDispatch(portName,Source.class, Service.Mode.PAYLOAD);
-	      Source result = (Source) disp.invoke(request);
-	      DOMResult domResponse = new DOMResult();
-	      Transformer trans = TransformerFactory.newInstance().newTransformer();
-	      trans.transform(result, domResponse);
-	      assertEquals("Double-It failing with prime numbers", "14", domResponse.getNode().getFirstChild().getTextContent().trim());
-	      /*
-	        Alternative for CXF, uses Dispatch: 
-	        Dispatch disp = jaxwsService.createDispatch(portName, DOMSource.class,
-	           Service.Mode.PAYLOAD); 
-	        DOMSource domResponse = disp.invoke(request);
-	        assertEquals("Double-It failing with prime numbers", "14",
-	           domResponse.getNode().getFirstChild().getTextContent().trim());
-	       */
-	   }
-
-	   /*
-	    * This test uses raw Service class for service, Dispatch<JAXBContext> for
-	    * client. Conveniently uses JAX-WS generated artifacts.
-	    */
-	   // @Test
-	   public void doubleItWorksWithOddNumbers() throws Exception {
-	      Service jaxwsService = Service.create(wsdlURL, serviceName);
-	      JAXBContext jaxbContext = JAXBContext.newInstance("org.example.doubleit");
-	      Dispatch jaxbDispatch = jaxwsService.createDispatch(portName,jaxbContext, Service.Mode.PAYLOAD);
-
-	      //DoubleIt myDoubleIt = new DoubleIt();
-	      //myDoubleIt.setNumberToDouble(new BigInteger("3"));
-
-	      //JAXBElement doubleItElement = new JAXBElement(new QName(
-	        //    "http://www.example.org/DoubleIt", "DoubleIt"), DoubleIt.class,
-	         //   myDoubleIt);
-
-	      //DoubleItResponse response = (DoubleItResponse) jaxbDispatch
-	      //      .invoke(doubleItElement);
-	     // assertNotNull(response);
-	      //assertEquals("Double-It failing with odd numbers", "6", response
-	          //  .getDoubledNumber().toString());
-	   }
-
+	  
 }
