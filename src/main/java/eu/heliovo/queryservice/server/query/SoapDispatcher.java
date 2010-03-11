@@ -173,11 +173,7 @@ public class SoapDispatcher implements Provider<Source> {
             throw new TransformerException("Error while applying template", te);
         }
         Element root = ((Document)result.getNode()).getDocumentElement();
-
-       
-        return root;
+       return root;
     }
 
-	
-	
 }
