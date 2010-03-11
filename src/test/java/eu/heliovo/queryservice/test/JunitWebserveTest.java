@@ -91,16 +91,17 @@ public class JunitWebserveTest {
 		   DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		      factory.setNamespaceAware(true);
 		      DocumentBuilder builder = factory.newDocumentBuilder();
-		      InputStream is = getClass().getClassLoader().getResourceAsStream(
-		            "reqSOAPMessage.xml");
+		      InputStream is = getClass().getClassLoader().getResourceAsStream("reqSOAPMessage.xml");
 		      Document newDoc = builder.parse(is);
 		      DOMSource request = new DOMSource(newDoc);
-		      // Both CXF and Metro:
+		      // Both CXF and Metro.
 		      Dispatch disp = jaxwsService.createDispatch(portName,Source.class, Service.Mode.PAYLOAD);
 		      Source result = (Source) disp.invoke(request);
 		      DOMResult domResponse = new DOMResult();
 		      Transformer trans = TransformerFactory.newInstance().newTransformer();
 		      trans.transform(result, domResponse);
+		      assertNotNull(domResponse);
+
 		      System.out.println("  : Response Result :  "+domResponse.getNode().getFirstChild().getTextContent().trim());
 
 		  }catch(Exception e){
