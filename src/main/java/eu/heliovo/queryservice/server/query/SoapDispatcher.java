@@ -63,8 +63,7 @@ public class SoapDispatcher implements Provider<Source> {
 		try {
 			
 			Element inputDoc=toDocument(request);
-			String inputURI = inputDoc.getNamespaceURI();
-			        	 	    	
+			
 		     String interfaceName = inputDoc.getLocalName().intern();
 		     //since this service will be used a lot, supposedly .intern() can be quicker
 	   	     //each method should return a XMLStreamReader that is streamed back to the client.
