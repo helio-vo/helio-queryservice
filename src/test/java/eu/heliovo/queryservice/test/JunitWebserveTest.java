@@ -84,11 +84,12 @@ public class JunitWebserveTest {
 	   }
 	   
 	   @Test
-	   public void testWeService() throws MalformedURLException {
+	   public void testWeService() throws Exception {
 		 try{
 			 
-		   Service jaxwsService = Service.create(wsdlURL, serviceName);
-		   DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+			Service jaxwsService = Service.create(wsdlURL, serviceName);
+			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+			
 		      factory.setNamespaceAware(true);
 		      DocumentBuilder builder = factory.newDocumentBuilder();
 		      InputStream is = getClass().getClassLoader().getResourceAsStream("reqSOAPMessage.xml");
@@ -104,12 +105,15 @@ public class JunitWebserveTest {
 
 		      System.out.println("  : Response Result :  "+domResponse.getNode().getFirstChild().getTextContent().trim());
 
-		  }catch(Exception e){
+		 }
+		 catch(MalformedURLException e){
 			   e.printStackTrace();
-		  }
-		   
-		   
-		   System.out.println(" Testing results ");
+		 }
+		 catch(Exception e){
+			   e.printStackTrace();
+		 }
+		  
+		  System.out.println(" Testing results ");
 	   }
 	  
 }
