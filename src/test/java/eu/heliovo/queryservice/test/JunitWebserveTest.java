@@ -43,7 +43,7 @@ import org.apache.catalina.realm.MemoryRealm;
 @SuppressWarnings("unused")
 public class JunitWebserveTest {
 
-	protected static Endpoint ep;
+	   protected static Endpoint ep;
 	   protected static String address;
 	   protected static URL wsdlURL;
 	   protected static QName serviceName;
