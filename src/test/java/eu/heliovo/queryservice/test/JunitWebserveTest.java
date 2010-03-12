@@ -33,10 +33,15 @@ import org.apache.catalina.Host;
 import org.apache.catalina.connector.Connector;
 import org.apache.catalina.startup.Embedded;
 import org.apache.catalina.realm.MemoryRealm;
+import org.apache.log4j.Logger;
+
+
 
 @SuppressWarnings("unused")
 public class JunitWebserveTest {
 
+	   protected final  Logger logger = Logger.getLogger(this.getClass());
+	
 	   protected static Endpoint ep;
 	   protected static String address;
 	   protected static URL wsdlURL;
@@ -52,9 +57,10 @@ public class JunitWebserveTest {
 	      portName = new QName("http://helio-vo.eu/xml/QueryService/v0.1", "HelioQueryServicePort");
 	      server = new Embedded();
 	      //server.setRealm(new MemoryRealm());  // if using the tomcat-users.xml file.
+	      //Creating embedded tomcat.
 	      Engine baseEngine = server.createEngine();
 	      baseEngine.setDefaultHost("helio-queryservice");
-	      Host baseHost = server.createHost("helio-queryservice","/Users/vineethtshetty/HELIO/workspace/helio-queryservice/target");
+	      Host baseHost = server.createHost("helio-queryservice","/Users/vineethtshetty/war/");
 	      baseEngine.addChild(baseHost);
 	      Context appCtx = server.createContext("/helio-queryservice", "helio-queryservice");
 	      baseHost.addChild(appCtx);      
@@ -66,6 +72,7 @@ public class JunitWebserveTest {
 	          server.start();
 	      } catch (Exception e) {
 	          e.printStackTrace();
+	          
 	      }     
 	   }
 
@@ -81,12 +88,14 @@ public class JunitWebserveTest {
 	   public void testWeService() throws Exception {
 		 try{
 			 
-			Service jaxwsService = Service.create(wsdlURL, serviceName);
-			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+			  logger.info(" : Start Testing Junit test case method testWebService()  : ");
+			  Service jaxwsService = Service.create(wsdlURL, serviceName);
+			  DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			
 		      factory.setNamespaceAware(true);
 		      DocumentBuilder builder = factory.newDocumentBuilder();
 		      InputStream is = getClass().getClassLoader().getResourceAsStream("reqSOAPMessage.xml");
+		      logger.info(" : Input details are loaded into input stream : ");
 		      Document newDoc = builder.parse(is);
 		      DOMSource request = new DOMSource(newDoc);
 		      // Both CXF and Metro.
@@ -95,9 +104,10 @@ public class JunitWebserveTest {
 		      DOMResult domResponse = new DOMResult();
 		      Transformer trans = TransformerFactory.newInstance().newTransformer();
 		      trans.transform(result, domResponse);
+		      logger.info(" : Checking if response is not null : ");
 		      assertNotNull(domResponse);
-
-		      System.out.println("  : Response Result :  "+domResponse.getNode().getFirstChild().getTextContent().trim());
+		      logger.info(" : Done : ");
+		      logger.info(" : Response from the webservice  : "+domResponse.getNode().getFirstChild().getTextContent().trim());
 
 		 }
 		 catch(MalformedURLException e){
