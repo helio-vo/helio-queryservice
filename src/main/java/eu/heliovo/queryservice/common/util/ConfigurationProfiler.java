@@ -95,7 +95,7 @@ public class ConfigurationProfiler {
 		}
 	}
 	
-	public Enumeration getAllKeys(){
+	public Enumeration<?> getAllKeys(){
 		return prop.propertyNames();
 	}
 	
@@ -103,6 +103,6 @@ public class ConfigurationProfiler {
     { 
          prop.setProperty(sKey, value); 
     } 
-
+	
 	
 }
