@@ -5,7 +5,6 @@
    	<listener>
     	<listener-class>com.sun.xml.ws.transport.http.servlet.WSServletContextListener</listener-class>
 	</listener>
-	
 	<!-- 
 	<listener>  
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>  
@@ -52,9 +51,45 @@
 	   <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
 	   <load-on-startup>1</load-on-startup>
 	</servlet>
+	<servlet>
+		<description>
+		</description>
+		<display-name>VosiServlet</display-name>
+		<servlet-name>VosiServlet</servlet-name>
+		<servlet-class>
+		eu.heliovo.queryservice.servlets.VosiServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<description>
+		</description>
+		<display-name>CapabilityServlet</display-name>
+		<servlet-name>CapabilityServlet</servlet-name>
+		<servlet-class>
+		eu.heliovo.queryservice.servlets.CapabilityServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<description>
+		</description>
+		<display-name>TableServlet</display-name>
+		<servlet-name>TableServlet</servlet-name>
+		<servlet-class>
+		eu.heliovo.queryservice.servlets.TableServlet</servlet-class>
+	</servlet>
 	<servlet-mapping>
 	   <servlet-name>jaxws-servlet</servlet-name>
 	   <url-pattern>/HelioService</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>VosiServlet</servlet-name>
+		<url-pattern>/VosiServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>CapabilityServlet</servlet-name>
+		<url-pattern>/VOSI/capabilities</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>TableServlet</servlet-name>
+		<url-pattern>/VOSI/tables</url-pattern>
 	</servlet-mapping> 
  	
   <env-entry>
