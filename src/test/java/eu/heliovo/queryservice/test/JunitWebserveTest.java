@@ -40,7 +40,6 @@ import org.apache.log4j.Logger;
 @SuppressWarnings("unused")
 public class JunitWebserveTest {
 
-	/*
 	   protected final  Logger logger = Logger.getLogger(this.getClass());
 	
 	   protected static Endpoint ep;
@@ -121,5 +120,5 @@ public class JunitWebserveTest {
 		  
 		  System.out.println(" Testing results ");
 	   }
-	  */
+	  
 }
