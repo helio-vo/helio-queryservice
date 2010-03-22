@@ -7,9 +7,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.Statement;
 import java.util.HashMap;
-
 import org.apache.log4j.Logger;
-
 import uk.ac.starlink.table.StarTable;
 import uk.ac.starlink.table.jdbc.SequentialResultSetStarTable;
 import eu.heliovo.queryservice.common.dao.exception.DetailsNotFoundException;
@@ -22,8 +20,6 @@ import eu.heliovo.queryservice.common.util.ConnectionManager;
 import eu.heliovo.queryservice.common.util.QueryWhereClauseParser;
 import eu.heliovo.queryservice.common.util.StandardTypeTable;
 import eu.heliovo.queryservice.common.util.VOTableMaker;
-
-
 
 public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 		
@@ -104,7 +100,7 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 			} catch (Exception e) {
 				
 			}
-	}		
+	 }		
 	}
 	
 	
@@ -239,7 +235,9 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 			 params.put("kwstartdate", comCriteriaTO.getStartDateTime());
 			 params.put("kwenddate", comCriteriaTO.getEndDateTime());
 			 params.put("kwinstrument", comCriteriaTO.getInstruments());
-					
+			 params.put("kwdec", comCriteriaTO.getDelta());
+			 params.put("kwra", comCriteriaTO.getAlpha());
+			 params.put("kwsize", comCriteriaTO.getSize());
 			 //Setting parameter value
 			 comCriteriaTO.setParamData(params);
 			 //Checking for Where Clause 
@@ -287,7 +285,18 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 				
 			 }
 			
-			 logger.info(" : Appending Instrument Constraint If Avialable : "+queryConstraint);
+			 logger.info(" : Appending Instrument Constraint If Avialable : "+queryConstraint); 
+			 //Appending Coordinate clause.
+			 String queryCoordinateContraint=ConfigurationProfiler.getInstance().getProperty("sql.query.coordinates.constraint."+listName);
+			 if(queryCoordinateContraint!=null && !queryCoordinateContraint.trim().equals("")){
+				 if(queryConstraint!="")
+					 queryConstraint=queryConstraint+" AND "+queryCoordinateContraint; 
+				 else
+					 queryConstraint=queryConstraint+" "+queryCoordinateContraint; 
+				
+			 }
+			 
+			 logger.info(" : Appending Coordinate Constraint If Avialable : "+queryConstraint);
 			 
 			 //Appending Order By clause.
 			 String queryOrderByContraint=ConfigurationProfiler.getInstance().getProperty("sql.query.orderby.constraint."+listName);
@@ -296,6 +305,7 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 			 if(queryConstraint!=null && !queryConstraint.trim().equals("")){
 				 query=query+" WHERE "+queryConstraint;
 			 }
+			 logger.info(" : Appending Where Clause If Avialable : "+query);
 			 
 			 //Appending ; 'Order By Constraints' .
 			 query=query+" "+queryOrderByContraint;
