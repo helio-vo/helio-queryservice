@@ -76,38 +76,11 @@ public class SoapDispatcher implements Provider<Source> {
 			 comCriteriaTO.setStatus("WebService");
 			 
 		    	 if(interfaceName == "Query".intern()) {
-		    		 //Setting for START TIME parameter.
-		    		 if(inputDoc.getElementsByTagNameNS("*","STARTTIME").getLength()>0){
-			    		 String startTime = inputDoc.getElementsByTagNameNS("*","STARTTIME").item(0).getFirstChild().getNodeValue();
-			    		 comCriteriaTO.setStartDateTime(startTime);
-					 }
-		    		 //Setting for TIME parameter.
-		    		 if(inputDoc.getElementsByTagNameNS("*","ENDTIME").getLength()>0){
-			    		 String endTime = inputDoc.getElementsByTagNameNS("*","ENDTIME").item(0).getFirstChild().getNodeValue();
-						 comCriteriaTO.setEndDateTime(endTime);	
-		    		 }
-					//Setting for ListName parameter.
-		    		 if(inputDoc.getElementsByTagNameNS("*","FROM").getLength()>0){
-		    			 String listName = inputDoc.getElementsByTagNameNS("*","FROM").item(0).getFirstChild().getNodeValue();
-		    			 comCriteriaTO.setListName(listName);
-		    		 }
-					 
+		    					 
 					 //Setting for Instrument parameter.
 					 if(inputDoc.getElementsByTagNameNS("*","INSTRUMENT").getLength()>0){
 						 String instruments = inputDoc.getElementsByTagNameNS("*","INSTRUMENT").item(0).getFirstChild().getNodeValue();
 						 comCriteriaTO.setInstruments(instruments);
-					 }
-					 
-					//Setting for Start Row parameter.
-					 if(inputDoc.getElementsByTagNameNS("*","STARTINDEX").getLength()>0){
-						 String startRow = inputDoc.getElementsByTagNameNS("*","STARTINDEX").item(0).getFirstChild().getNodeValue();
-						 comCriteriaTO.setStartRow(startRow);
-					 }
-					 
-					//Setting for No Of Rows parameter.
-					 if(inputDoc.getElementsByTagNameNS("*","MAXRECORDS").getLength()>0){
-						 String noOfRows = inputDoc.getElementsByTagNameNS("*","MAXRECORDS").item(0).getFirstChild().getNodeValue();
-						 comCriteriaTO.setNoOfRows(noOfRows);
 					 }
 					 
 					//Setting for WHERE parameter.
@@ -115,37 +88,60 @@ public class SoapDispatcher implements Provider<Source> {
 						 String whereClause = inputDoc.getElementsByTagNameNS("*","WHERE").item(0).getFirstChild().getNodeValue();
 						 comCriteriaTO.setWhereClause(whereClause);
 					 }
-												
-		    	 }else if(interfaceName == "TimeQuery".intern()) {
-		    		
-		    		 //Setting for START TIME parameter.
-		    		 if(inputDoc.getElementsByTagNameNS("*","STARTTIME").getLength()>0){
-			    		 String startTime = inputDoc.getElementsByTagNameNS("*","STARTTIME").item(0).getFirstChild().getNodeValue();
-			    		 comCriteriaTO.setStartDateTime(startTime);
-					 }
-		    		 //Setting for TIME parameter.
-		    		 if(inputDoc.getElementsByTagNameNS("*","ENDTIME").getLength()>0){
-			    		 String endTime = inputDoc.getElementsByTagNameNS("*","ENDTIME").item(0).getFirstChild().getNodeValue();
-						 comCriteriaTO.setEndDateTime(endTime);	
-		    		 }
-					//Setting for ListName parameter.
-		    		 if(inputDoc.getElementsByTagNameNS("*","FROM").getLength()>0){
-		    			 String listName = inputDoc.getElementsByTagNameNS("*","FROM").item(0).getFirstChild().getNodeValue();
-		    			 comCriteriaTO.setListName(listName);
-		    		 }	 
-					//Setting for Start Row parameter.
-					 if(inputDoc.getElementsByTagNameNS("*","STARTINDEX").getLength()>0){
-						 String startRow = inputDoc.getElementsByTagNameNS("*","STARTINDEX").item(0).getFirstChild().getNodeValue();
-						 comCriteriaTO.setStartRow(startRow);
+		    	 } 
+		    	
+		    	 if(interfaceName == "Coordinates".intern()) {
+		    		 
+		    		 //Setting for POS( RA & DEC) parameter.
+					 if(inputDoc.getElementsByTagNameNS("*","POS").getLength()>0){
+						 String pos = inputDoc.getElementsByTagNameNS("*","POS").item(0).getFirstChild().getNodeValue();
+						 if(pos!=null && !pos.equals("")){
+							 String[] arrPos=pos.split(",");
+							 if(arrPos.length>0)
+							 comCriteriaTO.setAlpha(arrPos[0]);
+							 if(arrPos.length>1)
+							 comCriteriaTO.setDelta(arrPos[1]);
+						 }
 					 }
 					 
-					//Setting for No Of Rows parameter.
-					 if(inputDoc.getElementsByTagNameNS("*","MAXRECORDS").getLength()>0){
-						 String noOfRows = inputDoc.getElementsByTagNameNS("*","MAXRECORDS").item(0).getFirstChild().getNodeValue();
-						 comCriteriaTO.setNoOfRows(noOfRows);
+					//Setting for SIZE parameter.
+					 if(inputDoc.getElementsByTagNameNS("*","SIZE").getLength()>0){
+						 String size = inputDoc.getElementsByTagNameNS("*","SIZE").item(0).getFirstChild().getNodeValue();
+						 comCriteriaTO.setSize(size);
 					 }
-		    	 }	 
-		    		    	 
+		    	 }
+		    	 
+		    	 // This is common for Time. interface.
+		    	 
+		    	 //Setting for START TIME parameter.
+	    		 if(inputDoc.getElementsByTagNameNS("*","STARTTIME").getLength()>0){
+		    		 String startTime = inputDoc.getElementsByTagNameNS("*","STARTTIME").item(0).getFirstChild().getNodeValue();
+		    		 comCriteriaTO.setStartDateTime(startTime);
+				 }
+	    		 //Setting for TIME parameter.
+	    		 if(inputDoc.getElementsByTagNameNS("*","ENDTIME").getLength()>0){
+		    		 String endTime = inputDoc.getElementsByTagNameNS("*","ENDTIME").item(0).getFirstChild().getNodeValue();
+					 comCriteriaTO.setEndDateTime(endTime);	
+	    		 }
+		    	 
+		    	//Setting for ListName parameter.
+	    		 if(inputDoc.getElementsByTagNameNS("*","FROM").getLength()>0){
+	    			 String listName = inputDoc.getElementsByTagNameNS("*","FROM").item(0).getFirstChild().getNodeValue();
+	    			 comCriteriaTO.setListName(listName);
+	    		 }	 
+		    	 
+		    	//Setting for Start Row parameter.
+				 if(inputDoc.getElementsByTagNameNS("*","STARTINDEX").getLength()>0){
+					 String startRow = inputDoc.getElementsByTagNameNS("*","STARTINDEX").item(0).getFirstChild().getNodeValue();
+					 comCriteriaTO.setStartRow(startRow);
+				 }
+				 
+				//Setting for No Of Rows parameter.
+				 if(inputDoc.getElementsByTagNameNS("*","MAXRECORDS").getLength()>0){
+					 String noOfRows = inputDoc.getElementsByTagNameNS("*","MAXRECORDS").item(0).getFirstChild().getNodeValue();
+					 comCriteriaTO.setNoOfRows(noOfRows);
+				 }
+		    	 
 		    	 //Thread created to load data into PipeReader.
 				 new QueryThreadAnalizer(comCriteriaTO).start();				
 				 logger.info(" : Done VOTABLE : ");							
