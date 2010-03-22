@@ -5,15 +5,7 @@
    	<listener>
     	<listener-class>com.sun.xml.ws.transport.http.servlet.WSServletContextListener</listener-class>
 	</listener>
-	<!-- 
-	<listener>  
-    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>  
-       </listener>  
-	 <context-param>  
-         <param-name>contextConfigLocation</param-name>  
-         <param-value>/WEB-INF/appContext.xml</param-value>  
-     </context-param> 
-	-->
+	
 	<servlet>
 		<servlet-name>StartUpServlet</servlet-name>
 		<servlet-class>eu.heliovo.queryservice.service.StartupServlet</servlet-class>
@@ -95,7 +87,7 @@
   <env-entry>
    <env-entry-name>property/context</env-entry-name>
    <env-entry-type>java.lang.String</env-entry-type>
-   <env-entry-value>test.txt</env-entry-value>
+   <env-entry-value>/Users/vineethtshetty/HELIO/HelioDB.txt</env-entry-value>
   </env-entry>
   
   <welcome-file-list>		
