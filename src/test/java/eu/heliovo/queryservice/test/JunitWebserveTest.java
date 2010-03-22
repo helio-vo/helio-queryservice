@@ -61,7 +61,7 @@ public class JunitWebserveTest {
 	      Engine baseEngine = server.createEngine();
 	      baseEngine.setDefaultHost("helio-queryservice");
 	    
-	      Host baseHost = server.createHost("helio-queryservice","tar/");
+	      Host baseHost = server.createHost("helio-queryservice","/Users/vineethtshetty/war/");
 	      baseEngine.addChild(baseHost);
 	      Context appCtx = server.createContext("/helio-queryservice", "helio-queryservice");
 	      baseHost.addChild(appCtx);      
