@@ -39,6 +39,10 @@ public class CommonCriteriaTO implements Serializable{
 	private String noOfRows;
 	private String updatedQuery;
 	private int maxRecordsAllowed;
+	private String size;
+	private String alpha;
+	private String delta;
+	
 	
 	public CommonCriteriaTO(){
 		this.setIPageNumber(0);
@@ -246,6 +250,30 @@ public class CommonCriteriaTO implements Serializable{
 
 	public void setMaxRecordsAllowed(int maxRecordsAllowed) {
 		this.maxRecordsAllowed = maxRecordsAllowed;
+	}
+
+	public String getSize() {
+		return size;
+	}
+
+	public void setSize(String size) {
+		this.size = size;
+	}
+
+	public String getAlpha() {
+		return alpha;
+	}
+
+	public void setAlpha(String alpha) {
+		this.alpha = alpha;
+	}
+
+	public String getDelta() {
+		return delta;
+	}
+
+	public void setDelta(String delta) {
+		this.delta = delta;
 	}
 	
 	
