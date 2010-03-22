@@ -40,6 +40,7 @@ import org.apache.log4j.Logger;
 @SuppressWarnings("unused")
 public class JunitWebserveTest {
 
+	/*
 	   protected final  Logger logger = Logger.getLogger(this.getClass());
 	
 	   protected static Endpoint ep;
@@ -60,7 +61,8 @@ public class JunitWebserveTest {
 	      //Creating embedded tomcat.
 	      Engine baseEngine = server.createEngine();
 	      baseEngine.setDefaultHost("helio-queryservice");
-	      Host baseHost = server.createHost("helio-queryservice","/Users/vineethtshetty/war/");
+	    
+	      Host baseHost = server.createHost("helio-queryservice","tar/");
 	      baseEngine.addChild(baseHost);
 	      Context appCtx = server.createContext("/helio-queryservice", "helio-queryservice");
 	      baseHost.addChild(appCtx);      
@@ -119,5 +121,5 @@ public class JunitWebserveTest {
 		  
 		  System.out.println(" Testing results ");
 	   }
-	  
+	  */
 }
