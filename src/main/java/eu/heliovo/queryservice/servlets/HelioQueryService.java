@@ -59,6 +59,18 @@ public class HelioQueryService extends HttpServlet {
 		    //Setting no of row parameter
 		    String noOfRows=request.getParameter("MAXRECORDS");
 		    comCriteriaTO.setNoOfRows(noOfRows);
+		    //Setting POS ( dec and ra ) parameter
+		    String pos=request.getParameter("POS");
+		    if(pos!=null && !pos.equals("")){
+				 String[] arrPos=pos.split(",");
+				 if(arrPos.length>0)
+					 comCriteriaTO.setAlpha(arrPos[0]);
+				 if(arrPos.length>1)
+					 comCriteriaTO.setDelta(arrPos[1]);
+			 }
+		    //Setting SIZE parameter.
+		    String size=request.getParameter("SIZE");
+		    comCriteriaTO.setSize(size);
 			CommonDao commonNameDao= CommonDaoFactory.getInstance().getCommonDAO();
 			commonNameDao.generateVOTableDetails(comCriteriaTO);
 		}catch(Exception e){
