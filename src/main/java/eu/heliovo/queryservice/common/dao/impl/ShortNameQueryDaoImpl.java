@@ -54,7 +54,7 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 			st = con.createStatement();
 			rs= st.executeQuery(sRepSql);
 			comCriteriaTO.setQueryStatus("OK");
-			comCriteriaTO.setQueryDescription(sRepSql);
+			comCriteriaTO.setQuery(sRepSql);
 			
 			tables[intCnt] = new StandardTypeTable( new SequentialResultSetStarTable( rs ) );
 			tables[intCnt].setName(listName[intCnt]);			
