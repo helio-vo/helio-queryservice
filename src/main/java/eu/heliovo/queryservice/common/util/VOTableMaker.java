@@ -46,7 +46,7 @@ public class VOTableMaker {
 	        if(comCriteriaTO.getQueryStatus().equals("ERROR")){
 	        	 out.write( "<INFO name=\"QUERY_STATUS\" value=\""+comCriteriaTO.getQueryDescription()+"\"/>");
 	        }
-	       	out.write("<INFO ID=\""+comCriteriaTO.getQueryStatus()+"\" name=\""+comCriteriaTO.getQueryStatus()+"\" >"+"<![CDATA["+comCriteriaTO.getQueryDescription()+"]]>"+"</INFO>");
+	       	out.write("<INFO ID=\""+comCriteriaTO.getQueryStatus()+"\" name=\""+comCriteriaTO.getQueryStatus()+"\" >"+"<![CDATA["+comCriteriaTO.getQuery()+"]]>"+"</INFO>");
 	        if(tables!=null){
 		        for ( int i = 0; i < tables.length; i++ ) {
 		            VOSerializer.makeSerializer( DataFormat.TABLEDATA, tables[ i ] )
