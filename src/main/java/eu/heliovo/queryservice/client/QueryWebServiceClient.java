@@ -110,7 +110,7 @@ public class QueryWebServiceClient {
 	      
 	      //this is finally your endpoint to do
 	      //"http://localhost:8080/HelioQuery/services/HelioService"
-	      _call.setTargetEndpointAddress("http://msslxw.mssl.ucl.ac.uk:8080/HelioICS/services/HelioService");
+	      _call.setTargetEndpointAddress("http://localhost:8080/helio-queryservice/HelioService");
 	      _call.setSOAPActionURI("");
 	      //_call.setOperationStyle(org.apache.axis.enum.Style.MESSAGE);
 	      //_call.setOperationUse(org.apache.axis.enum.Use.LITERAL);
