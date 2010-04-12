@@ -35,6 +35,7 @@ public class VOTableMaker {
     	StarTable[] tables=comCriteriaTO.getTables();
     	String status=comCriteriaTO.getStatus();
     	try{    		
+    		//out.write("<?xml version=1.0 encoding=UTF-8?>");
 	    	//Adding response header start for WebService VOTABLE.
 			if(status!=null && !status.equals("")){
 				 out.write("<helio:queryResponse xmlns:helio=\"http://helio-vo.eu/xml/QueryService/v0.1\">");
