@@ -18,10 +18,7 @@ import javax.xml.ws.WebServiceProvider;
 import org.w3c.dom.Document;
 import org.apache.log4j.Logger; 
 import org.w3c.dom.Element;
-
-
 import eu.heliovo.queryservice.common.transfer.criteriaTO.CommonCriteriaTO;
-import eu.heliovo.queryservice.common.util.FileUtils;
 import eu.heliovo.queryservice.server.util.QueryThreadAnalizer;
 
 /**
