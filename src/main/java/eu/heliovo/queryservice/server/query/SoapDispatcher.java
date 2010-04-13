@@ -1,5 +1,9 @@
 package eu.heliovo.queryservice.server.query;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.PipedReader;
 import java.io.PipedWriter;
 import javax.xml.transform.Source;
@@ -14,7 +18,11 @@ import javax.xml.ws.WebServiceProvider;
 import org.w3c.dom.Document;
 import org.apache.log4j.Logger; 
 import org.w3c.dom.Element;
+
+import com.mockrunner.util.StreamUtil;
+
 import eu.heliovo.queryservice.common.transfer.criteriaTO.CommonCriteriaTO;
+import eu.heliovo.queryservice.common.util.FileUtils;
 import eu.heliovo.queryservice.server.util.QueryThreadAnalizer;
 
 /**
@@ -31,10 +39,11 @@ import eu.heliovo.queryservice.server.util.QueryThreadAnalizer;
 	      
 @ServiceMode(value=javax.xml.ws.Service.Mode.PAYLOAD)
 
-//public class SoapDispatcher implements Provider<XMLStreamReader> {
 public class SoapDispatcher implements Provider<Source> {
  
   protected final  Logger logger = Logger.getLogger(this.getClass());
+  
+  
   /**
    * Method: Constructor
    * Description: Setup any initiations, mainly hashtable of uri to query 
@@ -60,6 +69,7 @@ public class SoapDispatcher implements Provider<Source> {
 		PipedWriter pw=null;
 		CommonCriteriaTO comCriteriaTO=null;
 		StreamSource responseReader = null;	
+		
 		try {
 			
 			Element inputDoc=toDocument(request);
@@ -145,17 +155,46 @@ public class SoapDispatcher implements Provider<Source> {
 		    	 //Thread created to load data into PipeReader.
 				 new QueryThreadAnalizer(comCriteriaTO).start();				
 				 logger.info(" : Done VOTABLE : ");							
-	   				 
-				 responseReader= new StreamSource(pr);
+	   			
+				 responseReader= new StreamSource(pr); 
 				 
+				 // Reader copyPr= StreamUtil.copyReader(pr);
+				 /*
+				 String xmlStringValue=StreamUtil.getReaderAsString(pr);
+				 System.out.println(xmlStringValue);
+				 long startFileName=System.currentTimeMillis();
+				 //Writing into a file.. from Source Stream.
+				 FileUtils.writeStringIntoFile(xmlStringValue,"/Users/vineethtshetty/sample_files/votable_"+startFileName+".xml");
+				 responseReader= getInputSourceByFile("/Users/vineethtshetty/sample_files/votable_"+startFileName+".xml"); 
+				 */				 
 				 logger.info(" : returning response reader soap output : ");
-			 	 return responseReader;
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			 	 return responseReader; 
+		}catch (Exception e) {
 			e.printStackTrace();
+			logger.fatal(" Exception occured while creating soap output : ",e);
 		}
 		return null;
 	}
+	
+	
+	@SuppressWarnings("unused")
+	private  StreamSource getInputSourceByFile(String filePath) throws IOException 
+	{
+		InputStream is = null;
+		try {
+			File path=new File(filePath);
+			is = new FileInputStream(path);
+			return new StreamSource(is, path.getName());
+		} catch (IOException e) {
+			if (is != null) {
+				try {
+					is.close();
+					} catch (Exception x) { /** ignore */ }
+			}
+			throw e;
+		}
+	}
+
 	
 	/*
 	 * Method used to convert Source to dom object.
