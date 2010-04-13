@@ -19,7 +19,6 @@ import org.w3c.dom.Document;
 import org.apache.log4j.Logger; 
 import org.w3c.dom.Element;
 
-import com.mockrunner.util.StreamUtil;
 
 import eu.heliovo.queryservice.common.transfer.criteriaTO.CommonCriteriaTO;
 import eu.heliovo.queryservice.common.util.FileUtils;
