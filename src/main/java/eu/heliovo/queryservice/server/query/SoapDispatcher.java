@@ -156,9 +156,9 @@ public class SoapDispatcher implements Provider<Source> {
 				 logger.info(" : Done VOTABLE : ");							
 	   			
 				 responseReader= new StreamSource(pr); 
-				 
-				 // Reader copyPr= StreamUtil.copyReader(pr);
+				
 				 /*
+				 // Reader copyPr= StreamUtil.copyReader(pr);
 				 String xmlStringValue=StreamUtil.getReaderAsString(pr);
 				 System.out.println(xmlStringValue);
 				 long startFileName=System.currentTimeMillis();
