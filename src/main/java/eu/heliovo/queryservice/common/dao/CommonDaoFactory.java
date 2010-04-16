@@ -2,8 +2,10 @@
 package eu.heliovo.queryservice.common.dao;
 
 import eu.heliovo.queryservice.common.dao.impl.CommonDaoImpl;
+import eu.heliovo.queryservice.common.dao.impl.LongRunningQueryDaoImpl;
 import eu.heliovo.queryservice.common.dao.impl.ShortNameQueryDaoImpl;
 import eu.heliovo.queryservice.common.dao.interfaces.CommonDao;
+import eu.heliovo.queryservice.common.dao.interfaces.LongRunningQueryDao;
 import eu.heliovo.queryservice.common.dao.interfaces.ShortNameQueryDao;
 
 
@@ -25,9 +27,15 @@ public class CommonDaoFactory {
 	public CommonDao getCommonDAO(){
 		return new CommonDaoImpl();
 	}
+	
 	public ShortNameQueryDao getShortNameQueryDao(){
 		return new ShortNameQueryDaoImpl();
 	}
+	
+	public LongRunningQueryDao getLongRunningQueryDao(){
+		return new LongRunningQueryDaoImpl();
+	}
+	
 	
 	
 }
