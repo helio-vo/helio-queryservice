@@ -126,8 +126,7 @@
 		  <artifactId>jsp-api</artifactId>
 		  <version>2.1</version>
 		  <scope>test</scope>
-		</dependency>
-			
+		</dependency>	
 	   </dependencies>
       
       <repositories>
