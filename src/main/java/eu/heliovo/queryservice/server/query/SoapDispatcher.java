@@ -6,19 +6,28 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PipedReader;
 import java.io.PipedWriter;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.xml.namespace.QName;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.stream.StreamSource;
+import javax.xml.ws.BindingProvider;
 import javax.xml.ws.Provider;
 import javax.xml.ws.ServiceMode; 
+import javax.xml.ws.WebServiceContext;
 import javax.xml.ws.WebServiceProvider;
+import javax.xml.ws.handler.MessageContext;
+
 import org.w3c.dom.Document;
 import org.apache.log4j.Logger; 
 import org.w3c.dom.Element;
 import eu.heliovo.queryservice.common.transfer.criteriaTO.CommonCriteriaTO;
+import eu.heliovo.queryservice.common.util.CommonUtils;
+import eu.heliovo.queryservice.common.util.HsqlDbUtils;
 import eu.heliovo.queryservice.server.util.QueryThreadAnalizer;
 
 /**
@@ -36,7 +45,9 @@ import eu.heliovo.queryservice.server.util.QueryThreadAnalizer;
 @ServiceMode(value=javax.xml.ws.Service.Mode.PAYLOAD)
 
 public class SoapDispatcher implements Provider<Source> {
- 
+	@javax.annotation.Resource(type=Object.class)
+	 protected WebServiceContext wsContext; 
+	
   protected final  Logger logger = Logger.getLogger(this.getClass());
   
   
@@ -68,8 +79,12 @@ public class SoapDispatcher implements Provider<Source> {
 		
 		try {
 			
-			Element inputDoc=toDocument(request);
-			
+			 Element inputDoc=toDocument(request);
+			 MessageContext mc = wsContext.getMessageContext();
+			 javax.servlet.http.HttpServletRequest req = (javax.servlet.http.HttpServletRequest)mc.get(MessageContext.SERVLET_REQUEST);
+			 
+			 //HsqlDbUtils.getInstance().dropTable();
+			 
 		     String interfaceName = inputDoc.getLocalName().intern();
 		     //since this service will be used a lot, supposedly .intern() can be quicker
 	   	     //each method should return a XMLStreamReader that is streamed back to the client.
@@ -154,15 +169,6 @@ public class SoapDispatcher implements Provider<Source> {
 	   			
 				 responseReader= new StreamSource(pr); 
 				
-				 /*
-				 // Reader copyPr= StreamUtil.copyReader(pr);
-				 String xmlStringValue=StreamUtil.getReaderAsString(pr);
-				 System.out.println(xmlStringValue);
-				 long startFileName=System.currentTimeMillis();
-				 //Writing into a file.. from Source Stream.
-				 FileUtils.writeStringIntoFile(xmlStringValue,"/Users/vineethtshetty/sample_files/votable_"+startFileName+".xml");
-				 responseReader= getInputSourceByFile("/Users/vineethtshetty/sample_files/votable_"+startFileName+".xml"); 
-				 */				 
 				 logger.info(" : returning response reader soap output : ");
 			 	 return responseReader; 
 		}catch (Exception e) {
@@ -171,6 +177,7 @@ public class SoapDispatcher implements Provider<Source> {
 		}
 		return null;
 	}
+	
 	
 	
 	@SuppressWarnings("unused")
