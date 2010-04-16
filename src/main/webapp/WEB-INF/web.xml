@@ -9,7 +9,12 @@
 	<servlet>
 		<servlet-name>StartUpServlet</servlet-name>
 		<servlet-class>eu.heliovo.queryservice.service.StartupServlet</servlet-class>
+		<init-param>
+		<param-name>port</param-name>
+		<param-value>8080</param-value>
+		</init-param>
 		<load-on-startup>1</load-on-startup>
+		
 	</servlet>	
 	
 	 <filter>
@@ -37,6 +42,32 @@
 		<servlet-name>HelioQueryService</servlet-name>
 		<url-pattern>/HelioQueryService</url-pattern>
 	</servlet-mapping>
+	
+	 <servlet>
+		<description>
+		</description>
+		<display-name>LongRunningQueryService</display-name>
+		<servlet-name>LongRunningQueryService</servlet-name>
+		<servlet-class>eu.heliovo.queryservice.servlets.LongRunningQueryService</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>LongRunningQueryService</servlet-name>
+		<url-pattern>/LongRunningQueryService</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>ResultQueryService</servlet-name>
+		<url-pattern>/ServiceJobStatus</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<description>
+		</description>
+		<display-name>ResultQueryService</display-name>
+		<servlet-name>ResultQueryService</servlet-name>
+		<servlet-class>eu.heliovo.queryservice.servlets.ResultQueryService</servlet-class>
+	</servlet>
 	
 	<servlet>
 	   <servlet-name>jaxws-servlet</servlet-name>
