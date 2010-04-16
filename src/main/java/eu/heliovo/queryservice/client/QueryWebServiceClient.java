@@ -23,7 +23,7 @@ public class QueryWebServiceClient {
 
 		Document doc = null; 
 		DocumentBuilder registryBuilder = null;
-		registryBuilder =DocumentBuilderFactory.newInstance().newDocumentBuilder();
+		registryBuilder =DocumentBuilderFactory.newInstance(). newDocumentBuilder();
 		doc = registryBuilder.newDocument();
 		//change this to helio:TimeSearch
 		//the getSoapBodyNamespaceURI() you can hard code it should be the same namespace you used to register in the SoapServlet.
