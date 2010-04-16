@@ -42,7 +42,7 @@ public class CommonCriteriaTO implements Serializable{
 	private String size;
 	private String alpha;
 	private String delta;
-	
+	private String saveto;
 	
 	public CommonCriteriaTO(){
 		this.setIPageNumber(0);
@@ -274,6 +274,14 @@ public class CommonCriteriaTO implements Serializable{
 
 	public void setDelta(String delta) {
 		this.delta = delta;
+	}
+
+	public String getSaveto() {
+		return saveto;
+	}
+
+	public void setSaveto(String saveto) {
+		this.saveto = saveto;
 	}
 	
 	
