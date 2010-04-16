@@ -6,6 +6,7 @@ import java.util.HashMap;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 
@@ -57,5 +58,22 @@ public class CommonUtils {
 	    }
 	    return result.toString();
 	}
+	
+	
+	/**
+	   * Reveals the base URI of the web application.
+	   *
+	   * @return The URI.
+	   */
+	  public static  String getUrl(HttpServletRequest req,String job_Id) { 
+		  
+		  String scheme = req.getScheme(); // http 
+		  String serverName = req.getServerName(); // hostname.com 
+		  int serverPort = req.getServerPort(); // 80 
+		  String contextPath = req.getContextPath(); // mywebapp 
+		  String url = scheme+"://"+serverName+":"+serverPort+contextPath+"/ServiceJobStatus?MODE=file&ID="+job_Id; 
+		 		  
+		  return url; 
+	  }
 	
 }

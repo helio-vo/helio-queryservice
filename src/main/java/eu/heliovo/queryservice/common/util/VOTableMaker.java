@@ -31,7 +31,13 @@ public class VOTableMaker {
     
     //Writing all the details into VOtable.
     public static void writeTables( CommonCriteriaTO comCriteriaTO ) throws Exception {
-    	BufferedWriter out = new BufferedWriter( comCriteriaTO.getPrintWriter() );
+    	BufferedWriter out =null;
+    	
+    	if(!comCriteriaTO.getStatus().equalsIgnoreCase("LongRunningServlet")){
+    	    out = new BufferedWriter( comCriteriaTO.getPrintWriter() );
+    	}else{
+    		out=(BufferedWriter) comCriteriaTO.getPrintWriter();
+    	}
     	StarTable[] tables=comCriteriaTO.getTables();
     	String status=comCriteriaTO.getStatus();
     	try{    		
@@ -66,7 +72,7 @@ public class VOTableMaker {
         out.flush();
         out.close();
     }
-    
+        
     //Setting column property.
     public static void setColInfoProperty(StarTable[] tables,String[] listName) throws Exception{
     	try{   	

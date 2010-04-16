@@ -1,5 +1,6 @@
 package eu.heliovo.queryservice.common.util;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -7,11 +8,13 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PipedReader;
 import java.io.StringReader;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.net.URL;
 
@@ -22,6 +25,7 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
@@ -273,8 +277,23 @@ public static void exportToOoWriter(File file,PipedReader reader) throws Excepti
 
  	}
   
+  
+  public static String readDataFromFile(Document doc) throws Exception {
+	  
+      TransformerFactory transformerFactory = TransformerFactory.newInstance();
+      Transformer transformer = transformerFactory.newTransformer();
+      transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+      StringWriter writer = new StringWriter();
+      StreamResult result = new StreamResult(writer);
+      DOMSource source = new DOMSource(doc);
+      transformer.transform(source, result);
+      String string=writer.toString(); 
+      return string;
+    }
+  
   }
   
+
   
   class NullResolver implements EntityResolver {
 	   public InputSource resolveEntity(String publicId, String systemId) throws SAXException,
