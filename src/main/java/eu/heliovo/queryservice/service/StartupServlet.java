@@ -2,11 +2,8 @@
 package eu.heliovo.queryservice.service;
 
 import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
-
-import org.apache.tomcat.util.http.BaseRequest;
 
 import eu.heliovo.queryservice.common.util.InstanceHolders;
 
