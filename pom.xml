@@ -13,7 +13,9 @@
     <packaging>war</packaging>
     <name>helio-queryservice</name>
     <version>0.0.1-SNAPSHOT</version>
-    <url>http://maven.apache.org</url>
+    <description>
+		TODO: Add description in helio-queryservice/pom.xml
+	</description>
     <build>
         <finalName>helio-queryservice</finalName>
     </build>
