@@ -14,7 +14,7 @@ public class QueryThreadAnalizer extends Thread{
 	public QueryThreadAnalizer(CommonCriteriaTO comCriTO){
 		comCriteriaTO=comCriTO;
 	}
-	public void run () {
+	public void run(){
 		 CommonDao commonNameDao= CommonDaoFactory.getInstance().getCommonDAO();			
 			try {				
 				commonNameDao.generateVOTableDetails(comCriteriaTO);				
