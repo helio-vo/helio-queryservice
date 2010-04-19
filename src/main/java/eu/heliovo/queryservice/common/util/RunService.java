@@ -23,7 +23,6 @@ public class RunService implements Runnable {
 			LongRunningQueryIdHolders.getInstance().setProperty(randomUUIDString, statusValue+"");
 			CommonDao commonNameDao= CommonDaoFactory.getInstance().getCommonDAO();
 			commonNameDao.generateVOTableDetails(comCriteriaTO);
-			//Thread.sleep(10000);
 			isCompleted=true;
 		}
 		catch(Exception ex)
