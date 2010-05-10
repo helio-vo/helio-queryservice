@@ -2,10 +2,18 @@ package eu.heliovo.queryservice.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.PipedReader;
+import java.io.PipedWriter;
+import java.io.Reader;
+import java.io.StringWriter;
 import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.UUID;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -14,9 +22,12 @@ import javax.xml.soap.SOAPMessage;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 import javax.xml.ws.Dispatch;
 import javax.xml.ws.Endpoint;
 import javax.xml.ws.Service;
@@ -25,6 +36,7 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import org.apache.catalina.Context;
@@ -34,20 +46,26 @@ import org.apache.catalina.connector.Connector;
 import org.apache.catalina.startup.Embedded;
 import org.apache.catalina.realm.MemoryRealm;
 import org.apache.log4j.Logger;
+import eu.heliovo.queryservice.common.dao.CommonDaoFactory;
+import eu.heliovo.queryservice.common.dao.interfaces.CommonDao;
+import eu.heliovo.queryservice.common.transfer.criteriaTO.CommonCriteriaTO;
+import eu.heliovo.queryservice.common.util.CommonUtils;
+import eu.heliovo.queryservice.common.util.InstanceHolders;
+import eu.heliovo.queryservice.server.util.QueryThreadAnalizer;
 
 
 
 @SuppressWarnings("unused")
 public class JunitWebserveTest {
-
-	   protected final  Logger logger = Logger.getLogger(this.getClass());
 	
+	/*
+	   protected final  Logger logger = Logger.getLogger(this.getClass());
 	   protected static Endpoint ep;
 	   protected static String address;
 	   protected static URL wsdlURL;
 	   protected static QName serviceName;
 	   protected static QName portName;
-	   protected static Embedded server;
+	   protected static Embedded server;  
 	   
 	   @BeforeClass
 	   public static void setUp() throws Exception {
@@ -77,6 +95,7 @@ public class JunitWebserveTest {
 	      }     
 	   }
 
+	   
 	   @AfterClass
 	   public static void tearDown() throws Exception {
 		  if (server != null) {
@@ -120,5 +139,132 @@ public class JunitWebserveTest {
 		  
 		  System.out.println(" Testing results ");
 	   }
-	  
-}
+	  */
+	
+	
+	   @Test
+	   public void testFullQueryQname() throws Exception {
+		   
+			PipedReader  pr = new PipedReader();
+			PipedWriter pw = new PipedWriter(pr);
+			
+			try{
+				 System.out.println("Testing Full Query Service ....");
+				 ClassLoader loader = this.getClass().getClassLoader();
+				 String helioDbPath=loader.getResource("test.txt").getFile();
+				 System.out.println(" : helio db file path  : "+loader.getResource("test.txt").getFile());
+				 InstanceHolders.getInstance().setProperty("hsqldb.database.path",helioDbPath.replace("test.txt", ""));
+				 DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+			     factory.setNamespaceAware(true);
+				 DocumentBuilder builder = factory.newDocumentBuilder();  
+				 //
+				 CommonCriteriaTO comCriteriaTO=new CommonCriteriaTO();
+				 comCriteriaTO.setStartDateTime("1890-10-20T20:30:56");
+				 comCriteriaTO.setEndDateTime("2009-10-20T20:30:56");	
+				 comCriteriaTO.setListName("helio");
+				 comCriteriaTO.setStatus("WebService");
+				 comCriteriaTO.setPrintWriter(pw);
+				 System.out.println("Creating a VOTable ....");
+				 new QueryThreadAnalizer(comCriteriaTO).start();
+				 Thread.sleep(20000);
+				 //Print reader
+				 System.out.println("Printing VOTable ....");
+				 printPrintReader(pr);
+				 
+			 }catch(Exception e){
+				  System.out.println(" Exception occured in testQueryQname : "+e);
+			 }
+			 
+			 finally{
+				 
+				 if(pw!=null){
+					pw.close(); 
+				 }
+			     //Setting hsqldb.database.path to null.
+				 InstanceHolders.getInstance().setProperty("hsqldb.database.path",null);
+			 }
+			 
+	   }
+	   
+	   
+	   @Test
+	   public void testLongRunningQueryQname() throws Exception {
+		   
+			PipedReader  pr = new PipedReader();
+			PipedWriter pw = new PipedWriter(pr);
+			BufferedWriter out = new BufferedWriter(pw);
+			try{
+				 System.out.println("Testing Long Running Query Service ....");
+				 DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+			     factory.setNamespaceAware(true);
+				 DocumentBuilder builder = factory.newDocumentBuilder();  
+				 //Passing values to Trasfer Object.
+				 CommonCriteriaTO comCriteriaTO=new CommonCriteriaTO();
+				 comCriteriaTO.setStartDateTime("1890-10-20T20:30:56");
+				 comCriteriaTO.setEndDateTime("2009-10-20T20:30:56");	
+				 comCriteriaTO.setListName("helio");
+				 comCriteriaTO.setStatus("WebService");
+				 comCriteriaTO.setLongRunningQueryStatus("LongRunning");
+				 comCriteriaTO.setPrintWriter(out);
+				 // Creating UUID
+				 UUID uuid = UUID.randomUUID();
+				 String randomUUIDString = uuid.toString();
+				 
+				 String xmlString=CommonUtils.createXmlForWebService(randomUUIDString);
+				 System.out.println(" : XML String : "+xmlString);
+				
+				 //Setting piped reader 
+				 comCriteriaTO.setLongRunningPrintWriter(pw);
+				 //Set data to print writer.
+				 comCriteriaTO.setDataXml(xmlString);
+				 System.out.println("Creating response XML ....");
+				 //Thread created to load data into response.
+				 CommonDao commonNameDao= CommonDaoFactory.getInstance().getCommonDAO();
+				 commonNameDao.generatelongRunningQueryXML(comCriteriaTO);
+				 System.out.println("Response XML done ....");
+				 //Print print reader.
+				 System.out.println("Printing response ....");
+				 printPrintReader(pr);
+				 
+			 }catch(Exception e){
+				  System.out.println(" Exception occured in testQueryQname : "+e);
+			 }
+			 
+			 finally{
+				 
+				 if(pw!=null){
+					pw.close(); 
+				 }
+				 //Setting hsqldb.database.path to null.
+				 InstanceHolders.getInstance().setProperty("hsqldb.database.path",null);
+			 }
+			 
+	   }
+	   
+	   private void printPrintReader(PipedReader  reader) throws IOException
+	   {
+		   try{
+			   while (reader.ready())
+	            {
+				   Thread.sleep(50);
+	                System.out.print((char)reader.read());
+	            }
+
+	            // Close the PipedReader and PipedWriter.
+	           // reader.close();
+
+		   }catch(Exception e){ 
+			   System.out.println(" Exception in printPrintReader : "+e);
+			   e.printStackTrace();
+		   }
+		   
+		   finally{
+			   
+			   if(reader!=null){
+				   reader.close();
+			   }
+		   }
+	   }
+	   
+	  	    
+ }
