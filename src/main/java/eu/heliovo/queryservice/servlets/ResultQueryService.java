@@ -3,22 +3,15 @@ package eu.heliovo.queryservice.servlets;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.StringWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Text;
+
 import eu.heliovo.queryservice.common.util.CommonUtils;
 import eu.heliovo.queryservice.common.util.FileUtils;
 import eu.heliovo.queryservice.common.util.HsqlDbUtils;
@@ -58,7 +51,7 @@ public class ResultQueryService extends HttpServlet {
 				String sStatus=LongRunningQueryIdHolders.getInstance().getProperty(sID);
 				if(sStatus==null || sStatus.trim().equals(""))
 				  sStatus=HsqlDbUtils.getInstance().getStatusFromHsqlDB(sID);
-				String xmlString=createXmlTree(doc,sID,sStatus);
+				String xmlString=CommonUtils.createXmlForWebService(sID,sStatus);
 				System.out.println(" : XML String : "+xmlString);
 				pw.write(xmlString);
 			}else if(sMode!=null && sMode.equalsIgnoreCase("result")){
@@ -67,20 +60,28 @@ public class ResultQueryService extends HttpServlet {
 				  sStatus=HsqlDbUtils.getInstance().getStatusFromHsqlDB(sID);
 				String contextPath=CommonUtils.getUrl(request,sID);
 				
-				String xmlString=createXmlTree(doc,sID,sStatus,contextPath);
+				String xmlString=CommonUtils.createXmlForWebService(sID,sStatus,contextPath);
 				System.out.println(" : XML String : "+xmlString);
 				pw.write(xmlString);
 			}else if(sMode!=null && sMode.equalsIgnoreCase("file")){
+				StringBuilder fileData=null;
 				String sUrl=HsqlDbUtils.getInstance().getUrlFromHsqlDB(sID);
-				File xmlfile = new File(sUrl);
-		        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		        DocumentBuilder builder = factory.newDocumentBuilder();
-		        Document document = builder.parse(xmlfile);
-		        String fileData=FileUtils.readDataFromFile(document);
+				if(sUrl!=null && sUrl.startsWith("http")){
+					//http
+				}if(sUrl.startsWith("ftp")){
+					//fttp
+					String ftpUrl=HsqlDbUtils.getInstance().getUrlFromHsqlDB(sID);
+					fileData=FileUtils.getFileDataFromFtp(ftpUrl);
+				}else{
+					File xmlfile = new File(sUrl);
+			        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+			        DocumentBuilder builder = factory.newDocumentBuilder();
+			        Document document = builder.parse(xmlfile);
+			        fileData=FileUtils.readDataFromFile(document);
+				}
 		        logger.info(" : File data :   "+fileData);
-				pw.write(fileData);
+				pw.write(fileData.toString());
 			}
-			
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -104,72 +105,8 @@ public class ResultQueryService extends HttpServlet {
 	}
 	
 	
-	 public String createXmlTree(Document doc,String randomUUIDString) throws Exception {
-		 
-		 return createXmlTree(doc,randomUUIDString,null,null);
-	 }
-	 
-	 public String createXmlTree(Document doc,String randomUUIDString,String Status) throws Exception {
-		 
-		 return createXmlTree(doc,randomUUIDString,Status,null);
-	 }
 	
-	/*
-	 * 
-	 */
-	 public String createXmlTree(Document doc,String randomUUIDString,String Status,String sUrl) throws Exception {
-	        //This method creates an element node
-	        Element root = doc.createElement("SERVICE");
-	        //adding a node after the last child node of the specified node.
-	        doc.appendChild(root);
-
-	        Element child = doc.createElement("RESPONSE");
-	        root.appendChild(child);
-
-	        Element child1 = doc.createElement("ID");
-	        child.appendChild(child1);
-
-	        Text text = doc.createTextNode(randomUUIDString);
-	        child1.appendChild(text);
-
-	        if(Status!=null){
-	        	Element child2 = doc.createElement("STATUS");
-	 	        child.appendChild(child2);
-
-	 	        Text text1 = doc.createTextNode(Status);
-	 	        child2.appendChild(text1);
-	         }
-	        
-	        if(sUrl!=null){
-	        	Element childRt = doc.createElement("URIS");
-	        	child.appendChild(childRt);
-	        	Element chilE = doc.createElement("URL");
-	            chilE.setAttribute("name", "query");
-	            Text text12 = doc.createTextNode(sUrl);
-	            chilE.appendChild(text12);
-	            childRt.appendChild(chilE);
-	        }
-	        
-	        //TransformerFactory instance is used to create Transformer objects. 
-	        TransformerFactory factory = TransformerFactory.newInstance();
-	        Transformer transformer = factory.newTransformer();
-	       
-	        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-
-	        // create string from xml tree
-	        StringWriter sw = new StringWriter();
-	        StreamResult result = new StreamResult(sw);
-	        DOMSource source = new DOMSource(doc);
-	        transformer.transform(source, result);
-	        String xmlString = sw.toString();
-
-	       return xmlString;
-	      
-	    }
+	
+	
 	 
-	 
-
-	 
-	 
-
-}
+ }

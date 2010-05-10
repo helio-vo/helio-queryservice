@@ -10,7 +10,6 @@ import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 import java.util.UUID;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -23,12 +22,14 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.w3c.dom.Comment;
+import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
-
 import eu.heliovo.queryservice.common.transfer.criteriaTO.CommonCriteriaTO;
+import eu.heliovo.queryservice.common.util.CommonUtils;
+import eu.heliovo.queryservice.common.util.FileUtils;
+import eu.heliovo.queryservice.common.util.InstanceHolders;
 import eu.heliovo.queryservice.common.util.RunService;
 
 /**
@@ -36,7 +37,7 @@ import eu.heliovo.queryservice.common.util.RunService;
  */
 public class LongRunningQueryService extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	protected final  Logger logger = Logger.getLogger(this.getClass());
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -77,7 +78,19 @@ public class LongRunningQueryService extends HttpServlet {
 		    comCriteriaTO.setNoOfRows(noOfRows);
 		    //Setting save to parameter
 		    String saveTo=request.getParameter("SAVETO");
-		    comCriteriaTO.setSaveto(saveTo);
+		    
+		    // Save To file.
+			if(saveTo==null || saveTo==""){
+			    saveTo= InstanceHolders.getInstance().getProperty("hsqldb.database.path")+"/files";
+			    File f = new File(saveTo);
+			    //Checking if directry present; if not create one.
+			    if(!f.exists())
+			    	f.mkdir();
+			    //passing save to value to common TO.	
+			    comCriteriaTO.setSaveto(saveTo);
+			    logger.info(" : save to file location :  "+saveTo);
+			 }
+			 
 		    //Setting POS ( dec and ra ) parameter
 		    String pos=request.getParameter("POS");
 		    if(pos!=null && !pos.equals("")){
@@ -98,8 +111,8 @@ public class LongRunningQueryService extends HttpServlet {
 		    BufferedWriter bw =null;
 		    String saveFilePath=null;
 		    //
-		    if(comCriteriaTO!=null && saveTo.contains("ftp")){
-		    	
+		    if(saveTo!=null && saveTo.contains("ftp")){
+		    	FileUtils.saveFileToFtp(saveTo,"votable_"+randomUUIDString+".xml");	    			    	
 		    }else{
 		    	 saveFilePath=saveTo+"/votable_"+randomUUIDString+".xml";
 		    	 file = new File(saveFilePath);
@@ -109,9 +122,7 @@ public class LongRunningQueryService extends HttpServlet {
 		    //Setting print writer.
 		    comCriteriaTO.setPrintWriter(bw);
 		    //Status set to inform long running query
-		    comCriteriaTO.setStatus("LongRunningServlet");
-		    //Setting save file path
-		    comCriteriaTO.setSaveto(saveFilePath);
+		    comCriteriaTO.setLongRunningQueryStatus("LongRunning");
 		    //Running the service in back round
 		    RunService oRunReport= new RunService(comCriteriaTO,randomUUIDString);
 			Thread th = new Thread(oRunReport);
@@ -123,7 +134,7 @@ public class LongRunningQueryService extends HttpServlet {
 	        //creating a new instance of a DOM to build a DOM tree.
 	        Document doc = docBuilder.newDocument();
 	        //
-	        String xmlString=createXmlTree(doc,randomUUIDString);
+	        String xmlString=CommonUtils.createXmlForWebService(randomUUIDString);
 			System.out.println(" : XML String : "+xmlString);
 			pw.write(xmlString);
 			
