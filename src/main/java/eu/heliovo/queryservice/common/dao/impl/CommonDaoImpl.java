@@ -1,6 +1,8 @@
 /* #ident	"%W%" */
 package eu.heliovo.queryservice.common.dao.impl;
 
+import java.io.BufferedWriter;
+
 import org.apache.log4j.Logger;
 
 import eu.heliovo.queryservice.common.dao.CommonDaoFactory;
@@ -31,6 +33,30 @@ public class CommonDaoImpl implements CommonDao {
 		
 	}
 
+	public void generatelongRunningQueryXML(CommonCriteriaTO comCriteriaTO) throws Exception
+	{
+		BufferedWriter out =null;
+		try{
+			String status=comCriteriaTO.getStatus();
+			out = new BufferedWriter( comCriteriaTO.getLongRunningPrintWriter() );
+			//Adding response header start for WebService VOTABLE.
+			if(status!=null && !status.equals("")){
+				 out.write("<helio:resultResponse xmlns:helio=\"http://helio-vo.eu/xml/LongQueryService/v0.1\">");
+			}
+			out.write(comCriteriaTO.getDataXml());
+			//Adding response header start for WebService VOTABLE.
+			if(status!=null && !status.equals("")){
+				 out.write("</helio:resultResponse>");
+			}
+		}catch(Exception pe) {
+        	pe.printStackTrace();
+        	logger.fatal("   : Exception in CommonDaoImpl:generatelongRunningQueryXML : ", pe);
+    		throw new Exception("Couldn't create Long running response XML");
+        }		
+		
+		out.flush();
+        out.close();
+	}
 	
 	
 }
