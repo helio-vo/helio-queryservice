@@ -1,33 +1,41 @@
 package eu.heliovo.queryservice.server.query;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStreamWriter;
 import java.io.PipedReader;
 import java.io.PipedWriter;
-
+import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
-import javax.xml.namespace.QName;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.stream.StreamSource;
-import javax.xml.ws.BindingProvider;
 import javax.xml.ws.Provider;
 import javax.xml.ws.ServiceMode; 
 import javax.xml.ws.WebServiceContext;
 import javax.xml.ws.WebServiceProvider;
 import javax.xml.ws.handler.MessageContext;
-
 import org.w3c.dom.Document;
 import org.apache.log4j.Logger; 
 import org.w3c.dom.Element;
+import eu.heliovo.queryservice.common.dao.CommonDaoFactory;
+import eu.heliovo.queryservice.common.dao.interfaces.CommonDao;
 import eu.heliovo.queryservice.common.transfer.criteriaTO.CommonCriteriaTO;
 import eu.heliovo.queryservice.common.util.CommonUtils;
+import eu.heliovo.queryservice.common.util.FileUtils;
 import eu.heliovo.queryservice.common.util.HsqlDbUtils;
+import eu.heliovo.queryservice.common.util.InstanceHolders;
+import eu.heliovo.queryservice.common.util.LongRunningQueryIdHolders;
+import eu.heliovo.queryservice.common.util.RunService;
 import eu.heliovo.queryservice.server.util.QueryThreadAnalizer;
 
 /**
@@ -38,9 +46,9 @@ import eu.heliovo.queryservice.server.util.QueryThreadAnalizer;
  * XMLStreamReader with the help of PipedStreams.
  *
  */
-@WebServiceProvider(targetNamespace="http://helio-vo.eu/xml/QueryService/v0.1",
-	      serviceName="HelioQueryServiceService",
-	      portName="HelioQueryServicePort")
+@WebServiceProvider(targetNamespace="",
+	      serviceName="",
+	      portName="")
 	      
 @ServiceMode(value=javax.xml.ws.Service.Mode.PAYLOAD)
 
@@ -49,8 +57,7 @@ public class SoapDispatcher implements Provider<Source> {
 	 protected WebServiceContext wsContext; 
 	
   protected final  Logger logger = Logger.getLogger(this.getClass());
-  
-  
+
   /**
    * Method: Constructor
    * Description: Setup any initiations, mainly hashtable of uri to query 
@@ -76,14 +83,19 @@ public class SoapDispatcher implements Provider<Source> {
 		PipedWriter pw=null;
 		CommonCriteriaTO comCriteriaTO=null;
 		StreamSource responseReader = null;	
+		File file=null;
+		BufferedWriter bw =null;
+		String saveFilePath=null;
+		String saveTo =null;
+		//Creating UUID and generating unique ID.
+		UUID uuid = UUID.randomUUID();
+		String randomUUIDString = uuid.toString();
 		
 		try {
 			
 			 Element inputDoc=toDocument(request);
 			 MessageContext mc = wsContext.getMessageContext();
-			 javax.servlet.http.HttpServletRequest req = (javax.servlet.http.HttpServletRequest)mc.get(MessageContext.SERVLET_REQUEST);
-			 
-			 //HsqlDbUtils.getInstance().dropTable();
+			 HttpServletRequest req = (HttpServletRequest)mc.get(MessageContext.SERVLET_REQUEST);
 			 
 		     String interfaceName = inputDoc.getLocalName().intern();
 		     //since this service will be used a lot, supposedly .intern() can be quicker
@@ -91,90 +103,199 @@ public class SoapDispatcher implements Provider<Source> {
 		     comCriteriaTO=new CommonCriteriaTO(); 
 			 pr = new PipedReader();
 			 pw = new PipedWriter(pr);	    		   		   		  		   	 
-			 comCriteriaTO.setPrintWriter(pw);
 			 
 			 //Indicator to define VOTABLE for Web Service request
 			 comCriteriaTO.setStatus("WebService");
+		
+			 // This is common for Time. interface.
+	    	 //Setting for START TIME parameter.
+    		 if(inputDoc.getElementsByTagNameNS("*","STARTTIME").getLength()>0){
+	    		 String startTime = inputDoc.getElementsByTagNameNS("*","STARTTIME").item(0).getFirstChild().getNodeValue();
+	    		 comCriteriaTO.setStartDateTime(startTime);
+			 }
+    		 //Setting for TIME parameter.
+    		 if(inputDoc.getElementsByTagNameNS("*","ENDTIME").getLength()>0){
+	    		 String endTime = inputDoc.getElementsByTagNameNS("*","ENDTIME").item(0).getFirstChild().getNodeValue();
+				 comCriteriaTO.setEndDateTime(endTime);	
+    		 }
+	    	 
+	    	//Setting for ListName parameter.
+    		 if(inputDoc.getElementsByTagNameNS("*","FROM").getLength()>0){
+    			 String listName = inputDoc.getElementsByTagNameNS("*","FROM").item(0).getFirstChild().getNodeValue();
+    			 comCriteriaTO.setListName(listName);
+    		 }	 
+	    	 
+	    	//Setting for Start Row parameter.
+			 if(inputDoc.getElementsByTagNameNS("*","STARTINDEX").getLength()>0){
+				 String startRow = inputDoc.getElementsByTagNameNS("*","STARTINDEX").item(0).getFirstChild().getNodeValue();
+				 comCriteriaTO.setStartRow(startRow);
+			 }
 			 
-		    	 if(interfaceName == "Query".intern()) {
-		    					 
-					 //Setting for Instrument parameter.
-					 if(inputDoc.getElementsByTagNameNS("*","INSTRUMENT").getLength()>0){
-						 String instruments = inputDoc.getElementsByTagNameNS("*","INSTRUMENT").item(0).getFirstChild().getNodeValue();
-						 comCriteriaTO.setInstruments(instruments);
-					 }
-					 
-					//Setting for WHERE parameter.
-					 if(inputDoc.getElementsByTagNameNS("*","WHERE").getLength()>0){
-						 String whereClause = inputDoc.getElementsByTagNameNS("*","WHERE").item(0).getFirstChild().getNodeValue();
-						 comCriteriaTO.setWhereClause(whereClause);
-					 }
-		    	 } 
-		    	
-		    	 if(interfaceName == "Coordinates".intern()) {
-		    		 
-		    		 //Setting for POS( RA & DEC) parameter.
-					 if(inputDoc.getElementsByTagNameNS("*","POS").getLength()>0){
-						 String pos = inputDoc.getElementsByTagNameNS("*","POS").item(0).getFirstChild().getNodeValue();
-						 if(pos!=null && !pos.equals("")){
-							 String[] arrPos=pos.split(",");
-							 if(arrPos.length>0)
-							 comCriteriaTO.setAlpha(arrPos[0]);
-							 if(arrPos.length>1)
-							 comCriteriaTO.setDelta(arrPos[1]);
-						 }
-					 }
-					 
-					//Setting for SIZE parameter.
-					 if(inputDoc.getElementsByTagNameNS("*","SIZE").getLength()>0){
-						 String size = inputDoc.getElementsByTagNameNS("*","SIZE").item(0).getFirstChild().getNodeValue();
-						 comCriteriaTO.setSize(size);
-					 }
-		    	 }
-		    	 
-		    	 // This is common for Time. interface.
-		    	 
-		    	 //Setting for START TIME parameter.
-	    		 if(inputDoc.getElementsByTagNameNS("*","STARTTIME").getLength()>0){
-		    		 String startTime = inputDoc.getElementsByTagNameNS("*","STARTTIME").item(0).getFirstChild().getNodeValue();
-		    		 comCriteriaTO.setStartDateTime(startTime);
+			//Setting for No Of Rows parameter.
+			 if(inputDoc.getElementsByTagNameNS("*","MAXRECORDS").getLength()>0){
+				 String noOfRows = inputDoc.getElementsByTagNameNS("*","MAXRECORDS").item(0).getFirstChild().getNodeValue();
+				 comCriteriaTO.setNoOfRows(noOfRows);
+			 }
+	    	 
+			 //Full query interface
+		     if(interfaceName == "Query".intern() || interfaceName == "LongQuery".intern()) {
+		    	 //Setting for Instrument parameter.
+				 if(inputDoc.getElementsByTagNameNS("*","INSTRUMENT").getLength()>0){
+					 String instruments = inputDoc.getElementsByTagNameNS("*","INSTRUMENT").item(0).getFirstChild().getNodeValue();
+					 comCriteriaTO.setInstruments(instruments);
 				 }
-	    		 //Setting for TIME parameter.
-	    		 if(inputDoc.getElementsByTagNameNS("*","ENDTIME").getLength()>0){
-		    		 String endTime = inputDoc.getElementsByTagNameNS("*","ENDTIME").item(0).getFirstChild().getNodeValue();
-					 comCriteriaTO.setEndDateTime(endTime);	
-	    		 }
-		    	 
-		    	//Setting for ListName parameter.
-	    		 if(inputDoc.getElementsByTagNameNS("*","FROM").getLength()>0){
-	    			 String listName = inputDoc.getElementsByTagNameNS("*","FROM").item(0).getFirstChild().getNodeValue();
-	    			 comCriteriaTO.setListName(listName);
-	    		 }	 
-		    	 
-		    	//Setting for Start Row parameter.
-				 if(inputDoc.getElementsByTagNameNS("*","STARTINDEX").getLength()>0){
-					 String startRow = inputDoc.getElementsByTagNameNS("*","STARTINDEX").item(0).getFirstChild().getNodeValue();
-					 comCriteriaTO.setStartRow(startRow);
+				//Setting for WHERE parameter.
+				 if(inputDoc.getElementsByTagNameNS("*","WHERE").getLength()>0){
+					 String whereClause = inputDoc.getElementsByTagNameNS("*","WHERE").item(0).getFirstChild().getNodeValue();
+					 comCriteriaTO.setWhereClause(whereClause);
 				 }
-				 
-				//Setting for No Of Rows parameter.
-				 if(inputDoc.getElementsByTagNameNS("*","MAXRECORDS").getLength()>0){
-					 String noOfRows = inputDoc.getElementsByTagNameNS("*","MAXRECORDS").item(0).getFirstChild().getNodeValue();
-					 comCriteriaTO.setNoOfRows(noOfRows);
+				 //Coordinates interface
+	    	 } else if(interfaceName == "Coordinates".intern()) {
+	    		 //Setting for POS( RA & DEC) parameter.
+				 if(inputDoc.getElementsByTagNameNS("*","POS").getLength()>0){
+					 String pos = inputDoc.getElementsByTagNameNS("*","POS").item(0).getFirstChild().getNodeValue();
+					 if(pos!=null && !pos.equals("")){
+						 String[] arrPos=pos.split(",");
+						 if(arrPos.length>0)
+						 comCriteriaTO.setAlpha(arrPos[0]);
+						 if(arrPos.length>1)
+						 comCriteriaTO.setDelta(arrPos[1]);
+					 }
 				 }
-		    	 
-		    	 //Thread created to load data into PipeReader.
-				 new QueryThreadAnalizer(comCriteriaTO).start();				
-				 logger.info(" : Done VOTABLE : ");							
-	   			
-				 responseReader= new StreamSource(pr); 
+				//Setting for SIZE parameter.
+				 if(inputDoc.getElementsByTagNameNS("*","SIZE").getLength()>0){
+					 String size = inputDoc.getElementsByTagNameNS("*","SIZE").item(0).getFirstChild().getNodeValue();
+					 comCriteriaTO.setSize(size);
+				 }
+				 //Long running query interface.
+	    	 }else if(interfaceName == "LongTimeQuery".intern() || interfaceName == "LongQuery".intern()){
+						 
+				 //Setting for No Of Rows parameter.
+				 if(inputDoc.getElementsByTagNameNS("*","SAVETO").getLength()>0){
+					 saveTo = inputDoc.getElementsByTagNameNS("*","SAVETO").item(0).getFirstChild().getNodeValue();
+				 } 
+				 // Save To file.
+				 if(saveTo==null || saveTo==""){
+				    saveTo= InstanceHolders.getInstance().getProperty("hsqldb.database.path")+"/files";
+				    File f = new File(saveTo);
+				    //Checking if directry present; if not create one.
+				    if(!f.exists())
+				    	f.mkdir();
+				    //passing save to value to common TO.	
+				    comCriteriaTO.setSaveto(saveTo);
+				    logger.info(" : save to file location :  "+saveTo);
+				 }
 				
-				 logger.info(" : returning response reader soap output : ");
-			 	 return responseReader; 
+				 comCriteriaTO.setLongRunningQueryStatus("LongRunning");
+				 String xmlString=CommonUtils.createXmlForWebService(randomUUIDString);
+				 System.out.println(" : XML String : "+xmlString);
+				 
+				 //Setting piped reader 
+				 comCriteriaTO.setLongRunningPrintWriter(pw);
+				 //Set data to print writer.
+				 comCriteriaTO.setDataXml(xmlString);
+				 //Thread created to load data into response.
+				 CommonDao commonNameDao= CommonDaoFactory.getInstance().getCommonDAO();
+				 commonNameDao.generatelongRunningQueryXML(comCriteriaTO);	
+				 logger.info(" : Done VOTABLE : ");	
+				 if(saveTo!=null && saveTo.startsWith("http")){
+				 //Save file to http.
+				 }else if(saveTo!=null && saveTo.contains("ftp")){
+				    FileUtils.saveFileToFtp(saveTo,"votable_"+randomUUIDString+".xml");	    			    	
+				 }else{
+				 //Save the file to local system.
+				    saveFilePath=saveTo+"/votable_"+randomUUIDString+".xml";
+				    file = new File(saveFilePath);
+					bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file)));
+					comCriteriaTO.setPrintWriter(bw);
+				 }
+				
+				 //Running the service in back round
+				 RunService oRunReport= new RunService(comCriteriaTO,randomUUIDString);
+				 Thread th = new Thread(oRunReport);
+				 th.start();
+				 //Long running query status of completion.
+		 }else if(interfaceName == "GetStatus".intern()){
+			 String sID =null;
+			 if(inputDoc.getElementsByTagNameNS("*","ID").getLength()>0){
+	    		 sID = inputDoc.getElementsByTagNameNS("*","ID").item(0).getFirstChild().getNodeValue();
+			 }
+			 
+			 String sStatus=LongRunningQueryIdHolders.getInstance().getProperty(sID);
+				if(sStatus==null || sStatus.trim().equals(""))
+				  sStatus=HsqlDbUtils.getInstance().getStatusFromHsqlDB(sID);
+				String xmlString=CommonUtils.createXmlForWebService(sID,sStatus);
+				System.out.println(" : XML String : "+xmlString);	
+				//Setting piped reader 
+				 comCriteriaTO.setLongRunningPrintWriter(pw);
+				//Set data to print writer.
+				comCriteriaTO.setDataXml(xmlString);
+				//Thread created to load data into response.
+				CommonDao commonNameDao= CommonDaoFactory.getInstance().getCommonDAO();
+				commonNameDao.generatelongRunningQueryXML(comCriteriaTO);	
+				//Long running query file location path result.
+		 }else if(interfaceName == "GetResults".intern()){
+			 String sID =null;
+			 if(inputDoc.getElementsByTagNameNS("*","ID").getLength()>0){
+	    		 sID = inputDoc.getElementsByTagNameNS("*","ID").item(0).getFirstChild().getNodeValue();
+			 }
+			 
+			 String sStatus=LongRunningQueryIdHolders.getInstance().getProperty(sID);
+				if(sStatus==null || sStatus.trim().equals(""))
+				  sStatus=HsqlDbUtils.getInstance().getStatusFromHsqlDB(sID);
+				String contextPath=CommonUtils.getUrl(req,sID);
+				
+				String xmlString=CommonUtils.createXmlForWebService(sID,sStatus,contextPath);
+				System.out.println(" : XML String : "+xmlString);	
+				//Setting piped reader 
+				comCriteriaTO.setLongRunningPrintWriter(pw);
+				//Set data to print writer.
+				comCriteriaTO.setDataXml(xmlString);
+				//Thread created to load data into response.
+				CommonDao commonNameDao= CommonDaoFactory.getInstance().getCommonDAO();
+				commonNameDao.generatelongRunningQueryXML(comCriteriaTO);	
+				//Long running query response result.
+		 }else if(interfaceName == "GetResponseFile".intern()){
+			 //Presently not in use.
+			 StringBuilder fileData=null;
+			 String sID =null;
+			 if(inputDoc.getElementsByTagNameNS("*","ID").getLength()>0){
+	    		 sID = inputDoc.getElementsByTagNameNS("*","ID").item(0).getFirstChild().getNodeValue();
+			 }
+			 String sUrl=HsqlDbUtils.getInstance().getUrlFromHsqlDB(sID);
+				if(sUrl.contains("ftp")){
+					String ftpUrl=HsqlDbUtils.getInstance().getUrlFromHsqlDB(sID);
+					fileData=FileUtils.getFileDataFromFtp(ftpUrl);
+				}else if(sUrl.startsWith("http")) {
+				
+				}
+				else{
+					File xmlfile = new File(sUrl);
+			        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+			        DocumentBuilder builder = factory.newDocumentBuilder();
+			        Document document = builder.parse(xmlfile);
+			        fileData=FileUtils.readDataFromFile(document);
+				}
+				
+				pw.write(fileData.toString());
+		 }
+		 
+		 if(interfaceName == "Query".intern() || interfaceName == "Coordinates".intern() || interfaceName == "TimeQuery".intern()){ 
+			 //Setting piped reader 
+			 comCriteriaTO.setPrintWriter(pw);
+	    	 //Thread created to load data into PipeReader.
+			 new QueryThreadAnalizer(comCriteriaTO).start();				
+			 logger.info(" : Done VOTABLE : ");				
+		 }
+			
+		 responseReader= new StreamSource(pr); 
+			 
+		 logger.info(" : Returning response reader soap output : ");
+		 return responseReader; 
 		}catch (Exception e) {
 			e.printStackTrace();
 			logger.fatal(" Exception occured while creating soap output : ",e);
-		}
+	    }
 		return null;
 	}
 	
