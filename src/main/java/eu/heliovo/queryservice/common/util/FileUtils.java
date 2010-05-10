@@ -1,8 +1,13 @@
 package eu.heliovo.queryservice.common.util;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
@@ -16,15 +21,16 @@ import java.io.PipedReader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.XMLStreamWriter;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
@@ -278,7 +284,7 @@ public static void exportToOoWriter(File file,PipedReader reader) throws Excepti
  	}
   
   
-  public static String readDataFromFile(Document doc) throws Exception {
+  public static StringBuilder readDataFromFile(Document doc) throws Exception {
 	  
       TransformerFactory transformerFactory = TransformerFactory.newInstance();
       Transformer transformer = transformerFactory.newTransformer();
@@ -287,14 +293,164 @@ public static void exportToOoWriter(File file,PipedReader reader) throws Excepti
       StreamResult result = new StreamResult(writer);
       DOMSource source = new DOMSource(doc);
       transformer.transform(source, result);
-      String string=writer.toString(); 
-      return string;
+      StringBuilder sb=new StringBuilder(writer.toString());
+      return sb;
     }
   
+  /*
+   * Save the file to ftp.
+   */
+  public static void saveFileToFtp(String ftpUrl,String saveFile) throws Exception
+  {
+	  if (ftpUrl != null && saveFile != null)
+      {
+         BufferedInputStream bis = null;
+         BufferedOutputStream bos = null;
+         try
+         {
+            URL url = new URL(ftpUrl);
+            URLConnection urlc = url.openConnection();
+            bos = new BufferedOutputStream( urlc.getOutputStream() );
+            bis = new BufferedInputStream( new FileInputStream(saveFile) );
+            int i;
+            // read byte by byte until end of stream
+            while ((i = bis.read()) != -1)
+            {
+               bos.write( i );
+            }
+         }
+         finally
+         {
+            if (bis != null)
+               try
+               {
+                  bis.close();
+               }
+               catch (IOException ioe)
+               {
+                  ioe.printStackTrace();
+               }
+            if (bos != null)
+               try
+               {
+                  bos.close();
+               }
+               catch (IOException ioe)
+               {
+                  ioe.printStackTrace();
+               }
+         }
+      }
+      else
+      {
+         System.out.println( "Input not available." );
+      }
+
   }
   
+  
+  /*
+   * Get the data from the file
+   */
+  public static StringBuilder  getFileDataFromFtp(String ftpUrl){
+	  StringBuilder  fTextArea=new StringBuilder();
+	  try {
+		    URL url = new URL(ftpUrl);
+		    URLConnection urlconnection = url.openConnection();
+		    long l = urlconnection.getContentLength();
+		    //fTextArea.append("Content Length = " + l);
+		    BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
+		    String line;
+		    while ((line = in.readLine()) != null)
+		    {
+		        fTextArea.append("\n"+line);
+		    }
+		    in.close();
+        
+		} catch (Exception e) {
+		   System.out.println("  :  Couldn't get data from the file  :    "+e.getMessage());
+		}  
+		return fTextArea;
+  }
+  
+  public static String readFileFromHttpServer(String httpUrl)
+  {
+	   StringBuffer sb=new StringBuffer();
+	    try
+	    {
+	      URL                url; 
+	      URLConnection      urlConn; 
+	      DataInputStream    dis;
+	      
+	      url = new URL(httpUrl);
+
+	      // Note:  a more portable URL: 
+	      //url = new URL(getCodeBase().toString() + "/ToDoList/ToDoList.txt");
+
+	      urlConn = url.openConnection(); 
+	      urlConn.setDoInput(true); 
+	      urlConn.setUseCaches(false);
+
+	      dis = new DataInputStream(urlConn.getInputStream()); 
+	      String s; 
+	    
+	    
+	      while ((s = dis.readLine()) != null)
+	      { 
+	    	  sb.append(s);
+	      } 
+	        dis.close(); 
+	    }
+
+	      catch (MalformedURLException mue) {
+	    	  System.out.println(" Exception while creating readFileFromHttpServer() "+mue);
+	      } 
+	      catch (IOException ioe) {
+	    	  System.out.println(" Exception while creating readFileFromHttpServer() "+ioe);
+	      } 
+	      
+	      return sb.toString();
+	    } 
+  
+  
+  
+  public static void createFileInHttpServer(String locUrl,String fileName) {  
+	  try {
+
+	    URL                url; 
+	    URLConnection      urlConn; 
+	    DataOutputStream   dos; 
+	    DataInputStream    dis;
+
+	    url = new URL(locUrl); 
+	    urlConn = url.openConnection(); 
+	    urlConn.setDoInput(true); 
+	    urlConn.setDoOutput(true); 
+	    urlConn.setUseCaches(false); 
+	    urlConn.setRequestProperty ("Content-Type", "application/x-www-form-urlencoded");
+
+	    dos = new DataOutputStream (urlConn.getOutputStream()); 
+	    String message = "NEW_ITEM=" + URLEncoder.encode(fileName); 
+	    dos.writeBytes(message); 
+	    dos.flush(); 
+	    dos.close();
+
+	  } // end of "try"
+
+	  catch (MalformedURLException mue) { 
+	    System.out.println(" Exception while creating createFileInHttpServer() "+mue);
+	  } 
+	  catch (IOException ioe) { 
+		  System.out.println(" Exception while creating createFileInHttpServer() "+ioe);
+	  }
+
+	}  // end of createFileInHttpServer() method 
 
   
+
+  }
+  
+    
   class NullResolver implements EntityResolver {
 	   public InputSource resolveEntity(String publicId, String systemId) throws SAXException,
 	       IOException {

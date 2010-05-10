@@ -1,14 +1,23 @@
 /* #ident	"%W%" */
 package eu.heliovo.queryservice.common.util;
 
+import java.io.StringWriter;
 import java.util.HashMap;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.apache.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Text;
 
 
 public class CommonUtils {
@@ -71,9 +80,65 @@ public class CommonUtils {
 		  String serverName = req.getServerName(); // hostname.com 
 		  int serverPort = req.getServerPort(); // 80 
 		  String contextPath = req.getContextPath(); // mywebapp 
-		  String url = scheme+"://"+serverName+":"+serverPort+contextPath+"/ServiceJobStatus?MODE=file&ID="+job_Id; 
+		  String url = scheme+"://"+serverName+":"+serverPort+contextPath+"/ServiceJobStatus?MODE=file&amp;ID="+job_Id; 
 		 		  
 		  return url; 
 	  }
-	
+	  
+    /*
+	 * create Xml for webservice request.
+	 */
+	 public static String createXmlForWebService(String randomUUIDString,String Status,String sUrl) throws Exception {
+		 StringBuilder xmlString = new StringBuilder();
+		 xmlString.append("<ResultInfo>");
+		 xmlString.append("<ID>");
+		 xmlString.append(randomUUIDString);
+		 xmlString.append("</ID>");
+		 String sDes=null;
+		 String statusArray[]=null;
+		 //Status of completion.
+		 if(Status!=null && !Status.trim().equals(""))
+			 statusArray=Status.split("::");
+		 //Description if the error occured
+		 if(statusArray!=null && statusArray.length>1)
+			 sDes=statusArray[1];
+		 //Status for the service
+		 if(Status!=null && !Status.trim().equals("")){
+			 xmlString.append("<status>");
+			 xmlString.append(statusArray[0]);
+			 xmlString.append("</status>");
+		 }
+		 
+		// Des for the file location.
+		 if(sDes!=null && !sDes.trim().equals("")){
+			 xmlString.append("<statusdescription>");
+			 xmlString.append(sDes);
+			 xmlString.append("</statusdescription>");
+		 }
+		 // Url for the file location.
+		 if(sUrl!=null && !sUrl.trim().equals("")){
+			 xmlString.append("<resultURI>");
+			 xmlString.append(sUrl);
+			 xmlString.append("</resultURI>");
+		 }
+		 
+		 //Result info
+		 xmlString.append("<fileInfo>");
+		 xmlString.append("</fileInfo>");
+		 //Result end
+		 xmlString.append("</ResultInfo>");
+		 
+	     return xmlString.toString();
+      }
+ 
+	 public static String createXmlForWebService(String randomUUIDString) throws Exception {
+		 return createXmlForWebService(randomUUIDString,null,null);
+	 }
+	 
+	 public static String createXmlForWebService(String randomUUIDString,String Status) throws Exception {
+		 
+		 return createXmlForWebService(randomUUIDString,Status,null);
+	 }
+	 
+				
 }

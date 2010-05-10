@@ -7,6 +7,7 @@ import eu.heliovo.queryservice.common.transfer.criteriaTO.CommonCriteriaTO;
 public class RunService implements Runnable {
 	private String statusValue="PENDING";
 	private boolean isCompleted=false;
+	private String errorDes=null;
 	CommonCriteriaTO comCriteriaTO=null;
 	String randomUUIDString=null;
 	
@@ -19,26 +20,32 @@ public class RunService implements Runnable {
 	public void run()
 	{
 		try{
-	
+			System.out.println(" Thread executing... ");
 			LongRunningQueryIdHolders.getInstance().setProperty(randomUUIDString, statusValue+"");
 			CommonDao commonNameDao= CommonDaoFactory.getInstance().getCommonDAO();
+			System.out.println(" Generating VOTable... ");
 			commonNameDao.generateVOTableDetails(comCriteriaTO);
+			System.out.println(" VOTable created succesfully! ");
 			isCompleted=true;
 		}
 		catch(Exception ex)
 		{
 			System.out.println("Exception ex:"+ex);
-			ex.printStackTrace();
+			errorDes=ex.getMessage();
 			isCompleted=false;
 		}
+		//if it is completed.
 		if(isCompleted){
 			try {
 				//Inserting status into HSQL database.
+				System.out.println(" Adding Status in to database... ");
 				HsqlDbUtils.getInstance().insertStatusIntoHsqlDB(randomUUIDString, "COMPLETED");
 				//Removing status from instance holder.
 				LongRunningQueryIdHolders.getInstance().removeProperty(randomUUIDString);
 				//Inserting URL into HSQLDB.
-				HsqlDbUtils.getInstance().insertURLToHsqlDB(randomUUIDString, comCriteriaTO.getSaveto());
+				System.out.println(" Adding URL in to database... ");
+				HsqlDbUtils.getInstance().insertURLToHsqlDB(randomUUIDString, comCriteriaTO.getSaveto()+"/votable_"+randomUUIDString+".xml");
+				System.out.println(" Done. Returning response..!!! ");
 			} catch (Exception e) {
 				LongRunningQueryIdHolders.getInstance().removeProperty(randomUUIDString);
 				
@@ -46,7 +53,8 @@ public class RunService implements Runnable {
 		}else{
 			try {
 				//Inserting status into HSQL database
-				HsqlDbUtils.getInstance().insertStatusIntoHsqlDB(randomUUIDString, "ERROR");
+				HsqlDbUtils.getInstance().insertStatusIntoHsqlDB(randomUUIDString, "ERROR::"+errorDes);
+				LongRunningQueryIdHolders.getInstance().removeProperty(randomUUIDString);
 			} catch (Exception e) {
 				//Removing status from instance holder.
 				LongRunningQueryIdHolders.getInstance().removeProperty(randomUUIDString);

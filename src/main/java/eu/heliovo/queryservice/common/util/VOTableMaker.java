@@ -2,11 +2,8 @@ package eu.heliovo.queryservice.common.util;
 
 import java.io.BufferedWriter;
 import java.sql.ResultSet;
-
 import org.apache.log4j.Logger;
-
 import eu.heliovo.queryservice.common.util.ConfigurationProfiler;
-
 import uk.ac.starlink.table.StarTable;
 import uk.ac.starlink.table.Tables;
 import uk.ac.starlink.table.jdbc.SequentialResultSetStarTable;
@@ -32,18 +29,22 @@ public class VOTableMaker {
     //Writing all the details into VOtable.
     public static void writeTables( CommonCriteriaTO comCriteriaTO ) throws Exception {
     	BufferedWriter out =null;
+    	String status=comCriteriaTO.getStatus();
+    	String longRunning= comCriteriaTO.getLongRunningQueryStatus();
     	
-    	if(!comCriteriaTO.getStatus().equalsIgnoreCase("LongRunningServlet")){
-    	    out = new BufferedWriter( comCriteriaTO.getPrintWriter() );
-    	}else{
+    	if(longRunning!=null  && longRunning.equals("LongRunning")){
     		out=(BufferedWriter) comCriteriaTO.getPrintWriter();
+    	}else{
+    		out = new BufferedWriter( comCriteriaTO.getPrintWriter() );
     	}
     	StarTable[] tables=comCriteriaTO.getTables();
-    	String status=comCriteriaTO.getStatus();
+    	
     	try{    		
 	    	//Adding response header start for WebService VOTABLE.
-			if(status!=null && !status.equals("")){
+			if(status!=null && !status.equals("") &&  longRunning!=null && longRunning.equals("")){
 				 out.write("<helio:queryResponse xmlns:helio=\"http://helio-vo.eu/xml/QueryService/v0.1\">");
+			}else if(longRunning!=null && longRunning.equals("LongRunning")){
+				out.write("<helio:resultResponse xmlns:helio=\"http://helio-vo.eu/xml/LongQueryService/v0.1\">");
 			}
 	        out.write( "<VOTABLE version='1.1' xmlns=\"http://www.ivoa.net/xml/VOTable/v1.1\">\n" );
 	        out.write( "<RESOURCE>\n" );
@@ -62,8 +63,10 @@ public class VOTableMaker {
 	        out.write( "</RESOURCE>\n" );
 	        out.write( "</VOTABLE>\n" );
 	      //Adding response header start for WebService VOTABLE.
-			if(status!=null && !status.equals("")){
+	        if(status!=null && !status.equals("") &&  longRunning!=null && longRunning.equals("")){
 				 out.write("</helio:queryResponse>");
+			}else if(longRunning!=null && longRunning.equals("LongRunning")){
+				 out.write("</helio:resultResponse>");
 			}
     	}catch (Exception e) {
     		System.out.println(" Exception occured writeTables() "+e.getMessage());

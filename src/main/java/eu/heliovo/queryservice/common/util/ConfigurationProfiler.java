@@ -1,7 +1,6 @@
 /* #ident	"%W%" */
 package eu.heliovo.queryservice.common.util;
 
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -10,7 +9,6 @@ import java.util.Enumeration;
 import java.util.Properties;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import org.apache.log4j.Logger;
 
 public class ConfigurationProfiler {
@@ -22,12 +20,14 @@ public class ConfigurationProfiler {
 	private ConfigurationProfiler()
 	{
 		try
-		{				
-			
-			if(sProfileFilePath==null || sProfileFilePath.equals("")){			
-				sProfileFilePath=CommonUtils.getPropertyFilePath();
+		{	
+			try{			
+				if(sProfileFilePath==null || sProfileFilePath.equals("")){			
+					sProfileFilePath=CommonUtils.getPropertyFilePath();
+				}
+			}catch(Exception e){
+				sProfileFilePath="test.txt";
 			}
-			
 			
 			if(sProfileFilePath!=null && sProfileFilePath.trim().equals("test.txt")){
 				//Configuring test.txt inside the webapp.
@@ -43,7 +43,7 @@ public class ConfigurationProfiler {
 			      protected void onChange( File file ){
 			      	try{			      		
 			      		loadPropertyValues();
-				    }catch (Exception e) {
+				    }catch (Exception e){
 				    	logger.fatal(" :  Exception occured in ConfigurationProfiler : While loading property file ", e);
 			      	}
 			      }

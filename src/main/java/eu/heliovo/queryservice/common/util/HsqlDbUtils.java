@@ -1,17 +1,12 @@
 package eu.heliovo.queryservice.common.util;
 
-
 import java.io.File;
 import java.io.FileInputStream;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.Properties;
 import org.apache.log4j.Logger;
 import eu.heliovo.queryservice.common.dao.CommonDaoFactory;
 import eu.heliovo.queryservice.common.dao.exception.DetailsNotFoundException;
 import eu.heliovo.queryservice.common.dao.interfaces.LongRunningQueryDao;
-
 
 public class HsqlDbUtils {
 	
@@ -22,36 +17,29 @@ public class HsqlDbUtils {
 	 }
 	 
 	 public Properties loadPropertyValues()
-		{
-			/*
-			 * New property variable is loaded to safeguard from losing the properties values in case of error while refresh.
-			 * */
-			try{
-				
-				String sProfileFilePath=loader.getResource("test.txt").getFile();
-				//logger.info("  : Property File Path  : "+sProfileFilePath);
-				Properties newProp= new Properties();
-				newProp.load(new  FileInputStream( new File(sProfileFilePath)));		
-				System.out.println(" : Hsql Property file loaded successfuly  : ");
-				
-				return newProp;
-			}catch(Exception ex)
-			{			
-				System.out.println(" :  Exception occured in loading hsql property file : While loading property file "+ ex);
-			}
-			return null;
+	 {
+		try{
+			String sProfileFilePath=loader.getResource("test.txt").getFile();
+			Properties newProp= new Properties();
+			newProp.load(new  FileInputStream( new File(sProfileFilePath)));		
+			System.out.println(" : Hsql Property file loaded successfuly  : ");
+			return newProp;
+		}catch(Exception ex)
+		{			
+			System.out.println(" :  Exception occured in loading hsql property file : While loading property file "+ ex);
 		}
+		return null;
+	 }
 	 
 	 
 	 public static HsqlDbUtils getInstance() {
 			return HsqlProfilerHolder.instance;
-		}
+	 }
 
-		private static class HsqlProfilerHolder {
-			private static HsqlDbUtils instance = new HsqlDbUtils();
-		}
-	 
-	 
+	 private static class HsqlProfilerHolder {
+		private static HsqlDbUtils instance = new HsqlDbUtils();
+	 }
+	  
 	 public void insertStatusIntoHsqlDB(String randomUUIDString,String status) throws DetailsNotFoundException
 	 {
 		 LongRunningQueryDao shortNameDao= CommonDaoFactory.getInstance().getLongRunningQueryDao();
@@ -69,7 +57,6 @@ public class HsqlDbUtils {
 		LongRunningQueryDao shortNameDao= CommonDaoFactory.getInstance().getLongRunningQueryDao();
 		String sStatus=shortNameDao.getStatusFromHsqlDB(randomUUIDString);
 		return sStatus;
-		 
 	 }
 	 
 	 public String  getUrlFromHsqlDB(String randomUUIDString) throws DetailsNotFoundException
@@ -77,9 +64,9 @@ public class HsqlDbUtils {
 		LongRunningQueryDao shortNameDao= CommonDaoFactory.getInstance().getLongRunningQueryDao();
 		String sUrl=shortNameDao.getUrlFromHsqlDB(randomUUIDString);
 		return sUrl;
-		 
 	 }
 	 
+	 /*
 	 public void dropTable(){
 		 try{
 		 Connection con = null;
@@ -96,5 +83,5 @@ public class HsqlDbUtils {
 			 e.printStackTrace();
 		 }
 	 }
-
+    */
 }

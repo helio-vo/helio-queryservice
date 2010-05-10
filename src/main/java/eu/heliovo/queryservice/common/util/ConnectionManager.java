@@ -1,15 +1,12 @@
-
 package eu.heliovo.queryservice.common.util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
-
-import eu.heliovo.queryservice.common.util.InstanceHolders;;
+import eu.heliovo.queryservice.common.util.InstanceHolders;
 
 public class ConnectionManager {
-		
 	/**
 	 * @return
 	 * This method returns connection to the data source
@@ -168,8 +165,5 @@ public class ConnectionManager {
 			url=url.replaceAll("kwpath",InstanceHolders.getInstance().getProperty("hsqldb.database.path") );
 		}
 		return url;
-	}
-	
-	
-	
+	}	
 }
