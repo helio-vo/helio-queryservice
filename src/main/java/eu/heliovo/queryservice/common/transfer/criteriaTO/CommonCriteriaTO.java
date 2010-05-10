@@ -4,7 +4,6 @@ package eu.heliovo.queryservice.common.transfer.criteriaTO;
 import java.io.Serializable;
 import java.io.Writer;
 import java.util.HashMap;
-
 import uk.ac.starlink.table.StarTable;
 import eu.heliovo.queryservice.common.transfer.CommonTO;
 
@@ -43,6 +42,9 @@ public class CommonCriteriaTO implements Serializable{
 	private String alpha;
 	private String delta;
 	private String saveto;
+	private String dataXml;
+	private String longRunningQueryStatus;
+	private Writer longRunningPrintWriter;
 	
 	public CommonCriteriaTO(){
 		this.setIPageNumber(0);
@@ -283,7 +285,30 @@ public class CommonCriteriaTO implements Serializable{
 	public void setSaveto(String saveto) {
 		this.saveto = saveto;
 	}
-	
+
+	public String getDataXml() {
+		return dataXml;
+	}
+
+	public void setDataXml(String dataXml) {
+		this.dataXml = dataXml;
+	}
+
+	public String getLongRunningQueryStatus() {
+		return longRunningQueryStatus;
+	}
+
+	public void setLongRunningQueryStatus(String longRunningQueryStatus) {
+		this.longRunningQueryStatus = longRunningQueryStatus;
+	}
+
+	public Writer getLongRunningPrintWriter() {
+		return longRunningPrintWriter;
+	}
+
+	public void setLongRunningPrintWriter(Writer longRunningPrintWriter) {
+		this.longRunningPrintWriter = longRunningPrintWriter;
+	}	
 	
 	
 }
