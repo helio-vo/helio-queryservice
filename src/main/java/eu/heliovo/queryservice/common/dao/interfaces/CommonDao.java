@@ -7,4 +7,5 @@ import eu.heliovo.queryservice.common.transfer.criteriaTO.CommonCriteriaTO;
  
 public interface CommonDao {
 	public void generateVOTableDetails(CommonCriteriaTO comCriteriaTO) throws DetailsNotFoundException;
+	public void generatelongRunningQueryXML(CommonCriteriaTO comCriteriaTO) throws Exception;
 }
