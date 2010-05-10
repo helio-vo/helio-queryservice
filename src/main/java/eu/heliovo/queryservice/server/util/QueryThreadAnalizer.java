@@ -15,11 +15,15 @@ public class QueryThreadAnalizer extends Thread{
 		comCriteriaTO=comCriTO;
 	}
 	public void run(){
-		 CommonDao commonNameDao= CommonDaoFactory.getInstance().getCommonDAO();			
-			try {				
-				commonNameDao.generateVOTableDetails(comCriteriaTO);				
-			} catch (DetailsNotFoundException e) {			
+		   CommonDao commonNameDao= CommonDaoFactory.getInstance().getCommonDAO();			
+			try {		
+				commonNameDao.generateVOTableDetails(comCriteriaTO);		
+			}catch (DetailsNotFoundException e) {			
 				 logger.fatal("   : Exception in QueryThreadAnalizer:run : ", e);
 			}
+			catch (Exception e) {			
+				 logger.fatal("   : Exception in QueryThreadAnalizer:run : ", e);
+			}
+		
 	 }
 }
