@@ -102,6 +102,12 @@
 	   <servlet-name>jaxws-servlet</servlet-name>
 	   <url-pattern>/HelioService</url-pattern>
 	</servlet-mapping>
+	
+	<servlet-mapping>
+	   <servlet-name>jaxws-servlet</servlet-name>
+	   <url-pattern>/HelioLongQueryService</url-pattern>
+	</servlet-mapping>
+	
 	<servlet-mapping>
 		<servlet-name>VosiServlet</servlet-name>
 		<url-pattern>/VosiServlet</url-pattern>
