@@ -19,6 +19,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
+import eu.heliovo.queryservice.common.transfer.FileResultTO;
+
 
 public class CommonUtils {
 	private static final String ARGSUFFIX = ":]";
@@ -88,14 +90,15 @@ public class CommonUtils {
     /*
 	 * create Xml for webservice request.
 	 */
-	 public static String createXmlForWebService(String randomUUIDString,String Status,String sUrl) throws Exception {
+	 public static String createXmlForWebService(FileResultTO fileTO) throws Exception {
 		 StringBuilder xmlString = new StringBuilder();
 		 xmlString.append("<ResultInfo>");
 		 xmlString.append("<ID>");
-		 xmlString.append(randomUUIDString);
+		 xmlString.append(fileTO.getRandomUUIDString());
 		 xmlString.append("</ID>");
 		 String sDes=null;
 		 String statusArray[]=null;
+		 String Status=fileTO.getStatus();
 		 //Status of completion.
 		 if(Status!=null && !Status.trim().equals(""))
 			 statusArray=Status.split("::");
@@ -115,30 +118,27 @@ public class CommonUtils {
 			 xmlString.append(sDes);
 			 xmlString.append("</statusdescription>");
 		 }
+		 String sUrl=fileTO.getsUrl();
 		 // Url for the file location.
 		 if(sUrl!=null && !sUrl.trim().equals("")){
 			 xmlString.append("<resultURI>");
 			 xmlString.append(sUrl);
 			 xmlString.append("</resultURI>");
 		 }
-		 
+		 String fileInfo=fileTO.getFileInfo();
 		 //Result info
-		 xmlString.append("<fileInfo>");
-		 xmlString.append("</fileInfo>");
+		 if(fileInfo!=null && !fileInfo.trim().equals("")){
+			 xmlString.append("<fileInfo>");
+			 xmlString.append(fileInfo);
+			 xmlString.append("</fileInfo>");
+		 }
 		 //Result end
 		 xmlString.append("</ResultInfo>");
 		 
 	     return xmlString.toString();
       }
  
-	 public static String createXmlForWebService(String randomUUIDString) throws Exception {
-		 return createXmlForWebService(randomUUIDString,null,null);
-	 }
-	 
-	 public static String createXmlForWebService(String randomUUIDString,String Status) throws Exception {
-		 
-		 return createXmlForWebService(randomUUIDString,Status,null);
-	 }
+	
 	 
 				
 }
