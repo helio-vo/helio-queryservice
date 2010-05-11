@@ -29,6 +29,7 @@ import org.apache.log4j.Logger;
 import org.w3c.dom.Element;
 import eu.heliovo.queryservice.common.dao.CommonDaoFactory;
 import eu.heliovo.queryservice.common.dao.interfaces.CommonDao;
+import eu.heliovo.queryservice.common.transfer.FileResultTO;
 import eu.heliovo.queryservice.common.transfer.criteriaTO.CommonCriteriaTO;
 import eu.heliovo.queryservice.common.util.CommonUtils;
 import eu.heliovo.queryservice.common.util.FileUtils;
@@ -90,7 +91,7 @@ public class SoapDispatcher implements Provider<Source> {
 		//Creating UUID and generating unique ID.
 		UUID uuid = UUID.randomUUID();
 		String randomUUIDString = uuid.toString();
-		
+		FileResultTO fileTO=new FileResultTO();
 		try {
 			
 			 Element inputDoc=toDocument(request);
@@ -187,7 +188,10 @@ public class SoapDispatcher implements Provider<Source> {
 				 }
 				
 				 comCriteriaTO.setLongRunningQueryStatus("LongRunning");
-				 String xmlString=CommonUtils.createXmlForWebService(randomUUIDString);
+				 //
+				 fileTO.setRandomUUIDString(randomUUIDString);
+
+				 String xmlString=CommonUtils.createXmlForWebService(fileTO);
 				 System.out.println(" : XML String : "+xmlString);
 				 
 				 //Setting piped reader 
@@ -224,7 +228,11 @@ public class SoapDispatcher implements Provider<Source> {
 			 String sStatus=LongRunningQueryIdHolders.getInstance().getProperty(sID);
 				if(sStatus==null || sStatus.trim().equals(""))
 				  sStatus=HsqlDbUtils.getInstance().getStatusFromHsqlDB(sID);
-				String xmlString=CommonUtils.createXmlForWebService(sID,sStatus);
+				//Setting file TO
+				fileTO.setRandomUUIDString(sID);
+				fileTO.setStatus(sStatus);
+				
+				String xmlString=CommonUtils.createXmlForWebService(fileTO);
 				System.out.println(" : XML String : "+xmlString);	
 				//Setting piped reader 
 				 comCriteriaTO.setLongRunningPrintWriter(pw);
@@ -244,8 +252,11 @@ public class SoapDispatcher implements Provider<Source> {
 				if(sStatus==null || sStatus.trim().equals(""))
 				  sStatus=HsqlDbUtils.getInstance().getStatusFromHsqlDB(sID);
 				String contextPath=CommonUtils.getUrl(req,sID);
-				
-				String xmlString=CommonUtils.createXmlForWebService(sID,sStatus,contextPath);
+				//Setting file TO
+				fileTO.setRandomUUIDString(sID);
+				fileTO.setStatus(sStatus);
+				fileTO.setsUrl(contextPath);
+				String xmlString=CommonUtils.createXmlForWebService(fileTO);
 				System.out.println(" : XML String : "+xmlString);	
 				//Setting piped reader 
 				comCriteriaTO.setLongRunningPrintWriter(pw);
