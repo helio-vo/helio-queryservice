@@ -22,6 +22,11 @@ public class FileResultTO implements Serializable {
 	private String orderByConstraint;
 	private String limitConstraint;
 	private String serviceDesc;
+	private String randomUUIDString;
+	private String Status;
+	private String sUrl;
+	private String fileInfo;
+	
 	
 	public String getJdbcDriverName() {
 		return jdbcDriverName;
@@ -113,8 +118,29 @@ public class FileResultTO implements Serializable {
 	public void setServiceDesc(String serviceDesc) {
 		this.serviceDesc = serviceDesc;
 	}
+	public String getRandomUUIDString() {
+		return randomUUIDString;
+	}
+	public void setRandomUUIDString(String randomUUIDString) {
+		this.randomUUIDString = randomUUIDString;
+	}
+	public String getStatus() {
+		return Status;
+	}
+	public void setStatus(String status) {
+		Status = status;
+	}
+	public String getsUrl() {
+		return sUrl;
+	}
+	public void setsUrl(String sUrl) {
+		this.sUrl = sUrl;
+	}
+	public String getFileInfo() {
+		return fileInfo;
+	}
+	public void setFileInfo(String fileInfo) {
+		this.fileInfo = fileInfo;
+	}
 	
-	
-	
-
 }
