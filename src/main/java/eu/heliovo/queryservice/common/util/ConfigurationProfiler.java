@@ -26,6 +26,7 @@ public class ConfigurationProfiler {
 					sProfileFilePath=CommonUtils.getPropertyFilePath();
 				}
 			}catch(Exception e){
+				//just for unit testing.. hard coded value..
 				sProfileFilePath="test.txt";
 			}
 			
