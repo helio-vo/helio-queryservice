@@ -55,12 +55,7 @@
 		<servlet-name>LongRunningQueryService</servlet-name>
 		<url-pattern>/LongRunningQueryService</url-pattern>
 	</servlet-mapping>
-	
-	<servlet-mapping>
-		<servlet-name>ResultQueryService</servlet-name>
-		<url-pattern>/ServiceJobStatus</url-pattern>
-	</servlet-mapping>
-	
+		
 	<servlet>
 		<description>
 		</description>
@@ -68,6 +63,11 @@
 		<servlet-name>ResultQueryService</servlet-name>
 		<servlet-class>eu.heliovo.queryservice.servlets.ResultQueryService</servlet-class>
 	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>ResultQueryService</servlet-name>
+		<url-pattern>/ServiceJobStatus</url-pattern>
+	</servlet-mapping>
 	
 	<servlet>
 	   <servlet-name>jaxws-servlet</servlet-name>
