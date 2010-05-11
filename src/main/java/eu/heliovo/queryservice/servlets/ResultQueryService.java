@@ -12,6 +12,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 
+import eu.heliovo.queryservice.common.transfer.FileResultTO;
 import eu.heliovo.queryservice.common.util.CommonUtils;
 import eu.heliovo.queryservice.common.util.FileUtils;
 import eu.heliovo.queryservice.common.util.HsqlDbUtils;
@@ -37,6 +38,7 @@ public class ResultQueryService extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/xml;charset=UTF-8");
 		PrintWriter pw = response.getWriter(); 
+		FileResultTO fileTO=new FileResultTO();
 		try{
 			
 			//Creating a xml file 
@@ -44,14 +46,18 @@ public class ResultQueryService extends HttpServlet {
 	        DocumentBuilder docBuilder = builderFactory.newDocumentBuilder();
 	        //creating a new instance of a DOM to build a DOM tree.
 	        Document doc = docBuilder.newDocument();
-			
+	       
 			String sID=request.getParameter("ID");
 			String sMode=request.getParameter("MODE");
+			//Mode to deciede the type of Phase.
 			if(sMode!=null && sMode.equalsIgnoreCase("phase")){
 				String sStatus=LongRunningQueryIdHolders.getInstance().getProperty(sID);
 				if(sStatus==null || sStatus.trim().equals(""))
 				  sStatus=HsqlDbUtils.getInstance().getStatusFromHsqlDB(sID);
-				String xmlString=CommonUtils.createXmlForWebService(sID,sStatus);
+				//setting file TO.
+				fileTO.setRandomUUIDString(sID);
+				fileTO.setStatus(sStatus);
+				String xmlString=CommonUtils.createXmlForWebService(fileTO);
 				System.out.println(" : XML String : "+xmlString);
 				pw.write(xmlString);
 			}else if(sMode!=null && sMode.equalsIgnoreCase("result")){
@@ -59,8 +65,11 @@ public class ResultQueryService extends HttpServlet {
 				if(sStatus==null || sStatus.trim().equals(""))
 				  sStatus=HsqlDbUtils.getInstance().getStatusFromHsqlDB(sID);
 				String contextPath=CommonUtils.getUrl(request,sID);
-				
-				String xmlString=CommonUtils.createXmlForWebService(sID,sStatus,contextPath);
+				//Setting file TO.
+				fileTO.setRandomUUIDString(sID);
+				fileTO.setStatus(sStatus);
+				fileTO.setsUrl(contextPath);
+				String xmlString=CommonUtils.createXmlForWebService(fileTO);
 				System.out.println(" : XML String : "+xmlString);
 				pw.write(xmlString);
 			}else if(sMode!=null && sMode.equalsIgnoreCase("file")){

@@ -26,6 +26,8 @@ import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
+
+import eu.heliovo.queryservice.common.transfer.FileResultTO;
 import eu.heliovo.queryservice.common.transfer.criteriaTO.CommonCriteriaTO;
 import eu.heliovo.queryservice.common.util.CommonUtils;
 import eu.heliovo.queryservice.common.util.FileUtils;
@@ -52,6 +54,7 @@ public class LongRunningQueryService extends HttpServlet {
 		response.setContentType("text/xml;charset=UTF-8");
 		 CommonCriteriaTO comCriteriaTO=new CommonCriteriaTO();
 		 PrintWriter pw = response.getWriter(); 
+		 FileResultTO fileTO=new FileResultTO();
 		try{
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		    dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
@@ -87,10 +90,10 @@ public class LongRunningQueryService extends HttpServlet {
 			    if(!f.exists())
 			    	f.mkdir();
 			    //passing save to value to common TO.	
-			    comCriteriaTO.setSaveto(saveTo);
 			    logger.info(" : save to file location :  "+saveTo);
 			 }
 			 
+			comCriteriaTO.setSaveto(saveTo);
 		    //Setting POS ( dec and ra ) parameter
 		    String pos=request.getParameter("POS");
 		    if(pos!=null && !pos.equals("")){
@@ -133,8 +136,9 @@ public class LongRunningQueryService extends HttpServlet {
 	        DocumentBuilder docBuilder = builderFactory.newDocumentBuilder();
 	        //creating a new instance of a DOM to build a DOM tree.
 	        Document doc = docBuilder.newDocument();
-	        //
-	        String xmlString=CommonUtils.createXmlForWebService(randomUUIDString);
+	        //setting file TO.
+	        fileTO.setRandomUUIDString(randomUUIDString);
+	        String xmlString=CommonUtils.createXmlForWebService(fileTO);
 			System.out.println(" : XML String : "+xmlString);
 			pw.write(xmlString);
 			
