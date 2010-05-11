@@ -181,12 +181,11 @@ public class SoapDispatcher implements Provider<Source> {
 				    File f = new File(saveTo);
 				    //Checking if directry present; if not create one.
 				    if(!f.exists())
-				    	f.mkdir();
-				    //passing save to value to common TO.	
-				    comCriteriaTO.setSaveto(saveTo);
-				    logger.info(" : save to file location :  "+saveTo);
+				    	f.mkdir();		    
 				 }
-				
+				 logger.info(" : save to file location :  "+saveTo);
+				 //passing save to value to common TO.	
+				 comCriteriaTO.setSaveto(saveTo);
 				 comCriteriaTO.setLongRunningQueryStatus("LongRunning");
 				 //
 				 fileTO.setRandomUUIDString(randomUUIDString);
