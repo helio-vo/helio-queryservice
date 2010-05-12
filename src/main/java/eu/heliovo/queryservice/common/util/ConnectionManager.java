@@ -20,11 +20,13 @@ public class ConnectionManager {
 	    String jdbcURL = getHsqlDBEmbeddedDatabasePath(ConfigurationProfiler.getInstance().getProperty("jdbc.url"));
 	    String user = ConfigurationProfiler.getInstance().getProperty("jdbc.user");
 	    String passwd = ConfigurationProfiler.getInstance().getProperty("jdbc.password");
-	    System.out.println(" jdbcString : "+jdbcString+" jdbcURL : "+jdbcURL+" user : "+user+" passwd  "+passwd);
+	    System.out.println(" Driver Name : "+jdbcString+" Database URL  : "+jdbcURL+" User : "+user+" Password  "+passwd);
 		while(noConnection){
 			try {
+				  System.out.println(" Driver manager tring to get connection --> count "+i);
 	              Class.forName(jdbcString);                  
 			      con = DriverManager.getConnection(jdbcURL,user,passwd);     
+			      System.out.println(" Connected succesfully !!!");
 			      noConnection = false;    
 			}catch(SQLException sqlex) {  
 				//logger.info(" SQLException Occoured in Connection Manager :getConnection()"+sqlex.getMessage()+" trying to reconeect for "+i+" time ");
@@ -71,12 +73,14 @@ public class ConnectionManager {
 	    String jdbcURL = InstanceHolders.getInstance().getProperty("jdbc.url");
 	    String user = InstanceHolders.getInstance().getProperty("jdbc.user");
 	    String passwd = InstanceHolders.getInstance().getProperty("jdbc.password");
-	    System.out.println(" jdbcString : "+jdbcString+" jdbcURL : "+jdbcURL+" user : "+user+" passwd  "+passwd);
+	    System.out.println(" Driver Name : "+jdbcString+" Database URL  : "+jdbcURL+" User : "+user+" Password  "+passwd);
 		while(noConnection){
 			try {
-	              Class.forName(jdbcString);                  
-			      con = DriverManager.getConnection(jdbcURL,user,passwd);     
-			      noConnection = false;    
+				System.out.println(" Driver manager tring to get connection --> count "+i);
+	            Class.forName(jdbcString);                  
+			    con = DriverManager.getConnection(jdbcURL,user,passwd);     
+			    System.out.println(" Connected succesfully !!!"); 
+			    noConnection = false;  
 			}catch(SQLException sqlex) {  
 				//logger.info(" SQLException Occoured in Connection Manager :getConnection()"+sqlex.getMessage()+" trying to reconeect for "+i+" time ");
 				if(i < 3){
@@ -122,12 +126,14 @@ public class ConnectionManager {
 	    String jdbcURL = getHsqlDBEmbeddedDatabasePath(prop.getProperty("jdbc.url"));
 	    String user = prop.getProperty("jdbc.user");
 	    String passwd = prop.getProperty("jdbc.password");
-	    System.out.println(" jdbcString : "+jdbcString+" jdbcURL : "+jdbcURL+" user : "+user+" passwd  "+passwd);
+	    System.out.println(" Driver Name : "+jdbcString+" Database URL  : "+jdbcURL+" User : "+user+" Password  "+passwd);
 		while(noConnection){
 			try {
-	              Class.forName(jdbcString);                  
-			      con = DriverManager.getConnection(jdbcURL,user,passwd);     
-			      noConnection = false;    
+				System.out.println(" Driver manager tring to get connection --> count "+i);
+	            Class.forName(jdbcString);                  
+			    con = DriverManager.getConnection(jdbcURL,user,passwd);     
+			    System.out.println(" Connected succesfully !!!");    
+			    noConnection = false;  
 			}catch(SQLException sqlex) {  
 				//logger.info(" SQLException Occoured in Connection Manager :getConnection()"+sqlex.getMessage()+" trying to reconeect for "+i+" time ");
 				if(i < 3){ 

@@ -16,7 +16,7 @@ public class HsqlDbUtils {
 		 loader = this.getClass().getClassLoader();
 	 }
 	 
-	 public Properties loadPropertyValues()
+	 public synchronized Properties loadPropertyValues()
 	 {
 		try{
 			String sProfileFilePath=loader.getResource("test.txt").getFile();
@@ -40,26 +40,26 @@ public class HsqlDbUtils {
 		private static HsqlDbUtils instance = new HsqlDbUtils();
 	 }
 	  
-	 public void insertStatusIntoHsqlDB(String randomUUIDString,String status) throws DetailsNotFoundException
+	 public synchronized void  insertStatusIntoHsqlDB(String randomUUIDString,String status) throws DetailsNotFoundException
 	 {
 		 LongRunningQueryDao shortNameDao= CommonDaoFactory.getInstance().getLongRunningQueryDao();
 		 shortNameDao.insertStatusToHsqlDB(randomUUIDString, status);
 	 }
 	 
-	 public void insertURLToHsqlDB(String randomUUIDString,String url) throws DetailsNotFoundException
+	 public synchronized void insertURLToHsqlDB(String randomUUIDString,String url) throws DetailsNotFoundException
 	 {
 		 LongRunningQueryDao shortNameDao= CommonDaoFactory.getInstance().getLongRunningQueryDao();
 		 shortNameDao.insertURLToHsqlDB(randomUUIDString, url);
 	 }
 	 
-	 public String  getStatusFromHsqlDB(String randomUUIDString) throws DetailsNotFoundException
+	 public synchronized String  getStatusFromHsqlDB(String randomUUIDString) throws DetailsNotFoundException
 	 {
 		LongRunningQueryDao shortNameDao= CommonDaoFactory.getInstance().getLongRunningQueryDao();
 		String sStatus=shortNameDao.getStatusFromHsqlDB(randomUUIDString);
 		return sStatus;
 	 }
 	 
-	 public String  getUrlFromHsqlDB(String randomUUIDString) throws DetailsNotFoundException
+	 public synchronized String  getUrlFromHsqlDB(String randomUUIDString) throws DetailsNotFoundException
 	 {
 		LongRunningQueryDao shortNameDao= CommonDaoFactory.getInstance().getLongRunningQueryDao();
 		String sUrl=shortNameDao.getUrlFromHsqlDB(randomUUIDString);
