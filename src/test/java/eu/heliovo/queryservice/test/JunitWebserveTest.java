@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PipedReader;
@@ -48,17 +49,16 @@ import org.apache.catalina.realm.MemoryRealm;
 import org.apache.log4j.Logger;
 import eu.heliovo.queryservice.common.dao.CommonDaoFactory;
 import eu.heliovo.queryservice.common.dao.interfaces.CommonDao;
+import eu.heliovo.queryservice.common.transfer.FileResultTO;
 import eu.heliovo.queryservice.common.transfer.criteriaTO.CommonCriteriaTO;
 import eu.heliovo.queryservice.common.util.CommonUtils;
 import eu.heliovo.queryservice.common.util.InstanceHolders;
 import eu.heliovo.queryservice.server.util.QueryThreadAnalizer;
 
 
-
 @SuppressWarnings("unused")
 public class JunitWebserveTest {
-	
-	/*
+		
 	   protected final  Logger logger = Logger.getLogger(this.getClass());
 	   protected static Endpoint ep;
 	   protected static String address;
@@ -66,7 +66,8 @@ public class JunitWebserveTest {
 	   protected static QName serviceName;
 	   protected static QName portName;
 	   protected static Embedded server;  
-	   
+	  
+	   /*
 	   @BeforeClass
 	   public static void setUp() throws Exception {
 	      address = "http://localhost:9090/helio-queryservice/HelioService";
@@ -79,23 +80,22 @@ public class JunitWebserveTest {
 	      Engine baseEngine = server.createEngine();
 	      baseEngine.setDefaultHost("helio-queryservice");
 	    
-	      Host baseHost = server.createHost("helio-queryservice","/Users/vineethtshetty/war/");
+	      File fi = new File("target");
+	      String helioDbPath=fi.getAbsolutePath();
+		  System.out.println(" : helio db file path  : "+helioDbPath); 
+	      
+	      Host baseHost = server.createHost("helio-queryservice",helioDbPath);
 	      baseEngine.addChild(baseHost);
 	      Context appCtx = server.createContext("/helio-queryservice", "helio-queryservice");
 	      baseHost.addChild(appCtx);      
 	      server.addEngine(baseEngine);
 	      Connector httpConnector = server.createConnector((java.net.InetAddress) null, 9090, false);
-	      server.addConnector(httpConnector);      
-
-	      try {
-	          server.start();
-	      } catch (Exception e) {
-	          e.printStackTrace();
+	      server.addConnector(httpConnector);   
+	      
+          server.start();
 	          
-	      }     
 	   }
-
-	   
+   
 	   @AfterClass
 	   public static void tearDown() throws Exception {
 		  if (server != null) {
@@ -106,8 +106,7 @@ public class JunitWebserveTest {
 	   
 	   @Test
 	   public void testWeService() throws Exception {
-		 try{
-			 
+					 
 			  logger.info(" : Start Testing Junit test case method testWebService()  : ");
 			  Service jaxwsService = Service.create(wsdlURL, serviceName);
 			  DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -128,19 +127,11 @@ public class JunitWebserveTest {
 		      assertNotNull(domResponse);
 		      logger.info(" : Done : ");
 		      logger.info(" : Response from the webservice  : "+domResponse.getNode().getFirstChild().getTextContent().trim());
-
-		 }
-		 catch(MalformedURLException e){
-			   e.printStackTrace();
-		 }
-		 catch(Exception e){
-			   e.printStackTrace();
-		 }
-		  
-		  System.out.println(" Testing results ");
+  
+		      System.out.println(" Testing results ");
 	   }
-	  */
-	
+	  
+	*/
 	
 	   @Test
 	   public void testFullQueryQname() throws Exception {
@@ -152,7 +143,7 @@ public class JunitWebserveTest {
 				 System.out.println("Testing Full Query Service ....");
 				 ClassLoader loader = this.getClass().getClassLoader();
 				 String helioDbPath=loader.getResource("test.txt").getFile();
-				 System.out.println(" : helio db file path  : "+loader.getResource("test.txt").getFile());
+				 System.out.println(" : helio db file path  : "+helioDbPath);
 				 InstanceHolders.getInstance().setProperty("hsqldb.database.path",helioDbPath.replace("test.txt", ""));
 				 DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			     factory.setNamespaceAware(true);
@@ -209,8 +200,10 @@ public class JunitWebserveTest {
 				 // Creating UUID
 				 UUID uuid = UUID.randomUUID();
 				 String randomUUIDString = uuid.toString();
-				 
-				 String xmlString=CommonUtils.createXmlForWebService(randomUUIDString);
+				 //file TO
+				 FileResultTO fileTO=new FileResultTO();
+				 fileTO.setRandomUUIDString(randomUUIDString);
+				 String xmlString=CommonUtils.createXmlForWebService(fileTO);
 				 System.out.println(" : XML String : "+xmlString);
 				
 				 //Setting piped reader 
@@ -235,8 +228,6 @@ public class JunitWebserveTest {
 				 if(pw!=null){
 					pw.close(); 
 				 }
-				 //Setting hsqldb.database.path to null.
-				 InstanceHolders.getInstance().setProperty("hsqldb.database.path",null);
 			 }
 			 
 	   }
@@ -249,8 +240,7 @@ public class JunitWebserveTest {
 				   Thread.sleep(50);
 	                System.out.print((char)reader.read());
 	            }
-
-	            // Close the PipedReader and PipedWriter.
+			   // Close the PipedReader and PipedWriter.
 	           // reader.close();
 
 		   }catch(Exception e){ 
