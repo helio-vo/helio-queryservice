@@ -76,7 +76,7 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 		}
 		finally
 		{
-			try {
+		    try {
 				if(rms!=null)
 				{
 					rms = null;
@@ -143,7 +143,7 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 			} catch (Exception e) {
 				
 			}
-	}	
+	   }	
 	    return hmbDatabaseTableList;
 	}
 	
