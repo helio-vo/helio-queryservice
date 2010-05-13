@@ -23,7 +23,7 @@ import eu.heliovo.queryservice.common.util.VOTableMaker;
 
 public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 		
-	public ShortNameQueryDaoImpl() { 
+	public ShortNameQueryDaoImpl(){ 
 						
 	}
 	
