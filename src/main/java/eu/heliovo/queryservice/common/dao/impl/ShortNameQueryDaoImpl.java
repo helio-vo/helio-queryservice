@@ -386,7 +386,7 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 			 
 		}
 		
-		 logger.info(" : Limit constraints in method generateLimitConstraintBasedOnDatabase(), limit constraints based on database : "+querylimitConstarint);
+		logger.info(" : Limit constraints in method generateLimitConstraintBasedOnDatabase(), limit constraints based on database : "+querylimitConstarint);
 		
 		return querylimitConstarint;
 	}
