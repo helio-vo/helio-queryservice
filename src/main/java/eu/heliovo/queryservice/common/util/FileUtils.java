@@ -25,7 +25,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -41,7 +40,6 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
@@ -260,28 +258,28 @@ public class FileUtils {
 	 }
 	 
   
-  @SuppressWarnings("unused")
-public static void exportToOoWriter(File file,PipedReader reader) throws Exception
-  {
-	  OutputStreamWriter zipout = new OutputStreamWriter(new FileOutputStream(file));
- 		
- 		Result result = new StreamResult(zipout);
-
- 		// create an instance of TransformerFactory
- 		try {
- 			// System.out.println("make transform instance");
- 			TransformerFactory transFact = TransformerFactory.newInstance();
-
- 			Transformer trans = transFact.newTransformer(new StreamSource(reader));
- 			trans.transform(new StreamSource(reader), result);
- 		} catch (Exception e) {
- 			// System.err.println("error applying the xslt file "+e);
- 			e.printStackTrace();
- 		}
- 		
- 		zipout.close();
-
- 	}
+    @SuppressWarnings("unused")
+    public static void exportToOoWriter(File file,PipedReader reader) throws Exception
+	{
+		  OutputStreamWriter zipout = new OutputStreamWriter(new FileOutputStream(file));
+	 		
+	 		Result result = new StreamResult(zipout);
+	
+	 		// create an instance of TransformerFactory
+	 		try {
+	 			// System.out.println("make transform instance");
+	 			TransformerFactory transFact = TransformerFactory.newInstance();
+	
+	 			Transformer trans = transFact.newTransformer(new StreamSource(reader));
+	 			trans.transform(new StreamSource(reader), result);
+	 		} catch (Exception e) {
+	 			// System.err.println("error applying the xslt file "+e);
+	 			e.printStackTrace();
+	 		}
+	 		
+	 		zipout.close();
+	
+	}
   
   
   public static StringBuilder readDataFromFile(Document doc) throws Exception {
