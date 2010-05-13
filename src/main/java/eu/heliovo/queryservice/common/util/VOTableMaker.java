@@ -78,30 +78,31 @@ public class VOTableMaker {
         
     //Setting column property.
     public static void setColInfoProperty(StarTable[] tables,String[] listName) throws Exception{
-    	try{   	
-    	for ( int i = 0; i < tables.length; i++ ) {
-    		//Column Description
-    		String[] columnDesc=ConfigurationProfiler.getInstance().getProperty("sql.columndesc."+listName[i]).split("::");
-    		//Column UCD's
-    		String[] columnUcd=ConfigurationProfiler.getInstance().getProperty("sql.columnucd."+listName[i]).split("::");
-    		//Column U Types.
-    		String[] columnUTypes=ConfigurationProfiler.getInstance().getProperty("sql.columnutypes."+listName[i]).split("::");
+    	try{  
     		
-    		for(int j=0;j<tables[ i ].getColumnCount();j++){
-    			//Setting UCD's for column.
-    			if(columnUcd.length>0 && columnUcd.length==tables[ i ].getColumnCount()){
-    				tables[ i ].getColumnInfo( j ).setUCD(columnUcd[j]);
-    			}
-    			//Setting Description for column.
-    			if(columnDesc.length>0 && columnDesc.length==tables[ i ].getColumnCount()){
-    				tables[ i ].getColumnInfo( j ).setDescription(columnDesc[j]);
-    			}
-    			//Setting Utypes for column
-    			if(columnUTypes.length>0 && columnUTypes.length==tables[ i ].getColumnCount()){
-    				Tables.setUtype( tables[ i ].getColumnInfo( j ), columnUTypes[j] );
-    			}
-    		}
-    	}
+	    	for ( int i = 0; i < tables.length; i++ ) {
+	    		//Column Description
+	    		String[] columnDesc=ConfigurationProfiler.getInstance().getProperty("sql.columndesc."+listName[i]).split("::");
+	    		//Column UCD's
+	    		String[] columnUcd=ConfigurationProfiler.getInstance().getProperty("sql.columnucd."+listName[i]).split("::");
+	    		//Column U Types.
+	    		String[] columnUTypes=ConfigurationProfiler.getInstance().getProperty("sql.columnutypes."+listName[i]).split("::");
+	    		
+	    		for(int j=0;j<tables[ i ].getColumnCount();j++){
+	    			//Setting UCD's for column.
+	    			if(columnUcd.length>0 && columnUcd.length==tables[ i ].getColumnCount()){
+	    				tables[ i ].getColumnInfo( j ).setUCD(columnUcd[j]);
+	    			}
+	    			//Setting Description for column.
+	    			if(columnDesc.length>0 && columnDesc.length==tables[ i ].getColumnCount()){
+	    				tables[ i ].getColumnInfo( j ).setDescription(columnDesc[j]);
+	    			}
+	    			//Setting Utypes for column
+	    			if(columnUTypes.length>0 && columnUTypes.length==tables[ i ].getColumnCount()){
+	    				Tables.setUtype( tables[ i ].getColumnInfo( j ), columnUTypes[j] );
+	    			}
+	    		}
+	    	}
     	
     }catch(Exception e){
     	System.out.println(" Exception occured setColInfoProperty() "+e.getMessage());
