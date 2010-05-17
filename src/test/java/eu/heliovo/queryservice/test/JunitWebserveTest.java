@@ -385,8 +385,7 @@ public class JunitWebserveTest {
 			 }
 			 
 	   }
-	   
-	   
+	      
 	   private void printPrintReader(PipedReader  reader) throws IOException
 	   {
 		   try{
@@ -407,7 +406,6 @@ public class JunitWebserveTest {
 			   }
 		   }
 	   }
-	   
 	   
 	   private String printPrintReaderStringRes(PipedReader  reader) throws IOException
 	   {
