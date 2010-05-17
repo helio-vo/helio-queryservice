@@ -25,6 +25,7 @@ import javax.xml.ws.WebServiceContext;
 import javax.xml.ws.WebServiceProvider;
 import javax.xml.ws.handler.MessageContext;
 import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
 import org.apache.log4j.Logger; 
 import org.w3c.dom.Element;
 import eu.heliovo.queryservice.common.dao.CommonDaoFactory;
@@ -110,30 +111,35 @@ public class SoapDispatcher implements Provider<Source> {
 		
 			 // This is common for Time. interface.
 	    	 //Setting for START TIME parameter.
-    		 if(inputDoc.getElementsByTagNameNS("*","STARTTIME").getLength()>0){
+			 if(inputDoc.getElementsByTagNameNS("*","STARTTIME").getLength()>0 && inputDoc.getElementsByTagNameNS("*","STARTTIME").item(0).getFirstChild()!=null){
 	    		 String startTime = inputDoc.getElementsByTagNameNS("*","STARTTIME").item(0).getFirstChild().getNodeValue();
 	    		 comCriteriaTO.setStartDateTime(startTime);
 			 }
     		 //Setting for TIME parameter.
-    		 if(inputDoc.getElementsByTagNameNS("*","ENDTIME").getLength()>0){
+    		 if(inputDoc.getElementsByTagNameNS("*","ENDTIME").getLength()>0 && inputDoc.getElementsByTagNameNS("*","ENDTIME").item(0).getFirstChild()!=null){
 	    		 String endTime = inputDoc.getElementsByTagNameNS("*","ENDTIME").item(0).getFirstChild().getNodeValue();
 				 comCriteriaTO.setEndDateTime(endTime);	
     		 }
-	    	 
-	    	//Setting for ListName parameter.
+	    	 //Setting for ListName parameter.
     		 if(inputDoc.getElementsByTagNameNS("*","FROM").getLength()>0){
-    			 String listName = inputDoc.getElementsByTagNameNS("*","FROM").item(0).getFirstChild().getNodeValue();
-    			 comCriteriaTO.setListName(listName);
+    			 //Node list
+    			 NodeList nodeList=inputDoc.getElementsByTagNameNS("*","FROM");
+    			 String[] listName=new String[nodeList.getLength()];
+    			 //List Name
+		    	 for(int i=0;i<nodeList.getLength();i++){
+		    		 listName[i]=nodeList.item(i).getFirstChild().getNodeValue();
+		    	 }
+		    	 comCriteriaTO.setListTableName(listName);
     		 }	 
 	    	 
-	    	//Setting for Start Row parameter.
-			 if(inputDoc.getElementsByTagNameNS("*","STARTINDEX").getLength()>0){
+    		//Setting for Start Row parameter.
+			 if(inputDoc.getElementsByTagNameNS("*","STARTINDEX").getLength()>0 && inputDoc.getElementsByTagNameNS("*","STARTINDEX").item(0).getFirstChild()!=null){
 				 String startRow = inputDoc.getElementsByTagNameNS("*","STARTINDEX").item(0).getFirstChild().getNodeValue();
 				 comCriteriaTO.setStartRow(startRow);
 			 }
 			 
 			//Setting for No Of Rows parameter.
-			 if(inputDoc.getElementsByTagNameNS("*","MAXRECORDS").getLength()>0){
+			 if(inputDoc.getElementsByTagNameNS("*","MAXRECORDS").getLength()>0 && inputDoc.getElementsByTagNameNS("*","MAXRECORDS").item(0).getFirstChild()!=null){
 				 String noOfRows = inputDoc.getElementsByTagNameNS("*","MAXRECORDS").item(0).getFirstChild().getNodeValue();
 				 comCriteriaTO.setNoOfRows(noOfRows);
 			 }
@@ -141,12 +147,12 @@ public class SoapDispatcher implements Provider<Source> {
 			 //Full query interface
 		     if(interfaceName == "Query".intern() || interfaceName == "LongQuery".intern()) {
 		    	 //Setting for Instrument parameter.
-				 if(inputDoc.getElementsByTagNameNS("*","INSTRUMENT").getLength()>0){
+				 if(inputDoc.getElementsByTagNameNS("*","INSTRUMENT").getLength()>0 && inputDoc.getElementsByTagNameNS("*","INSTRUMENT").item(0).getFirstChild()!=null){
 					 String instruments = inputDoc.getElementsByTagNameNS("*","INSTRUMENT").item(0).getFirstChild().getNodeValue();
 					 comCriteriaTO.setInstruments(instruments);
 				 }
 				//Setting for WHERE parameter.
-				 if(inputDoc.getElementsByTagNameNS("*","WHERE").getLength()>0){
+				 if(inputDoc.getElementsByTagNameNS("*","WHERE").getLength()>0 && inputDoc.getElementsByTagNameNS("*","WHERE").item(0).getFirstChild()!=null){
 					 String whereClause = inputDoc.getElementsByTagNameNS("*","WHERE").item(0).getFirstChild().getNodeValue();
 					 comCriteriaTO.setWhereClause(whereClause);
 				 }
@@ -171,8 +177,8 @@ public class SoapDispatcher implements Provider<Source> {
 				 //Long running query interface.
 	    	 }else if(interfaceName == "LongTimeQuery".intern() || interfaceName == "LongQuery".intern()){
 						 
-				 //Setting for No Of Rows parameter.
-				 if(inputDoc.getElementsByTagNameNS("*","SAVETO").getLength()>0){
+	    		 //Setting for No Of Rows parameter.
+				 if(inputDoc.getElementsByTagNameNS("*","SAVETO").getLength()>0 && inputDoc.getElementsByTagNameNS("*","SAVETO").item(0).getFirstChild()!=null){
 					 saveTo = inputDoc.getElementsByTagNameNS("*","SAVETO").item(0).getFirstChild().getNodeValue();
 				 } 
 				 // Save To file.
@@ -220,7 +226,7 @@ public class SoapDispatcher implements Provider<Source> {
 				 //Long running query status of completion.
 		 }else if(interfaceName == "GetStatus".intern()){
 			 String sID =null;
-			 if(inputDoc.getElementsByTagNameNS("*","ID").getLength()>0){
+			 if(inputDoc.getElementsByTagNameNS("*","ID").getLength()>0 && inputDoc.getElementsByTagNameNS("*","ID").item(0).getFirstChild()!=null){
 	    		 sID = inputDoc.getElementsByTagNameNS("*","ID").item(0).getFirstChild().getNodeValue();
 			 }
 			 
@@ -243,7 +249,7 @@ public class SoapDispatcher implements Provider<Source> {
 				//Long running query file location path result.
 		 }else if(interfaceName == "GetResults".intern()){
 			 String sID =null;
-			 if(inputDoc.getElementsByTagNameNS("*","ID").getLength()>0){
+			 if(inputDoc.getElementsByTagNameNS("*","ID").getLength()>0 && inputDoc.getElementsByTagNameNS("*","ID").item(0).getFirstChild()!=null){
 	    		 sID = inputDoc.getElementsByTagNameNS("*","ID").item(0).getFirstChild().getNodeValue();
 			 }
 			 
@@ -269,7 +275,7 @@ public class SoapDispatcher implements Provider<Source> {
 			 //Presently not in use.
 			 StringBuilder fileData=null;
 			 String sID =null;
-			 if(inputDoc.getElementsByTagNameNS("*","ID").getLength()>0){
+			 if(inputDoc.getElementsByTagNameNS("*","ID").getLength()>0 && inputDoc.getElementsByTagNameNS("*","ID").item(0).getFirstChild()!=null){
 	    		 sID = inputDoc.getElementsByTagNameNS("*","ID").item(0).getFirstChild().getNodeValue();
 			 }
 			 String sUrl=HsqlDbUtils.getInstance().getUrlFromHsqlDB(sID);
