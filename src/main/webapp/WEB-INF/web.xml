@@ -98,6 +98,7 @@
 		<servlet-class>
 		eu.heliovo.queryservice.servlets.TableServlet</servlet-class>
 	</servlet>
+	
 	<servlet-mapping>
 	   <servlet-name>jaxws-servlet</servlet-name>
 	   <url-pattern>/HelioService</url-pattern>
@@ -106,6 +107,11 @@
 	<servlet-mapping>
 	   <servlet-name>jaxws-servlet</servlet-name>
 	   <url-pattern>/HelioLongQueryService</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+	   <servlet-name>jaxws-servlet</servlet-name>
+	   <url-pattern>/HelioTavernaService</url-pattern>
 	</servlet-mapping>
 	
 	<servlet-mapping>
@@ -124,7 +130,7 @@
   <env-entry>
    <env-entry-name>property/context</env-entry-name>
    <env-entry-type>java.lang.String</env-entry-type>
-   <env-entry-value>test.txt</env-entry-value>
+   <env-entry-value>/opt/tomcat/HelioDB.txt</env-entry-value>
   </env-entry>
   
   <welcome-file-list>		

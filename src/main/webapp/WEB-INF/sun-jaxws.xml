@@ -18,6 +18,14 @@
     service="{http://helio-vo.eu/xml/LongQueryService/v0.1}LongHelioQueryService"
     port="{http://helio-vo.eu/xml/LongQueryService/v0.1}LongHelioQueryServicePort"
     url-pattern="/HelioLongQueryService"/>
+    
+  <endpoint 
+    name="HelioTavernaService"                    
+    implementation="eu.heliovo.queryservice.server.query.SoapDispatcher" 
+    wsdl="WEB-INF/wsdl/helio_service_traverna.wsdl"
+    service="{http://helio-vo.eu/xml/QueryService/v0.1}HelioQueryServiceServiceTwo"
+    port="{http://helio-vo.eu/xml/QueryService/v0.1}HelioQueryServicePortTwo"
+    url-pattern="/HelioTavernaService"/>
 
 </endpoints>
 
