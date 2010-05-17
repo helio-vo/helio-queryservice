@@ -25,6 +25,45 @@ public class QueryWebServiceClient {
 		DocumentBuilder registryBuilder = null;
 		registryBuilder =DocumentBuilderFactory.newInstance(). newDocumentBuilder();
 		doc = registryBuilder.newDocument();
+		
+		/*
+		//change this to helio:TimeSearch
+		//the getSoapBodyNamespaceURI() you can hard code it should be the same namespace you used to register in the SoapServlet.
+		Element root = doc.createElementNS("http://helio-vo.eu/xml/LongRunningQueryService/v0.1", "helio:Query");			
+		//This configuration for TIME.		  	
+		Element xqueryElemStartTime = doc.createElementNS("http://helio-vo.eu/xml/LongRunningQueryService/v0.1","helio:STARTTIME");			
+		//xquery should be 'time' so 2009-10-09T00:00:00/2009-10-09T01:00:00
+		xqueryElemStartTime.appendChild(doc.createTextNode("1890-10-20T20:30:56"));
+		//
+		Element xqueryElemEndTime = doc.createElementNS("http://helio-vo.eu/xml/LongRunningQueryService/v0.1","helio:ENDTIME");			
+		//xquery should be 'time' so 2009-10-09T00:00:00/2009-10-09T01:00:00
+		xqueryElemEndTime.appendChild(doc.createTextNode("2009-10-20T20:30:56"));	
+		//This configuration for INSTRUMENT.
+		Element xqueryElemIntrument = doc.createElementNS("http://helio-vo.eu/xml/LongRunningQueryService/v0.1","helio:INSTRUMENT");			
+		//xquery should be 'Instrument' 
+		xqueryElemIntrument.appendChild(doc.createTextNode("HXT"));
+		//This configuration for LISTNAME.
+		Element xqueryElemListName = doc.createElementNS("http://helio-vo.eu/xml/LongRunningQueryService/v0.1","helio:FROM");			
+		//xquery should be LISTNAME
+		xqueryElemListName.appendChild(doc.createTextNode("helio"));
+		Element xqueryElemListNameSave = doc.createElementNS("http://helio-vo.eu/xml/LongRunningQueryService/v0.1","helio:SAVETO");			
+		//xquery should be LISTNAME
+		xqueryElemListNameSave.appendChild(doc.createTextNode("/Users/vineethtshetty/sample_files"));
+		Element xqueryElemListNameid = doc.createElementNS("http://helio-vo.eu/xml/LongRunningQueryService/v0.1","helio:ID");			
+		//xquery should be LISTNAME
+		xqueryElemListNameid.appendChild(doc.createTextNode("6c9102b3-c9a9-445d-ac0f-c397b57fd40d"));
+		//ok put all these into Document.
+		root.appendChild(xqueryElemStartTime); //Start Time Element.
+		root.appendChild(xqueryElemEndTime); //End Time Element.
+		root.appendChild(xqueryElemIntrument); // Instrument Element.
+		root.appendChild(xqueryElemListName); // List Name Element.
+		root.appendChild(xqueryElemListNameSave); // List Name Element.
+		root.appendChild(xqueryElemListNameid); // List Name Element.
+		doc.appendChild(root);
+		 System.out.println("THE REQUEST FROM SERVICE = " +DomHelper.getStringFromDoc(doc) );
+		//Calling the service.
+		callService(doc,"LongRunningQueryResult","LongRunningQueryResult");
+		*/
 		//change this to helio:TimeSearch
 		//the getSoapBodyNamespaceURI() you can hard code it should be the same namespace you used to register in the SoapServlet.
 		Element root = doc.createElementNS("http://helio-vo.eu/xml/QueryService/v0.1", "helio:Query");			
@@ -39,28 +78,31 @@ public class QueryWebServiceClient {
 		//This configuration for INSTRUMENT.
 		Element xqueryElemIntrument = doc.createElementNS("http://helio-vo.eu/xml/QueryService/v0.1","helio:INSTRUMENT");			
 		//xquery should be 'Instrument' 
-		xqueryElemIntrument.appendChild(doc.createTextNode("HXT"));
+		xqueryElemIntrument.appendChild(doc.createTextNode(""));
 		//This configuration for LISTNAME.
 		Element xqueryElemListName = doc.createElementNS("http://helio-vo.eu/xml/QueryService/v0.1","helio:FROM");			
 		//xquery should be LISTNAME
-		xqueryElemListName.appendChild(doc.createTextNode("helio"));
+		xqueryElemListName.appendChild(doc.createTextNode("INSTRUMENTS"));
+		//This configuration for LISTNAME.
+		Element xqueryElemListName1 = doc.createElementNS("http://helio-vo.eu/xml/QueryService/v0.1","helio:FROM");			
+		//xquery should be LISTNAME
+		xqueryElemListName1.appendChild(doc.createTextNode("OBSERVATORY"));
 		//ok put all these into Document.
 		root.appendChild(xqueryElemStartTime); //Start Time Element.
 		root.appendChild(xqueryElemEndTime); //End Time Element.
 		root.appendChild(xqueryElemIntrument); // Instrument Element.
 		root.appendChild(xqueryElemListName); // List Name Element.
+		root.appendChild(xqueryElemListName1); // List Name Element.
 		doc.appendChild(root);
-		 System.out.println("THE REQUEST FROM SERVICE = " +DomHelper.getStringFromDoc(doc) );
 		//Calling the service.
 		callService(doc,"Query","Query");
-		
 	}
 	
 	protected static Document callService(Document soapBody, String name, String soapActionURI) throws RemoteException , ServiceException, Exception {
 	       Vector result = null;      
 	       Document resultDoc = DomHelper.newDocument();
 	       Document wsDoc = null;
-	       NodeList vResources = null;
+	       NodeList vResources = null; 
 	       //get a call object
 	       Call call = getCall();
 	           
@@ -110,7 +152,7 @@ public class QueryWebServiceClient {
 	      
 	      //this is finally your endpoint to do
 	      //"http://localhost:8080/HelioQuery/services/HelioService"
-	      _call.setTargetEndpointAddress("http://localhost:8080/helio-queryservice/HelioService");
+	      _call.setTargetEndpointAddress("http://msslxw.mssl.ucl.ac.uk:8080/helio-ics-taverna/HelioTavernaService");
 	      _call.setSOAPActionURI("");
 	      //_call.setOperationStyle(org.apache.axis.enum.Style.MESSAGE);
 	      //_call.setOperationUse(org.apache.axis.enum.Use.LITERAL);
