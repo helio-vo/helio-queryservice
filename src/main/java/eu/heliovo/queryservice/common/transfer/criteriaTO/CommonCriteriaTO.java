@@ -26,6 +26,7 @@ public class CommonCriteriaTO implements Serializable{
 	private String status;
 	private String instruments;
 	private String listName;
+	private String[] listTableName;
 	private String query;
 	HashMap<String,String> paramData;
 	private String queryForm;
@@ -308,7 +309,16 @@ public class CommonCriteriaTO implements Serializable{
 
 	public void setLongRunningPrintWriter(Writer longRunningPrintWriter) {
 		this.longRunningPrintWriter = longRunningPrintWriter;
+	}
+
+	public String[] getListTableName() {
+		return listTableName;
+	}
+
+	public void setListTableName(String[] listTableName) {
+		this.listTableName = listTableName;
 	}	
+	
 	
 	
 }
