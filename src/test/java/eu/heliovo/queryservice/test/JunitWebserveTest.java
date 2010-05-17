@@ -55,7 +55,6 @@ import eu.heliovo.queryservice.common.util.CommonUtils;
 import eu.heliovo.queryservice.common.util.InstanceHolders;
 import eu.heliovo.queryservice.server.util.QueryThreadAnalizer;
 
-
 @SuppressWarnings("unused")
 public class JunitWebserveTest {
 		
@@ -151,7 +150,9 @@ public class JunitWebserveTest {
 				 CommonCriteriaTO comCriteriaTO=new CommonCriteriaTO();
 				 comCriteriaTO.setStartDateTime("1890-10-20T20:30:56");
 				 comCriteriaTO.setEndDateTime("2009-10-20T20:30:56");	
-				 comCriteriaTO.setListName("helio");
+				 String[]  arr=new String[1];
+				 arr[0]="helio";
+				 comCriteriaTO.setListTableName(arr);
 				 comCriteriaTO.setStatus("WebService");
 				 comCriteriaTO.setPrintWriter(pw);
 				 System.out.println("Creating a VOTable ....");
@@ -195,7 +196,9 @@ public class JunitWebserveTest {
 				 CommonCriteriaTO comCriteriaTO=new CommonCriteriaTO();
 				 comCriteriaTO.setStartDateTime("1890-10-20T20:30:56");
 				 comCriteriaTO.setEndDateTime("2009-10-20T20:30:56");	
-				 comCriteriaTO.setListName("helio");
+				 String[]  arr=new String[1];
+				 arr[0]="helio";
+				 comCriteriaTO.setListTableName(arr);
 				 comCriteriaTO.setStatus("WebService");
 				 comCriteriaTO.setNoOfRows("1");
 				 comCriteriaTO.setPrintWriter(pw);
@@ -240,7 +243,9 @@ public class JunitWebserveTest {
 				 CommonCriteriaTO comCriteriaTO=new CommonCriteriaTO();
 				 comCriteriaTO.setStartDateTime("1890-10-20T20:30:56");
 				 comCriteriaTO.setEndDateTime("2009-10-20T20:30:56");	
-				 comCriteriaTO.setListName("helio");
+				 String[]  arr=new String[1];
+				 arr[0]="helio";
+				 comCriteriaTO.setListTableName(arr);
 				 comCriteriaTO.setStatus("WebService");
 				 comCriteriaTO.setNoOfRows("2");
 				 comCriteriaTO.setStartRow("1");
@@ -282,7 +287,9 @@ public class JunitWebserveTest {
 				 CommonCriteriaTO comCriteriaTO=new CommonCriteriaTO();
 				 comCriteriaTO.setStartDateTime("1890-10-20T20:30:56");
 				 comCriteriaTO.setEndDateTime("2009-10-20T20:30:56");	
-				 comCriteriaTO.setListName("helio");
+				 String[]  arr=new String[1];
+				 arr[0]="helio";
+				 comCriteriaTO.setListTableName(arr);
 				 comCriteriaTO.setStatus("WebService");
 				 comCriteriaTO.setLongRunningQueryStatus("LongRunning");
 				 comCriteriaTO.setPrintWriter(out);
@@ -336,7 +343,9 @@ public class JunitWebserveTest {
 				 CommonCriteriaTO comCriteriaTO=new CommonCriteriaTO();
 				 comCriteriaTO.setStartDateTime("1890-10-20T20:30:56");
 				 comCriteriaTO.setEndDateTime("2009-10-20T20:30:56");	
-				 comCriteriaTO.setListName("helio");
+				 String[]  arr=new String[1];
+				 arr[0]="helio";
+				 comCriteriaTO.setListTableName(arr);
 				 comCriteriaTO.setStatus("WebService");
 				 comCriteriaTO.setLongRunningQueryStatus("LongRunning");
 				 comCriteriaTO.setPrintWriter(out);
