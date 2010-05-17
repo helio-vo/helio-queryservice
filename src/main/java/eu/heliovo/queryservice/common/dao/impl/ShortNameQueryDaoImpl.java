@@ -37,9 +37,12 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 		Connection con = null;
 		Statement st = null;
 		ResultSetMetaData rms =null;
+		StarTable[] tables=null;
 		ResultSet rs=null;
-		String[] listName=comCriteriaTO.getListName().split(",");
-		StarTable[] tables=new StarTable[listName.length];
+		String[] listName=comCriteriaTO.getListTableName();
+		if(listName!=null)
+			tables=new StarTable[listName.length];
+		
 		try{
 		//For loop start
 		for(int intCnt=0;intCnt<listName.length;intCnt++){
@@ -65,7 +68,7 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 		//Writing all details into table.
 		VOTableMaker.writeTables(comCriteriaTO);
 		logger.info(" : VOTable succesfully created :");	
-		} catch (Exception e) {		
+		} catch (Exception e){		
 			//Writing all details into table.
 			comCriteriaTO.setQueryStatus("ERROR");
 			comCriteriaTO.setQueryDescription(e.getMessage());
@@ -74,6 +77,7 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 			logger.fatal(" Exception occured while generating VOTABLE: ",e);
 			throw new DetailsNotFoundException("EXCEPTION ", e);
 		}
+		
 		finally
 		{
 		    try {
