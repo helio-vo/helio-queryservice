@@ -40,10 +40,11 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 		StarTable[] tables=null;
 		ResultSet rs=null;
 		String[] listName=comCriteriaTO.getListTableName();
-		if(listName!=null)
-			tables=new StarTable[listName.length];
+		
 		
 		try{
+		if(listName!=null){
+		tables=new StarTable[listName.length];
 		//For loop start
 		for(int intCnt=0;intCnt<listName.length;intCnt++){
 			String sRepSql = CommonUtils.replaceParams(generateQuery(listName[intCnt],comCriteriaTO), comCriteriaTO.getParamData());
@@ -67,7 +68,12 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 		VOTableMaker.setColInfoProperty(tables, listName);
 		//Writing all details into table.
 		VOTableMaker.writeTables(comCriteriaTO);
-		logger.info(" : VOTable succesfully created :");	
+		logger.info(" : VOTable succesfully created :");
+		}else{
+			comCriteriaTO.setQueryStatus("ERROR");
+			comCriteriaTO.setQueryDescription("FROM clause value is missing in request xml.");
+			VOTableMaker.writeTables(comCriteriaTO);
+		}
 		} catch (Exception e){		
 			//Writing all details into table.
 			comCriteriaTO.setQueryStatus("ERROR");
@@ -340,7 +346,12 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 		String joinSelectList="";
 		 String joinTableName="";
 		 String query="";
-		 String[] joinListName=comCriteriaTO.getListName().split(",");
+		 String[] joinListName=null;
+		 if(comCriteriaTO.getListName()!=null){
+			 joinListName=comCriteriaTO.getListName().split(",");
+		 }else{
+			 joinListName=comCriteriaTO.getListTableName();
+		 }
 		 //looping for Table Names.
 		 for(int intCnt=0;intCnt<joinListName.length;intCnt++){
 			 joinSelectList=joinSelectList+getColumnNamesFromProperty(joinListName[intCnt])+",";
