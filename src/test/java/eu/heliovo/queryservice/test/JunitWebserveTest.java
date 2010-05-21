@@ -128,7 +128,7 @@ public class JunitWebserveTest {
 		      logger.info(" : Response from the webservice  : "+domResponse.getNode().getFirstChild().getTextContent().trim());
   
 		      System.out.println(" Testing results ");
-	   }	  
+	   }	   
 	  */
 	
 	   @Test
