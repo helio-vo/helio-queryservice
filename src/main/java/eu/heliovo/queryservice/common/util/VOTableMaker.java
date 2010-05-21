@@ -2,6 +2,9 @@ package eu.heliovo.queryservice.common.util;
 
 import java.io.BufferedWriter;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import org.apache.log4j.Logger;
 import eu.heliovo.queryservice.common.util.ConfigurationProfiler;
 import uk.ac.starlink.table.StarTable;
@@ -13,7 +16,8 @@ import uk.ac.starlink.votable.VOTableWriter;
 import eu.heliovo.queryservice.common.transfer.criteriaTO.CommonCriteriaTO;
 
 public class VOTableMaker {
-  
+	
+	public static final String DATE_FORMAT_NOW = "yyyy-MM-dd HH:mm:ss";
     protected final  Logger logger = Logger.getLogger(this.getClass());
     
     public VOTableMaker(){
@@ -50,10 +54,11 @@ public class VOTableMaker {
 	        out.write( "<RESOURCE>\n" );
 	        out.write( "<DESCRIPTION>"+ConfigurationProfiler.getInstance().getProperty("sql.votable.head.desc")+"</DESCRIPTION>\n" );
 	        out.write( "<INFO name=\"QUERY_STATUS\" value=\""+comCriteriaTO.getQueryStatus()+"\"/>");
+	        out.write( "<INFO name=\"EXECUTED_AT\" value=\""+now()+"\"/>");
 	        if(comCriteriaTO.getQueryStatus().equals("ERROR")){
-	        	 out.write( "<INFO name=\"QUERY_STATUS\" value=\""+comCriteriaTO.getQueryDescription()+"\"/>");
+	        	 out.write( "<INFO name=\"QUERY_ERROR\" value=\""+comCriteriaTO.getQueryDescription()+"\"/>");
 	        }
-	       	out.write("<INFO ID=\""+comCriteriaTO.getQueryStatus()+"\" name=\""+comCriteriaTO.getQueryStatus()+"\" >"+"<![CDATA["+comCriteriaTO.getQuery()+"]]>"+"</INFO>");
+	       	out.write("<INFO name=\"QUERY_STRING\" >"+"<![CDATA["+comCriteriaTO.getQuery()+"]]>"+"</INFO>");
 	        if(tables!=null){
 		        for ( int i = 0; i < tables.length; i++ ) {
 		            VOSerializer.makeSerializer( DataFormat.TABLEDATA, tables[ i ] )
@@ -110,5 +115,13 @@ public class VOTableMaker {
     }
     	
     }	
+    
+   private static String now() {
+    	
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT_NOW);
+        return sdf.format(cal.getTime());
+
+      }
    
 }
