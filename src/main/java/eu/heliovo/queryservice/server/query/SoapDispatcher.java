@@ -121,7 +121,7 @@ public class SoapDispatcher implements Provider<Source> {
 				 comCriteriaTO.setEndDateTime(endTime);	
     		 }
 	    	 //Setting for ListName parameter.
-    		 if(inputDoc.getElementsByTagNameNS("*","FROM").getLength()>0){
+    		 if(inputDoc.getElementsByTagNameNS("*","FROM").getLength()>0 && inputDoc.getElementsByTagNameNS("*","FROM").item(0).getFirstChild()!=null){
     			 //Node list
     			 NodeList nodeList=inputDoc.getElementsByTagNameNS("*","FROM");
     			 String[] listName=new String[nodeList.getLength()];
