@@ -82,17 +82,17 @@ public class QueryWebServiceClient {
 		//This configuration for LISTNAME.
 		Element xqueryElemListName = doc.createElementNS("http://helio-vo.eu/xml/QueryService/v0.1","helio:FROM");			
 		//xquery should be LISTNAME
-		xqueryElemListName.appendChild(doc.createTextNode("INSTRUMENTS"));
+		xqueryElemListName.appendChild(doc.createTextNode("instruments"));
 		//This configuration for LISTNAME.
 		Element xqueryElemListName1 = doc.createElementNS("http://helio-vo.eu/xml/QueryService/v0.1","helio:FROM");			
 		//xquery should be LISTNAME
-		xqueryElemListName1.appendChild(doc.createTextNode("OBSERVATORY"));
+		xqueryElemListName1.appendChild(doc.createTextNode("observatory"));
 		//ok put all these into Document.
 		root.appendChild(xqueryElemStartTime); //Start Time Element.
 		root.appendChild(xqueryElemEndTime); //End Time Element.
 		root.appendChild(xqueryElemIntrument); // Instrument Element.
-		root.appendChild(xqueryElemListName); // List Name Element.
-		root.appendChild(xqueryElemListName1); // List Name Element.
+		//root.appendChild(xqueryElemListName); // List Name Element.
+		//root.appendChild(xqueryElemListName1); // List Name Element.
 		doc.appendChild(root);
 		//Calling the service.
 		callService(doc,"Query","Query");
@@ -152,7 +152,7 @@ public class QueryWebServiceClient {
 	      
 	      //this is finally your endpoint to do
 	      //"http://localhost:8080/HelioQuery/services/HelioService"
-	      _call.setTargetEndpointAddress("http://msslxw.mssl.ucl.ac.uk:8080/helio-ics-taverna/HelioTavernaService");
+	      _call.setTargetEndpointAddress("http://msslxw.mssl.ucl.ac.uk:8080/helio-ics/HelioTavernaService");
 	      _call.setSOAPActionURI("");
 	      //_call.setOperationStyle(org.apache.axis.enum.Style.MESSAGE);
 	      //_call.setOperationUse(org.apache.axis.enum.Use.LITERAL);
