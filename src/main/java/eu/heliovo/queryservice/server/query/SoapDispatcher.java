@@ -112,16 +112,29 @@ public class SoapDispatcher implements Provider<Source> {
 			 // This is common for Time. interface.
 	    	 //Setting for START TIME parameter.
 			 if(inputDoc.getElementsByTagNameNS("*","STARTTIME").getLength()>0 && inputDoc.getElementsByTagNameNS("*","STARTTIME").item(0).getFirstChild()!=null){
-	    		 String startTime = inputDoc.getElementsByTagNameNS("*","STARTTIME").item(0).getFirstChild().getNodeValue();
-	    		 comCriteriaTO.setStartDateTime(startTime);
+				 NodeList nodeList=inputDoc.getElementsByTagNameNS("*","STARTTIME");
+    			 String[] startTime=new String[nodeList.getLength()];
+    			 //List Name
+		    	 for(int i=0;i<nodeList.getLength();i++){
+		    		 startTime[i]=nodeList.item(i).getFirstChild().getNodeValue();
+		    	 }
+
+	    		 comCriteriaTO.setStartDateTimeList(startTime);
 			 }
+			 
     		 //Setting for TIME parameter.
     		 if(inputDoc.getElementsByTagNameNS("*","ENDTIME").getLength()>0 && inputDoc.getElementsByTagNameNS("*","ENDTIME").item(0).getFirstChild()!=null){
-	    		 String endTime = inputDoc.getElementsByTagNameNS("*","ENDTIME").item(0).getFirstChild().getNodeValue();
-				 comCriteriaTO.setEndDateTime(endTime);	
+    			 NodeList nodeList=inputDoc.getElementsByTagNameNS("*","ENDTIME");
+    			 String[] endTime=new String[nodeList.getLength()];
+    			 //List Name
+		    	 for(int i=0;i<nodeList.getLength();i++){
+		    		 endTime[i]=nodeList.item(i).getFirstChild().getNodeValue();
+		    	 }
+				 comCriteriaTO.setEndDateTimeList(endTime);	
     		 }
+    		 
 	    	 //Setting for ListName parameter.
-    		 if(inputDoc.getElementsByTagNameNS("*","FROM").getLength()>0 && inputDoc.getElementsByTagNameNS("*","FROM").item(0).getFirstChild()!=null){
+    		 if(inputDoc.getElementsByTagNameNS("*","FROM").getLength()>0){
     			 //Node list
     			 NodeList nodeList=inputDoc.getElementsByTagNameNS("*","FROM");
     			 String[] listName=new String[nodeList.getLength()];
@@ -338,7 +351,7 @@ public class SoapDispatcher implements Provider<Source> {
 	
 	/*
 	 * Method used to convert Source to dom object.
-	 */
+	*/
 	private synchronized Element toDocument(Source src) throws TransformerException {
         DOMResult result = new DOMResult();
         Transformer transformer = TransformerFactory.newInstance().newTransformer();
