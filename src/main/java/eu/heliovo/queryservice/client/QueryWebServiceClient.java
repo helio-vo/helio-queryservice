@@ -2,11 +2,9 @@ package eu.heliovo.queryservice.client;
 
 import java.rmi.RemoteException;
 import java.util.Vector;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.rpc.ServiceException;
-
 import org.apache.axis.client.Call;
 import org.apache.axis.client.Service;
 import org.apache.axis.message.SOAPBodyElement;
@@ -70,11 +68,21 @@ public class QueryWebServiceClient {
 		//This configuration for TIME.		  	
 		Element xqueryElemStartTime = doc.createElementNS("http://helio-vo.eu/xml/QueryService/v0.1","helio:STARTTIME");			
 		//xquery should be 'time' so 2009-10-09T00:00:00/2009-10-09T01:00:00
-		xqueryElemStartTime.appendChild(doc.createTextNode("1890-10-20T20:30:56"));
+		xqueryElemStartTime.appendChild(doc.createTextNode("2000-01-01T00:00:00"));
+		
+		Element xqueryElemStartTime1 = doc.createElementNS("http://helio-vo.eu/xml/QueryService/v0.1","helio:STARTTIME");			
+		//xquery should be 'time' so 2009-10-09T00:00:00/2009-10-09T01:00:00
+		xqueryElemStartTime1.appendChild(doc.createTextNode("1990-10-20T20:30:56"));
+		
 		//
 		Element xqueryElemEndTime = doc.createElementNS("http://helio-vo.eu/xml/QueryService/v0.1","helio:ENDTIME");			
 		//xquery should be 'time' so 2009-10-09T00:00:00/2009-10-09T01:00:00
-		xqueryElemEndTime.appendChild(doc.createTextNode("2009-10-20T20:30:56"));	
+		xqueryElemEndTime.appendChild(doc.createTextNode("2000-02-01T00:00:00"));	
+		
+		//
+		Element xqueryElemEndTime1 = doc.createElementNS("http://helio-vo.eu/xml/QueryService/v0.1","helio:ENDTIME");			
+		//xquery should be 'time' so 2009-10-09T00:00:00/2009-10-09T01:00:00
+		xqueryElemEndTime1.appendChild(doc.createTextNode("2009-10-20T20:30:56"));
 		//This configuration for INSTRUMENT.
 		Element xqueryElemIntrument = doc.createElementNS("http://helio-vo.eu/xml/QueryService/v0.1","helio:INSTRUMENT");			
 		//xquery should be 'Instrument' 
@@ -84,16 +92,19 @@ public class QueryWebServiceClient {
 		//xquery should be LISTNAME
 		xqueryElemListName.appendChild(doc.createTextNode("instruments"));
 		//This configuration for LISTNAME.
-		Element xqueryElemListName1 = doc.createElementNS("http://helio-vo.eu/xml/QueryService/v0.1","helio:FROM");			
+		Element xqueryElemListName1 = doc.createElementNS("http://helio-vo.eu/xml/QueryService/v0.1","helio:WHERE");			
 		//xquery should be LISTNAME
-		xqueryElemListName1.appendChild(doc.createTextNode("observatory"));
+		xqueryElemListName1.appendChild(doc.createTextNode(""));
 		//ok put all these into Document.
 		root.appendChild(xqueryElemStartTime); //Start Time Element.
 		root.appendChild(xqueryElemEndTime); //End Time Element.
 		root.appendChild(xqueryElemIntrument); // Instrument Element.
-		//root.appendChild(xqueryElemListName); // List Name Element.
+		root.appendChild(xqueryElemListName); // List Name Element.
 		//root.appendChild(xqueryElemListName1); // List Name Element.
+		//root.appendChild(xqueryElemStartTime1); // List Name Element.
+		//root.appendChild(xqueryElemEndTime1); // List Name Element.
 		doc.appendChild(root);
+		 System.out.println("THE REQUEST FROM SERVICE = " +DomHelper.getStringFromDoc(doc) );
 		//Calling the service.
 		callService(doc,"Query","Query");
 	}
@@ -152,7 +163,7 @@ public class QueryWebServiceClient {
 	      
 	      //this is finally your endpoint to do
 	      //"http://localhost:8080/HelioQuery/services/HelioService"
-	      _call.setTargetEndpointAddress("http://msslxw.mssl.ucl.ac.uk:8080/helio-ics/HelioTavernaService");
+	      _call.setTargetEndpointAddress("http://localhost:8080/helio-queryservice/HelioService");
 	      _call.setSOAPActionURI("");
 	      //_call.setOperationStyle(org.apache.axis.enum.Style.MESSAGE);
 	      //_call.setOperationUse(org.apache.axis.enum.Use.LITERAL);
