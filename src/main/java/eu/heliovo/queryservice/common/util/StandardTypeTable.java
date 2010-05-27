@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import uk.ac.starlink.table.ColumnInfo;
 import uk.ac.starlink.table.RowSequence;
@@ -17,6 +19,7 @@ import uk.ac.starlink.table.WrapperStarTable;
  *
  * @author   Mark Taylor
  * @since    2 Feb 2010
+ * @change; Vineeth Shetty as per query interface format.
  */
 public class StandardTypeTable extends WrapperStarTable {
 
@@ -143,16 +146,43 @@ public class StandardTypeTable extends WrapperStarTable {
             return info_;
         }
         Object getValue(Object baseValue) {
-        	String sDate="0000-00-00 00:00:00";
+        	String sDate="0000-00-00T00:00:00";
         	//Checking for Date object.
         	if(baseValue!=null && !baseValue.toString().equals("")){
-        		if(baseValue.toString().endsWith(".0")){
-        			sDate=baseValue.toString().substring(0, baseValue.toString().length()-2);
+        		if(isValidDate(baseValue.toString())){
+        			if(baseValue.toString().trim().endsWith(".0")){
+        				sDate=baseValue.toString().trim().substring(0, baseValue.toString().length()-2).replaceAll(" ", "T");
+        			}else{
+        				sDate=baseValue.toString().trim().replaceAll(" ", "T");
+        			}
+        		}else if(baseValue.toString().endsWith(".0")){
+        			sDate=baseValue.toString().trim().substring(0, baseValue.toString().length()-2).replaceAll(" ", "T");
         		}
         	}
         	
             return (String)sDate;
         }
     }
+    
+    
+    private static boolean  isValidDate(String inDate)  {
+
+        if (inDate == null)
+          return false;
+
+        //set the format to use as a constructor argument
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    
+        dateFormat.setLenient(false);
+        
+        try {
+          //parse the inDate parameter
+          dateFormat.parse(inDate.trim());
+        }
+        catch (ParseException pe) {
+           pe.printStackTrace();
+        }
+        return true;
+      }
 }
 

@@ -4,7 +4,6 @@ import java.io.BufferedWriter;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-
 import org.apache.log4j.Logger;
 import eu.heliovo.queryservice.common.util.ConfigurationProfiler;
 import uk.ac.starlink.table.StarTable;
@@ -16,14 +15,13 @@ import uk.ac.starlink.votable.VOTableWriter;
 import eu.heliovo.queryservice.common.transfer.criteriaTO.CommonCriteriaTO;
 
 public class VOTableMaker {
-	
-	public static final String DATE_FORMAT_NOW = "yyyy-MM-dd HH:mm:ss";
+  
     protected final  Logger logger = Logger.getLogger(this.getClass());
-    
+    public static final String DATE_FORMAT_NOW = "yyyy-MM-dd HH:mm:ss";
+
     public VOTableMaker(){
     	
     }
-       
     
     public static void writeResultSet( ResultSet rset, BufferedWriter out ) throws Exception {
         StarTable table = new SequentialResultSetStarTable( rset );
@@ -45,7 +43,7 @@ public class VOTableMaker {
     	
     	try{    		
 	    	//Adding response header start for WebService VOTABLE.
-			if(status!=null && !status.equals("") &&  longRunning!=null && longRunning.equals("")){
+			if(status!=null && !status.equals("")  &&  (longRunning==null || longRunning.equals(""))){
 				 out.write("<helio:queryResponse xmlns:helio=\"http://helio-vo.eu/xml/QueryService/v0.1\">");
 			}else if(longRunning!=null && longRunning.equals("LongRunning")){
 				out.write("<helio:resultResponse xmlns:helio=\"http://helio-vo.eu/xml/LongQueryService/v0.1\">");
@@ -68,14 +66,14 @@ public class VOTableMaker {
 	        out.write( "</RESOURCE>\n" );
 	        out.write( "</VOTABLE>\n" );
 	      //Adding response header start for WebService VOTABLE.
-	        if(status!=null && !status.equals("") &&  longRunning!=null && longRunning.equals("")){
+	        if(status!=null && !status.equals("") &&  (longRunning==null || longRunning.equals(""))){
 				 out.write("</helio:queryResponse>");
 			}else if(longRunning!=null && longRunning.equals("LongRunning")){
 				 out.write("</helio:resultResponse>");
 			}
     	}catch (Exception e) {
-    		System.out.println(" Exception occured writeTables() "+e.getMessage());
-    		throw new Exception("Couldn't create VO TABLE.");
+    		System.out.println(" Exception occured writeTables():While creating VOTable...!!! "+e.getMessage());
+    		throw new Exception("Couldn't create VO TABLE!!!");
 		}
         out.flush();
         out.close();
@@ -84,14 +82,16 @@ public class VOTableMaker {
     //Setting column property.
     public static void setColInfoProperty(StarTable[] tables,String[] listName) throws Exception{
     	try{  
-    		
+    	 	// Table name list.
+    		for(int count=0;count<listName.length;count++){
+    		// Start table array.
 	    	for ( int i = 0; i < tables.length; i++ ) {
 	    		//Column Description
-	    		String[] columnDesc=ConfigurationProfiler.getInstance().getProperty("sql.columndesc."+listName[i]).split("::");
+	    		String[] columnDesc=ConfigurationProfiler.getInstance().getProperty("sql.columndesc."+listName[count]).split("::");
 	    		//Column UCD's
-	    		String[] columnUcd=ConfigurationProfiler.getInstance().getProperty("sql.columnucd."+listName[i]).split("::");
+	    		String[] columnUcd=ConfigurationProfiler.getInstance().getProperty("sql.columnucd."+listName[count]).split("::");
 	    		//Column U Types.
-	    		String[] columnUTypes=ConfigurationProfiler.getInstance().getProperty("sql.columnutypes."+listName[i]).split("::");
+	    		String[] columnUTypes=ConfigurationProfiler.getInstance().getProperty("sql.columnutypes."+listName[count]).split("::");
 	    		
 	    		for(int j=0;j<tables[ i ].getColumnCount();j++){
 	    			//Setting UCD's for column.
@@ -107,7 +107,8 @@ public class VOTableMaker {
 	    				Tables.setUtype( tables[ i ].getColumnInfo( j ), columnUTypes[j] );
 	    			}
 	    		}
-	    	}
+	    	}//end of for
+    	}// end of for
     	
     }catch(Exception e){
     	System.out.println(" Exception occured setColInfoProperty() "+e.getMessage());
@@ -116,12 +117,13 @@ public class VOTableMaker {
     	
     }	
     
-   private static String now() {
+    private static String now() {
     	
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT_NOW);
         return sdf.format(cal.getTime());
 
       }
+
    
 }
