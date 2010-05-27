@@ -13,8 +13,7 @@
 		<param-name>port</param-name>
 		<param-value>8080</param-value>
 		</init-param>
-		<load-on-startup>1</load-on-startup>
-		
+		<load-on-startup>1</load-on-startup>		
 	</servlet>	
 	
 	 <filter>
@@ -127,11 +126,11 @@
 		<url-pattern>/VOSI/tables</url-pattern>
 	</servlet-mapping> 
  	
-  <env-entry>
-   <env-entry-name>property/context</env-entry-name>
-   <env-entry-type>java.lang.String</env-entry-type>
-   <env-entry-value>test.txt</env-entry-value>
-  </env-entry>
+	<env-entry>
+	   <env-entry-name>property/context</env-entry-name>
+	   <env-entry-type>java.lang.String</env-entry-type>
+	   <env-entry-value>/Users/vineethtshetty/HELIO/helio-ics-r2.txt</env-entry-value>
+	</env-entry>
   
   <welcome-file-list>		
 		<welcome-file>HelioHome.jsp</welcome-file>
