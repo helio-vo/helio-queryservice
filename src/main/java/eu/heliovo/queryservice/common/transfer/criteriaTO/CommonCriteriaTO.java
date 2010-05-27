@@ -46,6 +46,9 @@ public class CommonCriteriaTO implements Serializable{
 	private String dataXml;
 	private String longRunningQueryStatus;
 	private Writer longRunningPrintWriter;
+	private String startDateTimeList[];
+	private String endDateTimeList[];	
+	
 	
 	public CommonCriteriaTO(){
 		this.setIPageNumber(0);
@@ -317,8 +320,21 @@ public class CommonCriteriaTO implements Serializable{
 
 	public void setListTableName(String[] listTableName) {
 		this.listTableName = listTableName;
+	}
+
+	public String[] getStartDateTimeList() {
+		return startDateTimeList;
+	}
+
+	public void setStartDateTimeList(String[] startDateTimeList) {
+		this.startDateTimeList = startDateTimeList;
+	}
+
+	public String[] getEndDateTimeList() {
+		return endDateTimeList;
+	}
+
+	public void setEndDateTimeList(String[] endDateTimeList) {
+		this.endDateTimeList = endDateTimeList;
 	}	
-	
-	
-	
 }
