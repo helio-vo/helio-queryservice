@@ -41,9 +41,16 @@ public class HelioQueryService extends HttpServlet {
 		    //Setting start time & end time parameter
 		    String sStartTime=request.getParameter("STARTTIME");
 		    String sEndTime=request.getParameter("ENDTIME");
-		   	System.out.println(" sStartTime : "+sStartTime+" sEndTime : "+sEndTime);			
-			comCriteriaTO.setStartDateTime(sStartTime);
-			comCriteriaTO.setEndDateTime(sEndTime);					
+		   	System.out.println(" sStartTime : "+sStartTime+" sEndTime : "+sEndTime);
+		   	//Start date array list
+		   	if(sStartTime!=null && !sStartTime.equals("")){
+		    	comCriteriaTO.setStartDateTimeList(sStartTime.split(","));
+		    }
+		    //End date array list
+		   	if(sEndTime!=null && !sEndTime.equals("")){
+		    	comCriteriaTO.setEndDateTimeList(sEndTime.split(","));
+		    }
+		   	
 		    //Setting for Instrument parameter.
 		    String sInstrument=request.getParameter("INSTRUMENT");
 		    comCriteriaTO.setInstruments(sInstrument);
