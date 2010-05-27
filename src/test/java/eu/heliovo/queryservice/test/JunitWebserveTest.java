@@ -148,8 +148,14 @@ public class JunitWebserveTest {
 				 DocumentBuilder builder = factory.newDocumentBuilder();  
 				 //
 				 CommonCriteriaTO comCriteriaTO=new CommonCriteriaTO();
-				 comCriteriaTO.setStartDateTime("1890-10-20T20:30:56");
-				 comCriteriaTO.setEndDateTime("2009-10-20T20:30:56");	
+				 String[]  arrStartTime=new String[1];
+				 String[]  arrEndTime=new String[1];
+				//Start time
+				 arrStartTime[0]="1890-10-20T20:30:56";
+				 arrEndTime[0]="2009-10-20T20:30:56";
+				 // Setting data
+				 comCriteriaTO.setStartDateTimeList(arrStartTime);
+				 comCriteriaTO.setEndDateTimeList(arrEndTime);	
 				 String[]  arr=new String[1];
 				 arr[0]="helio";
 				 comCriteriaTO.setListTableName(arr);
@@ -194,8 +200,14 @@ public class JunitWebserveTest {
 				 DocumentBuilder builder = factory.newDocumentBuilder();  
 				 //
 				 CommonCriteriaTO comCriteriaTO=new CommonCriteriaTO();
-				 comCriteriaTO.setStartDateTime("1890-10-20T20:30:56");
-				 comCriteriaTO.setEndDateTime("2009-10-20T20:30:56");	
+				 String[]  arrStartTime=new String[1];
+				 String[]  arrEndTime=new String[1];
+				 //Start time
+				 arrStartTime[0]="1890-10-20T20:30:56";
+				 arrEndTime[0]="2009-10-20T20:30:56";
+				 // Setting data
+				 comCriteriaTO.setStartDateTimeList(arrStartTime);
+				 comCriteriaTO.setEndDateTimeList(arrEndTime);	
 				 String[]  arr=new String[1];
 				 arr[0]="helio";
 				 comCriteriaTO.setListTableName(arr);
@@ -241,8 +253,15 @@ public class JunitWebserveTest {
 				 DocumentBuilder builder = factory.newDocumentBuilder();  
 				 //
 				 CommonCriteriaTO comCriteriaTO=new CommonCriteriaTO();
-				 comCriteriaTO.setStartDateTime("1890-10-20T20:30:56");
-				 comCriteriaTO.setEndDateTime("2009-10-20T20:30:56");	
+				 
+				 String[]  arrStartTime=new String[1];
+				 String[]  arrEndTime=new String[1];
+				 //Start time
+				 arrStartTime[0]="1890-10-20T20:30:56";
+				 arrEndTime[0]="2009-10-20T20:30:56";
+				 // Setting data
+				 comCriteriaTO.setStartDateTimeList(arrStartTime);
+				 comCriteriaTO.setEndDateTimeList(arrEndTime);
 				 String[]  arr=new String[1];
 				 arr[0]="helio";
 				 comCriteriaTO.setListTableName(arr);
@@ -285,8 +304,14 @@ public class JunitWebserveTest {
 				 DocumentBuilder builder = factory.newDocumentBuilder();  
 				 //Passing values to Trasfer Object.
 				 CommonCriteriaTO comCriteriaTO=new CommonCriteriaTO();
-				 comCriteriaTO.setStartDateTime("1890-10-20T20:30:56");
-				 comCriteriaTO.setEndDateTime("2009-10-20T20:30:56");	
+				 String[]  arrStartTime=new String[1];
+				 String[]  arrEndTime=new String[1];
+				 //Start time
+				 arrStartTime[0]="1890-10-20T20:30:56";
+				 arrEndTime[0]="2009-10-20T20:30:56";
+				 // Setting data
+				 comCriteriaTO.setStartDateTimeList(arrStartTime);
+				 comCriteriaTO.setEndDateTimeList(arrEndTime);
 				 String[]  arr=new String[1];
 				 arr[0]="helio";
 				 comCriteriaTO.setListTableName(arr);
@@ -341,8 +366,14 @@ public class JunitWebserveTest {
 				 DocumentBuilder builder = factory.newDocumentBuilder();  
 				 //Passing values to Trasfer Object.
 				 CommonCriteriaTO comCriteriaTO=new CommonCriteriaTO();
-				 comCriteriaTO.setStartDateTime("1890-10-20T20:30:56");
-				 comCriteriaTO.setEndDateTime("2009-10-20T20:30:56");	
+				 String[]  arrStartTime=new String[1];
+				 String[]  arrEndTime=new String[1];
+				 //Start time
+				 arrStartTime[0]="1890-10-20T20:30:56";
+				 arrEndTime[0]="2009-10-20T20:30:56";
+				 // Setting data
+				 comCriteriaTO.setStartDateTimeList(arrStartTime);
+				 comCriteriaTO.setEndDateTimeList(arrEndTime);	
 				 String[]  arr=new String[1];
 				 arr[0]="helio";
 				 comCriteriaTO.setListTableName(arr);
