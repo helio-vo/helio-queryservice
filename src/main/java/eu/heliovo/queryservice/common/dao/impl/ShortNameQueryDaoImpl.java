@@ -39,14 +39,29 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 		ResultSetMetaData rms =null;
 		StarTable[] tables=null;
 		ResultSet rs=null;
+		//List data or table names
 		String[] listName=comCriteriaTO.getListTableName();
+		//start date vales
+		String startDateTimeList[]=comCriteriaTO.getStartDateTimeList();
+		//end date values
+		String endDateTimeList[]=comCriteriaTO.getEndDateTimeList();
 		
-		
-		try{
-		if(listName!=null){
-		tables=new StarTable[listName.length];
+	  try{
+		  
+	  if(listName!=null){
+		//Count of tables in respionse.
+		int count=listName.length*startDateTimeList.length;
+		tables=new StarTable[count];
+		int tableCount=0;
+		if(startDateTimeList.length==endDateTimeList.length){
 		//For loop start
 		for(int intCnt=0;intCnt<listName.length;intCnt++){
+			//loop for start date.
+		  for(int intTimeCnt=0;intTimeCnt<startDateTimeList.length;intTimeCnt++){
+			 //Setting start time 
+			comCriteriaTO.setStartDateTime(startDateTimeList[intTimeCnt]);
+			//Setting end time
+			comCriteriaTO.setEndDateTime(endDateTimeList[intTimeCnt]);
 			String sRepSql = CommonUtils.replaceParams(generateQuery(listName[intCnt],comCriteriaTO), comCriteriaTO.getParamData());
 			logger.info(" : Query String After Replacing Value :"+sRepSql);	
 			//Setting Table Name.
@@ -54,37 +69,46 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 			//Setting query with values.
 			comCriteriaTO.setQuery(sRepSql);
 			//Connecting to database.						
-			con = ConnectionManager.getConnection();
+			con = getConnectionObject();
 			st = con.createStatement();
 			rs= st.executeQuery(sRepSql);
 			comCriteriaTO.setQueryStatus("OK");
 			comCriteriaTO.setQuery(sRepSql);
 			
-			tables[intCnt] = new StandardTypeTable( new SequentialResultSetStarTable( rs ) );
-			tables[intCnt].setName(listName[intCnt]);			
+			tables[tableCount] = new StandardTypeTable( new SequentialResultSetStarTable( rs ) );
+			tables[tableCount].setName(listName[intCnt]);
+			tableCount++;
+			}
 		}
 		comCriteriaTO.setTables(tables);
 		//Editing column property.
 		VOTableMaker.setColInfoProperty(tables, listName);
 		//Writing all details into table.
 		VOTableMaker.writeTables(comCriteriaTO);
-		logger.info(" : VOTable succesfully created :");
+		logger.info(" : VOTable succesfully created :");	
+		
 		}else{
 			comCriteriaTO.setQueryStatus("ERROR");
-			comCriteriaTO.setQueryDescription("FROM clause value is missing in request xml.");
+			comCriteriaTO.setQueryDescription("Start date and End date should have same no of values.");
 			VOTableMaker.writeTables(comCriteriaTO);
 		}
-		} catch (Exception e){		
+	  }else{
+		  comCriteriaTO.setQueryStatus("ERROR");
+		  comCriteriaTO.setQueryDescription("FROM clause value is missing in request xml.");
+		  VOTableMaker.writeTables(comCriteriaTO);
+	  }
+	 }catch (Exception e){		
 			//Writing all details into table.
 			comCriteriaTO.setQueryStatus("ERROR");
 			comCriteriaTO.setQueryDescription(e.getMessage());
+			
 			VOTableMaker.writeTables(comCriteriaTO);
 			logger.info(" Exception occured while generating VOTABLE: ",e);
 			logger.fatal(" Exception occured while generating VOTABLE: ",e);
 			throw new DetailsNotFoundException("EXCEPTION ", e);
-		}
+	 }
 		
-		finally
+	 finally
 		{
 		    try {
 				if(rms!=null)
@@ -214,14 +238,18 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 	 */
 	private String getColumnNamesFromProperty(String tableName) throws Exception
 	{
+		String colNames=ConfigurationProfiler.getInstance().getProperty("sql.columnnames."+tableName);
+		//Column names array
 		String[] columnNames=ConfigurationProfiler.getInstance().getProperty("sql.columnnames."+tableName).split("::");
 		String colNamesForTable="";
 		
-		if(columnNames!=null){		
+		if(colNames!=null && !colNames.trim().equals("")){		
 			for(int i=0;i<columnNames.length;i++)
 			{
 				colNamesForTable=colNamesForTable+columnNames[i]+",";
 			}
+		}else{
+			throw new Exception("Couldn't find coulumn names for table name "+tableName+". Please check configuration property file.");
 		}
 		
 		if(colNamesForTable.endsWith(",")){
@@ -429,5 +457,14 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 		logger.info(" : Max allowed record/ Limit constriant value : "+comCriteriaTO.getNoOfRows());
 	}
 	
+	private Connection getConnectionObject() throws Exception
+	{
+		Connection con=null;
+		con = ConnectionManager.getConnection();		
+		if(con==null){
+			throw new Exception("Couldn't connect database. Please connection details!!!");
+		}
+		return con;
+	}
 	
 }
