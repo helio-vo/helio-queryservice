@@ -3,9 +3,11 @@ package eu.heliovo.queryservice.common.dao.impl;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
+import java.util.Date;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import org.apache.log4j.Logger;
 import uk.ac.starlink.table.StarTable;
@@ -49,6 +51,7 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 	  try{
 		  
 	  if(listName!=null){
+		if(startDateTimeList!=null && endDateTimeList!=null){
 		//Count of tables in respionse.
 		int count=listName.length*startDateTimeList.length;
 		tables=new StarTable[count];
@@ -58,27 +61,44 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 		for(int intCnt=0;intCnt<listName.length;intCnt++){
 			//loop for start date.
 		  for(int intTimeCnt=0;intTimeCnt<startDateTimeList.length;intTimeCnt++){
+			 String startDate=startDateTimeList[intTimeCnt];
+			 String endDate=endDateTimeList[intTimeCnt];
+			 logger.info(" : Start Date ; End Date and List Name : "+startDate+"  : "+endDate+"  : "+listName[intCnt]);
 			 //Setting start time 
-			comCriteriaTO.setStartDateTime(startDateTimeList[intTimeCnt]);
+			comCriteriaTO.setStartDateTime(startDate);
 			//Setting end time
-			comCriteriaTO.setEndDateTime(endDateTimeList[intTimeCnt]);
-			String sRepSql = CommonUtils.replaceParams(generateQuery(listName[intCnt],comCriteriaTO), comCriteriaTO.getParamData());
-			logger.info(" : Query String After Replacing Value :"+sRepSql);	
-			//Setting Table Name.
-			comCriteriaTO.setTableName(listName[intCnt]);
-			//Setting query with values.
-			comCriteriaTO.setQuery(sRepSql);
-			//Connecting to database.						
-			con = getConnectionObject();
-			st = con.createStatement();
-			rs= st.executeQuery(sRepSql);
-			comCriteriaTO.setQueryStatus("OK");
-			comCriteriaTO.setQuery(sRepSql);
-			
-			tables[tableCount] = new StandardTypeTable( new SequentialResultSetStarTable( rs ) );
-			tables[tableCount].setName(listName[intCnt]);
-			tableCount++;
+			comCriteriaTO.setEndDateTime(endDate);
+			//Checking if start date or end date is null or no value.
+			if((startDate!=null && !startDate.trim().equals("")) && (endDate!=null && !endDate.trim().equals(""))){
+			//Comparing 2 date value.
+			if(compareToDates(startDate,endDate)){
+				String sRepSql = CommonUtils.replaceParams(generateQuery(listName[intCnt],comCriteriaTO), comCriteriaTO.getParamData());
+				logger.info(" : Query String After Replacing Value :"+sRepSql);	
+				//Setting Table Name.
+				comCriteriaTO.setTableName(listName[intCnt]);
+				//Setting query with values.
+				comCriteriaTO.setQuery(sRepSql);
+				//Connecting to database.						
+				con = getConnectionObject();
+				st = con.createStatement();
+				rs= st.executeQuery(sRepSql);
+				comCriteriaTO.setQueryStatus("OK");
+				comCriteriaTO.setQuery(sRepSql);
+				
+				tables[tableCount] = new StandardTypeTable( new SequentialResultSetStarTable( rs ) );
+				tables[tableCount].setName(listName[intCnt]);
+				tableCount++;
+			}else{
+				comCriteriaTO.setQueryStatus("ERROR");
+				comCriteriaTO.setQueryDescription("Start Date should always be less than End Date.");
+				VOTableMaker.writeTables(comCriteriaTO);
 			}
+			}else{
+				comCriteriaTO.setQueryStatus("ERROR");
+				comCriteriaTO.setQueryDescription("Start date and End date cannot be null or no value");
+				VOTableMaker.writeTables(comCriteriaTO);
+			}
+		  }
 		}
 		comCriteriaTO.setTables(tables);
 		//Editing column property.
@@ -92,6 +112,12 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 			comCriteriaTO.setQueryDescription("Start date and End date should have same no of values.");
 			VOTableMaker.writeTables(comCriteriaTO);
 		}
+		}else{
+			comCriteriaTO.setQueryStatus("ERROR");
+			comCriteriaTO.setQueryDescription("Start date and End date cannot be null or no value");
+			VOTableMaker.writeTables(comCriteriaTO);
+		}
+		
 	  }else{
 		  comCriteriaTO.setQueryStatus("ERROR");
 		  comCriteriaTO.setQueryDescription("FROM clause value is missing in request xml.");
@@ -465,6 +491,30 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 			throw new Exception("Couldn't connect database. Please connection details!!!");
 		}
 		return con;
+	}
+	
+	
+	@SuppressWarnings("deprecation")
+	private  boolean compareToDates(String startDate,String endDate) throws Exception{
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date d1 =null;
+		Date d2 =null;
+		df.setLenient(false);
+		boolean status=false;
+         // Get Date 1
+	    d1 = (Date) df.parse(startDate.replace("T", " "));
+	    // Get Date 2
+	    d2 = (Date) df.parse(endDate.replace("T", " "));
+
+	    if (d1.equals(d2)){
+	    	status=true;
+	    }else if (d1.before(d2)){
+	    	status=true;
+	    }else{
+	    	status=false;
+	    }
+	     
+	    return status;
 	}
 	
 }
