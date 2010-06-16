@@ -18,20 +18,21 @@
     		<td height="22" align="left" valign="top" class="bgtab" nowrap>
 				<table width="100%" border="0" cellspacing="0" cellpadding="0">
         			<tr align="left" valign="top">
-          				<td width="460" align="left" valign="middle" class="highlightedbgtab" nowrap>
-			           			&nbsp;&nbsp;Helio Admin System > 
-											<a href="<%=contextPath%>/display.action">
-											<!-- <s:text name="heading.MenuAdminPage"/>-->
-											Admin  Page
-										</a>	&nbsp;&nbsp;&nbsp;&nbsp;
-										<a href="<%=contextPath%>/indexpage.action">
+          				<td width="360" align="left" valign="middle" class="highlightedbgtab" nowrap>
+			           			&nbsp;&nbsp;Helio Query Service > 
+											<a href="<%=contextPath%>/indexpage.action">
 											<!-- <s:text name="heading.MenuAdminPage"/>-->
 											Index Page
+										</a>		
+										&nbsp;&nbsp;&nbsp;&nbsp;
+										<a href="<%=contextPath%>/display.action">
+											<!-- <s:text name="heading.MenuAdminPage"/>-->
+											Admin  Page
 										</a>						
           				</td>
           				<td width="10">&nbsp;</td>
          			 	<td align="right" valign="middle" class="bgtab" nowrap>
-	         			  	Welcome Admin
+	         			  	Welcome 
 						</td>
 					</tr>
 				</table>
