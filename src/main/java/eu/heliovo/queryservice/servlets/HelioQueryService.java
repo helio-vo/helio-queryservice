@@ -50,7 +50,10 @@ public class HelioQueryService extends HttpServlet {
 		   	if(sEndTime!=null && !sEndTime.equals("")){
 		    	comCriteriaTO.setEndDateTimeList(sEndTime.split(","));
 		    }
-		   	
+		   	//Setting context path.
+		    if(request.getContextPath()!=null){
+				 comCriteriaTO.setContextPath(request.getContextPath().replace("-", "_").replace("/", ""));
+			 }
 		    //Setting for Instrument parameter.
 		    String sInstrument=request.getParameter("INSTRUMENT");
 		    comCriteriaTO.setInstruments(sInstrument);
