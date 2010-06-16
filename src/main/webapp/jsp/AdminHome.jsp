@@ -75,10 +75,17 @@ cellspacing="0">
          <tr class="txtblackBP" > 
            <td>
               <ul>
-                  <li><a href="javascript:doSub('getDatabaseConfigurationPage.action')"> Configuration for connecting database. </a></li>		             
+                  <li><a href="javascript:doSub('getDatabaseConfigurationPage.action')"> Configuration for connecting database </a></li>		             
               </ul>            
           </td>
-         </tr>                              
+         </tr>   
+         <!-- <tr class="txtblackBP" > 
+           <td>
+              <ul>
+                  <li><a href=""> Instrument mapper </a></li>		             
+              </ul>            
+          </td>
+         </tr>  -->                          
       </table>   
      </s:form>
  	</td>
