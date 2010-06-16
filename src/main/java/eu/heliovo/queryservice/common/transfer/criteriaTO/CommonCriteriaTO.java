@@ -48,7 +48,7 @@ public class CommonCriteriaTO implements Serializable{
 	private Writer longRunningPrintWriter;
 	private String startDateTimeList[];
 	private String endDateTimeList[];	
-	
+	private String contextPath;
 	
 	public CommonCriteriaTO(){
 		this.setIPageNumber(0);
@@ -336,5 +336,14 @@ public class CommonCriteriaTO implements Serializable{
 
 	public void setEndDateTimeList(String[] endDateTimeList) {
 		this.endDateTimeList = endDateTimeList;
+	}
+
+	public String getContextPath() {
+		return contextPath;
+	}
+
+	public void setContextPath(String contextPath) {
+		this.contextPath = contextPath;
 	}	
+	
 }
