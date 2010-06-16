@@ -104,8 +104,10 @@ public class SoapDispatcher implements Provider<Source> {
 	   	     //each method should return a XMLStreamReader that is streamed back to the client.
 		     comCriteriaTO=new CommonCriteriaTO(); 
 			 pr = new PipedReader();
-			 pw = new PipedWriter(pr);	    		   		   		  		   	 
-			 
+			 pw = new PipedWriter(pr);	 
+			 if(req.getContextPath()!=null){
+				 comCriteriaTO.setContextPath(req.getContextPath().replace("-", "_").replace("/", ""));
+			 }
 			 //Indicator to define VOTABLE for Web Service request
 			 comCriteriaTO.setStatus("WebService");
 		
