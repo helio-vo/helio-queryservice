@@ -11,12 +11,17 @@
 	<package name="HelioQueryService" namespace="/" extends="struts-default">	 
 		<default-interceptor-ref name="defaultStack"/>	
 	
+	<action name="indexpage" method="indexPage" class="eu.heliovo.queryservice.common.action.CommonAction">
+            <result  name="SUCCESS" >jsp/index.jsp</result>
+            <result  name="ERROR" >jsp/index.jsp</result>				
+	</action> 
+	
 	<action name="display" method="display" class="eu.heliovo.queryservice.common.action.CommonAction">
             <result  name="SUCCESS" >jsp/AdminHome.jsp</result>
             <result  name="ERROR" >jsp/AdminHome.jsp</result>				
 	</action>
 	
-		<action name="showConfigurationDetials" method="showConfigurationDetials" class="eu.heliovo.queryservice.common.action.CommonAction">
+	<action name="showConfigurationDetials" method="showConfigurationDetials" class="eu.heliovo.queryservice.common.action.CommonAction">
             <result  name="SUCCESS" >jsp/xdoc/Configuration.jsp</result>
             <result  name="ERROR" >jsp/xdoc/Configuration.jsp</result>				
 	</action>
