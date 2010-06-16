@@ -40,7 +40,11 @@ public class CommonAction  extends ActionSupport
 	{
 		return "SUCCESS";
 	}
-	
+	//Directing to index page.
+	public String indexPage() throws SQLException{
+		
+		return "SUCCESS";
+	}
 	
 	public String display() throws SQLException{ 
 		String sReturnStatus="ERROR";
