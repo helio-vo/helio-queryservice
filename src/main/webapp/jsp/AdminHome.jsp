@@ -79,13 +79,13 @@ cellspacing="0">
               </ul>            
           </td>
          </tr>   
-         <!-- <tr class="txtblackBP" > 
+         <!--  <tr class="txtblackBP" > 
            <td>
               <ul>
-                  <li><a href=""> Instrument mapper </a></li>		             
+                  <li><a href="javascript:doSub('instrumentMapperPage.action')"> Instrument mapper </a></li>		             
               </ul>            
           </td>
-         </tr>  -->                          
+         </tr>    -->                    
       </table>   
      </s:form>
  	</td>
