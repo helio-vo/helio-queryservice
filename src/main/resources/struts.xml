@@ -45,6 +45,12 @@
             <result  name="ERROR" >jsp/DatabaseTables.jsp</result>	
 	</action>
 	
+	<!-- instrument mapper action mapping -->
+	<action name="instrumentMapperPage" method="instrumentMapperPage" class="eu.heliovo.queryservice.common.action.CommonAction">
+            <result  name="SUCCESS" >jsp/AdminHome.jsp</result>	
+            <result  name="ERROR" >jsp/AdminHome.jsp</result>	
+	</action>
+	
 	<!-- End of instruments -->
     </package>
 </struts>
