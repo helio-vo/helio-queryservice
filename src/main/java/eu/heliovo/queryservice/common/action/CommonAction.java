@@ -1,5 +1,6 @@
 package eu.heliovo.queryservice.common.action;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -18,6 +19,7 @@ import eu.heliovo.queryservice.common.transfer.FileResultTO;
 import eu.heliovo.queryservice.common.util.ConnectionManager;
 import eu.heliovo.queryservice.common.util.FileUtils;
 import eu.heliovo.queryservice.common.util.InstanceHolders;
+import eu.heliovo.queryservice.common.util.XsdParserUtils;
 
  
 public class CommonAction  extends ActionSupport
@@ -365,6 +367,26 @@ public class CommonAction  extends ActionSupport
 		}
 		
 		return sReturnStatus;
+	}
+	/*
+	 * Yet to implement
+	 */
+	public String instrumentMapperPage()
+	{
+		XsdParserUtils xsdParserUtils=new XsdParserUtils();
+		String filePath=InstanceHolders.getInstance().getProperty("hsqldb.database.path");
+		if(filePath!=null && !filePath.equals("")){
+			filePath=filePath.replace("classes", "wsdl");
+		}
+		System.out.println(":  File Path for Instrument XSD  :"+filePath);
+		//PRINT ELEMENTS FROM XSD.
+		try {
+			xsdParserUtils.parseSchema(filePath+"/Instruments.xsd");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "SUCCESS";
 	}
 	
        
