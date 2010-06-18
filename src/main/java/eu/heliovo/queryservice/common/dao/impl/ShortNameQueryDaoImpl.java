@@ -329,7 +329,7 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 			 if(queryTimeContraint!=null && !queryTimeContraint.trim().equals("") ){
 				 //Checking if it has where clause.
 				 if(!queryWhereClause.equals("")){
-					 queryConstraint=queryConstraint+" "+queryWhereClause+" AND "+queryTimeContraint;
+					 queryConstraint=queryConstraint+" "+queryTimeContraint+" AND "+queryWhereClause;
 				 }else{
 					 queryConstraint=queryConstraint+" "+queryTimeContraint;
 				 }
