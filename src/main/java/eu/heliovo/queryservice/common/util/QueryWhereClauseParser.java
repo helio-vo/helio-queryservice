@@ -134,6 +134,27 @@ public class QueryWhereClauseParser {
         return input.split("\\Q"+countString+"\\E", -1).length - 1;
     }
 	
+	//This method not yet used.
+	public static boolean isInteger( String input )  
+	 {  
+	    try  
+	    {  
+	       Integer.parseInt( input );  
+	       return true;  
+	    }  
+	    catch( Exception e)  
+	    {  
+	    	try{
+	    		Double.parseDouble(input);
+	    		return true; 
+	    	}catch(Exception e1){
+	    		return false; 
+	    	}
+	        
+	       
+	    }  
+	 } 
+	
 	// check is string is a join query
 	public static boolean checkIfJoinQuery(CommonCriteriaTO comCriteriaTO)
 	{
@@ -150,8 +171,8 @@ public class QueryWhereClauseParser {
 		//Checking All type of cluase
 		checkAllType(sWhereClause);
 		//Checking if it ends with AND.
-		if(whereClauseString.endsWith("AND"))
-			whereClauseString=whereClauseString.substring(0, whereClauseString.length()-3);
+		if(whereClauseString!=null && whereClauseString.trim().endsWith("AND") )
+			whereClauseString=whereClauseString.substring(0, whereClauseString.length()-4);
 		
 		return whereClauseString;
 	}
@@ -162,8 +183,8 @@ public class QueryWhereClauseParser {
 
 	/*
 	public static void main(String arg[]){
-		String sWhere="vmag,4.5/5.5;imag,4.5/;bmag,/5.5;flag,4,5,6;jmag,4.5/5.5,/3.0,9.0/;name,*Lon*;kmag,4.5/5.5;flux,null;last,1,3,5;flux,!null";
-		//String sWhere="flag,4,5,6;last,1";
+		String sWhere="vmag,4.5/5.5;imag,4.5/;bmag,/5.5;flag,4,5,6;jmag,4.5/5.5,/3.0,9.0/;name,*Lon*;kmag,4.5/5.5;flux,null;last,1,3,5;flux,!null;xray_class,C6/X10";
+		//String sWhere="xray_class,C6/X10";
 		System.out.println(generateWhereClause(sWhere));
 	  }
 	*/
