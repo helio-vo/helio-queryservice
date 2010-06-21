@@ -1,11 +1,16 @@
 package eu.heliovo.queryservice.common.util;
 
+import java.util.regex.Pattern;
+
 import eu.heliovo.queryservice.common.transfer.criteriaTO.CommonCriteriaTO;
 
 public class QueryWhereClauseParser {
 	
 	private static String whereClauseString="";
-		
+	
+	/*
+	 *Check for null cluase. 
+	 */
 	private static void checkIfNull(String value){
 		String data[]=value.split(",");
 		if(data.length>1 && data[1].equalsIgnoreCase("null")){
@@ -14,6 +19,9 @@ public class QueryWhereClauseParser {
 		
 	}
 	
+	/*
+	 *Check for is not null cluase. 
+	 */
 	private static void checkIfNotNull(String value){
 		String data[]=value.split(",");
 		if(data.length>1 && data[1].equalsIgnoreCase("!null")){
@@ -22,6 +30,9 @@ public class QueryWhereClauseParser {
 		
 	}
 	
+	/*
+	 *Check for is greater cluase. 
+	 */
 	private static void checkIfGreaterThanEqualTo(String value){
 		String data[]=value.split(",");
 		if(data.length>1 && data[1].endsWith("/")){
@@ -30,7 +41,9 @@ public class QueryWhereClauseParser {
 		
 	}
 	
-
+	/*
+	 *Check for less then equal to cluase. 
+	 */	
 	private static void checkIfLessThanEqualTo(String value){
 		String data[]=value.split(",");
 		if(data.length>1 && data[1].startsWith("/")){
@@ -39,14 +52,30 @@ public class QueryWhereClauseParser {
 		
 	}
 	
+	/*
+	 *Check for between cluase. 
+	 */
 	private static void checkIfBetween(String value){
 		String data[]=value.split(",");
 		if(data.length>1 && !data[1].startsWith("/") && !data[1].endsWith("/") && data[1].split("/").length>1 && data[1].split("/")[1]!=null && data[1].split("/")[1].trim()!=""){
-			whereClauseString=whereClauseString+" "+data[0]+" BETWEEN "+data[1].split("/")[0]+" AND "+data[1].split("/")[1]+" AND ";
+			//First Value
+			String firstValue=data[1].split("/")[0];
+			//Secound Value
+			String secoundValue=data[1].split("/")[1];
+			//Test if it has any char.
+			if(testAlphaString(firstValue))
+				firstValue="'"+firstValue+"'";
+			//Secound Value.
+			if(testAlphaString(secoundValue))
+				secoundValue="'"+secoundValue+"'";
+			whereClauseString=whereClauseString+" "+data[0]+" BETWEEN "+firstValue+" AND "+secoundValue+" AND";
 		}
 		
 	}
 	
+	/*
+	 *Check for 'or' cluase. 
+	 */
 	private static void checkIfOR(String value){
 		String orClause="";
 		String data[]=value.split(",");	
@@ -58,14 +87,21 @@ public class QueryWhereClauseParser {
 					else
 						orClause=" OR ";
 					//Creating where clause.
-					whereClauseString=whereClauseString+data[0]+"="+data[i]+orClause;
+					String sValue=data[i];
+					//Checking if the value has alpha.
+					if(testAlphaString(sValue))
+						sValue="'"+sValue+"'";
+					whereClauseString=whereClauseString+data[0]+"="+sValue+orClause;
 		    }	
 		   whereClauseString=whereClauseString+" ) AND";
 		}
 		
 		
 	}
-		
+	
+	/*
+	 *Check for like cluase. 
+	 */
 	private static void checkIfLike(String value){ 
 		String data[]=value.split(",");
 		if(data.length>1 && data[1].startsWith("*") && data[1].endsWith("*")){
@@ -73,8 +109,12 @@ public class QueryWhereClauseParser {
 		}
 		
 	}
-		
+
+	/*
+	 *Check for between cluase. 
+	 *		
 	// Not in use now.
+	 */
 	private static void checkIfEqual(String value){
 		String data[]=value.split(",");
 		if(data.length>1){
@@ -83,7 +123,9 @@ public class QueryWhereClauseParser {
 		
 	}
 
-	//Yet to be done.
+	/*
+	 *Check for all type of cluase. 
+	 */
 	private static void checkAllType(String whereClause){
 		String stringForOr="";
 		String prevColumnName="";
@@ -129,33 +171,32 @@ public class QueryWhereClauseParser {
 		
 	}
 		
-	// Count of search string.
+	/*
+	 *Getting the count of a search string. 
+	*/
 	private static int count(String input, String countString){
         return input.split("\\Q"+countString+"\\E", -1).length - 1;
     }
 	
-	//This method not yet used.
-	public static boolean isInteger( String input )  
-	 {  
-	    try  
-	    {  
-	       Integer.parseInt( input );  
-	       return true;  
-	    }  
-	    catch( Exception e)  
-	    {  
-	    	try{
-	    		Double.parseDouble(input);
-	    		return true; 
-	    	}catch(Exception e1){
-	    		return false; 
-	    	}
-	        
-	       
-	    }  
-	 } 
+	/*
+	 *Pattern search. 
+	 */
+	private static Pattern p = Pattern.compile("[A-Za-z]");
+	public static boolean testAlphaString(String s)
+	{		
+	   return match(s);
+	}
 	
-	// check is string is a join query
+	/*
+	 *Check the match value. 
+	*/
+	private static boolean match(String s) {
+		return  p.matcher(s).find();
+	}
+	
+	/*
+	 *Check for join query. 
+	*/
 	public static boolean checkIfJoinQuery(CommonCriteriaTO comCriteriaTO)
 	{
 		boolean status=false;
@@ -166,28 +207,32 @@ public class QueryWhereClauseParser {
 		}
 		return status;
 	}
-	
+	/*
+	 *Generate the sql based query.
+	 */
 	public static String generateWhereClause(String sWhereClause){
 		//Checking All type of cluase
 		checkAllType(sWhereClause);
 		//Checking if it ends with AND.
 		if(whereClauseString!=null && whereClauseString.trim().endsWith("AND") )
-			whereClauseString=whereClauseString.substring(0, whereClauseString.length()-4);
+			whereClauseString=whereClauseString.substring(0, whereClauseString.length()-3);
 		
 		return whereClauseString;
 	}
-	
+	/*
+	 *settng null value for all unused variable.. 
+	 */
 	public static void deAllocateStringToNull(){
 		whereClauseString=null;
 	}
 
 	/*
 	public static void main(String arg[]){
-		String sWhere="vmag,4.5/5.5;imag,4.5/;bmag,/5.5;flag,4,5,6;jmag,4.5/5.5,/3.0,9.0/;name,*Lon*;kmag,4.5/5.5;flux,null;last,1,3,5;flux,!null;xray_class,C6/X10";
+		String sWhere="vmag,4.5/5.5;imag,4.5/;bmag,/5.5;flag,4,5,6,77y88;vinu,4;jmag,4.5/5.5,/3.0,9.0/;name,*Lon*;kmag,4.5/5.5;flux,null;last,1,3,5,u78;flux,!null;xray_class,9999y/X10";
 		//String sWhere="xray_class,C6/X10";
 		System.out.println(generateWhereClause(sWhere));
 	  }
 	*/
-	
+
 }
 
