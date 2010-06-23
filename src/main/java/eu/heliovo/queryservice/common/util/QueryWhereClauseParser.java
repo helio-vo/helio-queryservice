@@ -119,7 +119,7 @@ public class QueryWhereClauseParser {
 	}
 
 	/*
-	 *Check for between cluase. 
+	 *Check for equals to cluase. 
 	 *		
 	// Not in use now.
 	 */
