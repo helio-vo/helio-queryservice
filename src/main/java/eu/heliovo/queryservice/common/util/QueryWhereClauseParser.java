@@ -36,7 +36,11 @@ public class QueryWhereClauseParser {
 	private static void checkIfGreaterThanEqualTo(String value){
 		String data[]=value.split(",");
 		if(data.length>1 && data[1].endsWith("/")){
-			whereClauseString=whereClauseString+" "+data[0]+">="+data[1].replace("/", "")+" AND";
+			// Value
+			String sValue=data[1].replace("/", "");
+			if(testAlphaString(sValue))
+				sValue="'"+sValue+"'";
+			whereClauseString=whereClauseString+" "+data[0]+">="+sValue+" AND";
 		}
 		
 	}
@@ -47,7 +51,11 @@ public class QueryWhereClauseParser {
 	private static void checkIfLessThanEqualTo(String value){
 		String data[]=value.split(",");
 		if(data.length>1 && data[1].startsWith("/")){
-			whereClauseString=whereClauseString+" "+data[0]+"<="+data[1].replace("/", "")+" AND";
+			// Value
+			String sValue=data[1].replace("/", "");
+			if(testAlphaString(sValue))
+				sValue="'"+sValue+"'";
+			whereClauseString=whereClauseString+" "+data[0]+"<="+sValue+" AND";
 		}
 		
 	}
@@ -228,7 +236,7 @@ public class QueryWhereClauseParser {
 
 	/*
 	public static void main(String arg[]){
-		String sWhere="vmag,4.5/5.5;imag,4.5/;bmag,/5.5;flag,4,5,6,77y88;vinu,4;jmag,4.5/5.5,/3.0,9.0/;name,*Lon*;kmag,4.5/5.5;flux,null;last,1,3,5,u78;flux,!null;xray_class,9999y/X10";
+		String sWhere="vmag,4.5/5.5;imag,4.5/;bmag,/5.5;flag,4,5,6,77y88;vinu,4;jmag,4.5/5.5,/3.0r,I9.0/;name,*Lon*;kmag,4.5/5.5;flux,null;last,1,3,5,u78;flux,!null;xray_class,9999y/X10";
 		//String sWhere="xray_class,C6/X10";
 		System.out.println(generateWhereClause(sWhere));
 	  }
