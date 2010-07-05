@@ -2,15 +2,12 @@
 package eu.heliovo.queryservice.common.dao.impl;
 
 import java.io.BufferedWriter;
-
 import org.apache.log4j.Logger;
-
 import eu.heliovo.queryservice.common.dao.CommonDaoFactory;
 import eu.heliovo.queryservice.common.dao.exception.DetailsNotFoundException;
 import eu.heliovo.queryservice.common.dao.interfaces.CommonDao;
 import eu.heliovo.queryservice.common.dao.interfaces.ShortNameQueryDao;
 import eu.heliovo.queryservice.common.transfer.criteriaTO.CommonCriteriaTO;
-
 
 
 public class CommonDaoImpl implements CommonDao { 

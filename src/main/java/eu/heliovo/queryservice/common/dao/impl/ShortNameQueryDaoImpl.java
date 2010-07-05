@@ -6,6 +6,7 @@ import java.sql.DatabaseMetaData;
 import java.util.Date;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -30,17 +31,12 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 	}
 	
 	protected final  Logger logger = Logger.getLogger(this.getClass());
-	
+		
 	/*
 	 * (non-Javadoc)
 	 * @see com.org.helio.common.dao.interfaces.ShortNameQueryDao#generateVOTableDetails(com.org.helio.common.transfer.criteriaTO.CommonCriteriaTO)
 	 */
 	public void generateVOTableDetails(CommonCriteriaTO comCriteriaTO) throws DetailsNotFoundException,Exception {
-		Connection con = null;
-		Statement st = null;
-		ResultSetMetaData rms =null;
-		StarTable[] tables=null;
-		ResultSet rs=null;
 		//List data or table names
 		String[] listName=comCriteriaTO.getListTableName();
 		//start date vales
@@ -48,121 +44,32 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 		//end date values
 		String endDateTimeList[]=comCriteriaTO.getEndDateTimeList();
 		
-	  try{
-		  
-	  if(listName!=null){
-		if(startDateTimeList!=null && endDateTimeList!=null){
-		//Count of tables in respionse.
-		int count=listName.length*startDateTimeList.length;
-		tables=new StarTable[count];
-		int tableCount=0;
-		if(startDateTimeList.length==endDateTimeList.length){
-		//For loop start
-		for(int intCnt=0;intCnt<listName.length;intCnt++){
-			//loop for start date.
-		  for(int intTimeCnt=0;intTimeCnt<startDateTimeList.length;intTimeCnt++){
-			 String startDate=startDateTimeList[intTimeCnt];
-			 String endDate=endDateTimeList[intTimeCnt];
-			 logger.info(" : Start Date ; End Date and List Name : "+startDate+"  : "+endDate+"  : "+listName[intCnt]);
-			 //Setting start time 
-			comCriteriaTO.setStartDateTime(startDate);
-			//Setting end time
-			comCriteriaTO.setEndDateTime(endDate);
-			//Checking if start date or end date is null or no value.
-			if((startDate!=null && !startDate.trim().equals("")) && (endDate!=null && !endDate.trim().equals(""))){
-			//Comparing 2 date value.
-			if(compareToDates(startDate,endDate)){
-				String sRepSql = CommonUtils.replaceParams(generateQuery(listName[intCnt],comCriteriaTO), comCriteriaTO.getParamData());
-				logger.info(" : Query String After Replacing Value :"+sRepSql);	
-				//Setting Table Name.
-				comCriteriaTO.setTableName(listName[intCnt]);
-				//Setting query with values.
-				comCriteriaTO.setQuery(sRepSql);
-				//Connecting to database.						
-				con = getConnectionObject();
-				st = con.createStatement();
-				rs= st.executeQuery(sRepSql);
-				comCriteriaTO.setQueryStatus("OK");
-				comCriteriaTO.setQuery(sRepSql);
-				
-				tables[tableCount] = new StandardTypeTable( new SequentialResultSetStarTable( rs ) );
-				tables[tableCount].setName(comCriteriaTO.getContextPath()+"_"+listName[intCnt]);
-				tableCount++;
-			}else{
+		try{
+				//Checking for list name.
+			  	if(listName!=null){
+					if(startDateTimeList!=null && endDateTimeList!=null){
+						//Start time & End time array of time.
+						comCriteriaTO=handlingStartTimeAndEndTimeArray(comCriteriaTO);
+					}else{
+						//Start time and end time is null; Get all result values.
+						comCriteriaTO=handlingNonTimeBased(comCriteriaTO);
+					}
+				}else{
+					  comCriteriaTO.setQueryStatus("ERROR");
+					  comCriteriaTO.setQueryDescription("FROM clause value is missing in request xml.");
+					  VOTableMaker.writeTables(comCriteriaTO);
+				}
+		}catch (Exception e){		
+				//Writing all details into table.
 				comCriteriaTO.setQueryStatus("ERROR");
-				comCriteriaTO.setQueryDescription("Start Date should always be less than End Date.");
-				VOTableMaker.writeTables(comCriteriaTO);
-			}
-			}else{
-				comCriteriaTO.setQueryStatus("ERROR");
-				comCriteriaTO.setQueryDescription("Start date and End date cannot be null or no value");
-				VOTableMaker.writeTables(comCriteriaTO);
-			}
-		  }
-		}
-		comCriteriaTO.setTables(tables);
-		//Editing column property.
-		VOTableMaker.setColInfoProperty(tables, listName);
-		//Writing all details into table.
-		VOTableMaker.writeTables(comCriteriaTO);
-		logger.info(" : VOTable succesfully created :");	
-		
-		}else{
-			comCriteriaTO.setQueryStatus("ERROR");
-			comCriteriaTO.setQueryDescription("Start date and End date should have same no of values.");
-			VOTableMaker.writeTables(comCriteriaTO);
-		}
-		}else{
-			comCriteriaTO.setQueryStatus("ERROR");
-			comCriteriaTO.setQueryDescription("Start date and End date cannot be null or no value");
-			VOTableMaker.writeTables(comCriteriaTO);
-		}
-		
-	  }else{
-		  comCriteriaTO.setQueryStatus("ERROR");
-		  comCriteriaTO.setQueryDescription("FROM clause value is missing in request xml.");
-		  VOTableMaker.writeTables(comCriteriaTO);
-	  }
-	 }catch (Exception e){		
-			//Writing all details into table.
-			comCriteriaTO.setQueryStatus("ERROR");
-			comCriteriaTO.setQueryDescription(e.getMessage());
-			
-			VOTableMaker.writeTables(comCriteriaTO);
-			logger.info(" Exception occured while generating VOTABLE: ",e);
-			logger.fatal(" Exception occured while generating VOTABLE: ",e);
-			throw new DetailsNotFoundException("EXCEPTION ", e);
-	 }
-		
-	 finally
-		{
-		    try {
-				if(rms!=null)
-				{
-					rms = null;
-				}
-				if(rs!=null)
-				{
-					rs.close();
-					rs=null;
-				}
-				if(st!=null)
-				{
-					st.close();
-					st=null;
-				}
-				if(con!=null)
-				{
-					con.close();
-					con=null;
-				}
+				comCriteriaTO.setQueryDescription(e.getMessage());
 				
-			} catch (Exception e) {
-				
-			}
-		}		
+				VOTableMaker.writeTables(comCriteriaTO);
+				logger.fatal(" Exception occured while generating VOTABLE: ",e);
+				throw new DetailsNotFoundException("EXCEPTION ", e);
+		 }
+		
 	}
-	
 	
 	/*
 	 * Get the list of Tables in a Database.
@@ -201,7 +108,7 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 					rs=null;
 				}
 			} catch (Exception e) {
-				
+				logger.fatal(" Exception occured while closing connection: ",e);
 			}
 	   }	
 	    return hmbDatabaseTableList;
@@ -326,7 +233,7 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 			
 			 //Appending Time clause.
 			 String queryTimeContraint=ConfigurationProfiler.getInstance().getProperty("sql.query.time.constraint."+listName);
-			 if(queryTimeContraint!=null && !queryTimeContraint.trim().equals("") ){
+			 if(queryTimeContraint!=null && !queryTimeContraint.trim().equals("") && comCriteriaTO.getStartDateTime()!=null && !comCriteriaTO.getStartDateTime().trim().equals("")  && comCriteriaTO.getEndDateTime()!=null && !comCriteriaTO.getEndDateTime().trim().equals("")){
 				 //Checking if it has where clause.
 				 if(!queryWhereClause.equals("")){
 					 queryConstraint=queryConstraint+" "+queryTimeContraint+" AND "+queryWhereClause;
@@ -342,7 +249,7 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 			 //Appending Instrument clause.
 			 String queryInstContraint=ConfigurationProfiler.getInstance().getProperty("sql.query.instr.constraint."+listName);
 			 if(queryInstContraint!=null && !queryInstContraint.trim().equals("")){
-				 if(queryConstraint!="")
+				 if(queryConstraint!=null && !queryConstraint.trim().equals(""))
 					 queryConstraint=queryConstraint+" AND "+queryInstContraint; 
 				 else
 					 queryConstraint=queryConstraint+" "+queryInstContraint; 
@@ -353,7 +260,7 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 			 //Appending Coordinate clause.
 			 String queryCoordinateContraint=ConfigurationProfiler.getInstance().getProperty("sql.query.coordinates.constraint."+listName);
 			 if(queryCoordinateContraint!=null && !queryCoordinateContraint.trim().equals("")){
-				 if(queryConstraint!="")
+				 if(queryConstraint!=null && !queryConstraint.trim().equals(""))
 					 queryConstraint=queryConstraint+" AND "+queryCoordinateContraint; 
 				 else
 					 queryConstraint=queryConstraint+" "+queryCoordinateContraint; 
@@ -383,8 +290,8 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 			 }
 			 //Setting max record
 			 comCriteriaTO.setMaxRecordsAllowed(maxRecordsAllowed);
-			//Getting Limit Constraint. 
-			String querylimitContraint=generateLimitConstraintBasedOnDatabase(comCriteriaTO);
+			 //Getting Limit Constraint. 
+			 String querylimitContraint=generateLimitConstraintBasedOnDatabase(comCriteriaTO);
 			
 			 //Appending ; 'Limit Constraints' .
 			 query=query+" "+querylimitContraint;
@@ -425,7 +332,9 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 		 return query;
 	}
 	
-	
+	/*
+	 * 
+	 */
 	@SuppressWarnings("unused")
 	private String generateLimitConstraintBasedOnDatabase(CommonCriteriaTO comCriteriaTO) throws Exception{
 		String sDrive= ConfigurationProfiler.getInstance().getProperty("jdbc.driver");
@@ -493,7 +402,9 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 		return con;
 	}
 	
-	
+	/*
+	 * Method to compare to date.
+	 */
 	@SuppressWarnings("deprecation")
 	private  boolean compareToDates(String startDate,String endDate) throws Exception{
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -517,4 +428,170 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 	    return status;
 	}
 	
+	/*
+	 * Method to add result set data to VOTable.
+	 */
+	private ResultSet addingResultSetToVOTable(CommonCriteriaTO comCriteriaTO) throws Exception
+	{
+		Connection con = null;
+		Statement st = null;
+		ResultSetMetaData rms =null;
+		ResultSet rs=null;
+		try{
+		
+			String sRepSql = CommonUtils.replaceParams(generateQuery(comCriteriaTO.getTableName(),comCriteriaTO), comCriteriaTO.getParamData());
+			logger.info(" : Query String After Replacing Value :"+sRepSql);	
+			//Setting Table Name.
+			comCriteriaTO.setTableName(comCriteriaTO.getListName());
+			//Setting query with values.
+			comCriteriaTO.setQuery(sRepSql);
+			//Connecting to database.						
+			con = getConnectionObject();
+			st = con.createStatement();
+			rs= st.executeQuery(sRepSql);
+			comCriteriaTO.setQueryStatus("OK");
+			comCriteriaTO.setQuery(sRepSql);
+			
+		}catch(Exception e){
+			throw new Exception("Please check sql syntax, some problem with executing this query.");
+		}
+		
+		finally
+		{
+		    try {
+		    	
+				if(rms!=null)
+				{
+					rms = null;
+				}
+				if(rs!=null)
+				{
+					rs.close();
+					rs=null;
+				}
+				if(st!=null)
+				{
+					st.close();
+					st=null;
+				}
+				if(con!=null)
+				{
+					con.close();
+					con=null;
+				}
+				
+			} catch (Exception e) {
+				
+			}
+		}		
+		return rs;
+	}
+	
+	/*
+	 * start time and end time is null or no value.
+	 */
+	@SuppressWarnings("unused")
+	private CommonCriteriaTO handlingNonTimeBased(CommonCriteriaTO comCriteriaTO) throws SQLException, Exception
+	{
+		logger.info(" : Start of method handlingStartTimeAndEndTime()--> Start time and End time is NULL,select all values. :");
+		//List data or table names
+		String[] listName=comCriteriaTO.getListTableName();
+		StarTable[] tables=null;
+		ResultSet rs=null;
+		int count=listName.length;
+		tables=new StarTable[count];
+		int tableCount=0;
+		//For loop start
+		for(int intCnt=0;intCnt<listName.length;intCnt++){
+			comCriteriaTO.setTableName(listName[intCnt]);
+			//getting the result set
+			rs= addingResultSetToVOTable(comCriteriaTO);
+			tables[tableCount] = new StandardTypeTable( new SequentialResultSetStarTable( rs ) );
+			tables[tableCount].setName(comCriteriaTO.getContextPath()+"_"+listName[intCnt]);
+			tableCount++;
+		}
+		
+		comCriteriaTO.setTables(tables);
+		//Editing column property.
+		VOTableMaker.setColInfoProperty(tables, listName);
+		//Writing all details into table.
+		VOTableMaker.writeTables(comCriteriaTO);
+		comCriteriaTO.setTables(tables);
+		//Editing column property.
+		VOTableMaker.setColInfoProperty(tables, listName);
+		//Writing all details into table.
+		VOTableMaker.writeTables(comCriteriaTO);
+		logger.info(" : VOTable succesfully created :");
+		
+		return comCriteriaTO;
+	}
+	
+	/*
+	 * Array of start time and end time
+	 */
+	@SuppressWarnings("unused")
+	private CommonCriteriaTO handlingStartTimeAndEndTimeArray(CommonCriteriaTO comCriteriaTO) throws SQLException, Exception
+	{
+		logger.info(" : Start of method handlingStartTimeAndEndTimeArray()--> Array of start time andend time. :");
+		StarTable[] tables=null;
+		ResultSet rs=null;
+	
+		//List data or table names
+		String[] listName=comCriteriaTO.getListTableName();
+		//start date vales
+		String startDateTimeList[]=comCriteriaTO.getStartDateTimeList();
+		//end date values
+		String endDateTimeList[]=comCriteriaTO.getEndDateTimeList();
+		//Count of tables in respionse.
+		int count=listName.length*startDateTimeList.length;
+		tables=new StarTable[count];
+		int tableCount=0;
+		if(startDateTimeList.length==endDateTimeList.length){
+		//For loop start
+		for(int intCnt=0;intCnt<listName.length;intCnt++){
+			//loop for start date.
+		  for(int intTimeCnt=0;intTimeCnt<startDateTimeList.length;intTimeCnt++){
+			 String startDate=startDateTimeList[intTimeCnt];
+			 String endDate=endDateTimeList[intTimeCnt];
+			 logger.info(" : Start Date ; End Date and List Name : "+startDate+"  : "+endDate+"  : "+listName[intCnt]);
+			 //Setting start time 
+			comCriteriaTO.setStartDateTime(startDate);
+			//Setting end time
+			comCriteriaTO.setEndDateTime(endDate);
+			//Checking if start date or end date is null or no value.
+			if((startDate!=null && !startDate.trim().equals("")) && (endDate!=null && !endDate.trim().equals(""))){
+			//Comparing 2 date value.
+			if(compareToDates(startDate,endDate)){
+				comCriteriaTO.setTableName(listName[intCnt]);
+				//getting the result set
+				rs= addingResultSetToVOTable(comCriteriaTO);
+				tables[tableCount] = new StandardTypeTable( new SequentialResultSetStarTable( rs ) );
+				tables[tableCount].setName(comCriteriaTO.getContextPath()+"_"+listName[intCnt]);
+				tableCount++;
+			}else{
+				comCriteriaTO.setQueryStatus("ERROR");
+				comCriteriaTO.setQueryDescription("Start Date should always be less than End Date.");
+				VOTableMaker.writeTables(comCriteriaTO);
+			}
+			}else{
+				comCriteriaTO.setQueryStatus("ERROR");
+				comCriteriaTO.setQueryDescription("Start date and End date cannot be null or no value");
+				VOTableMaker.writeTables(comCriteriaTO);
+			}
+		  }
+		}
+		comCriteriaTO.setTables(tables);
+		//Editing column property.
+		VOTableMaker.setColInfoProperty(tables, listName);
+		//Writing all details into table.
+		VOTableMaker.writeTables(comCriteriaTO);
+		logger.info(" : VOTable succesfully created :");	
+		
+		}else{
+			comCriteriaTO.setQueryStatus("ERROR");
+			comCriteriaTO.setQueryDescription("Start date and End date should have same no of values.");
+			VOTableMaker.writeTables(comCriteriaTO);
+		}
+		return comCriteriaTO;
+ }
 }
