@@ -49,6 +49,8 @@ public class CommonCriteriaTO implements Serializable{
 	private String startDateTimeList[];
 	private String endDateTimeList[];	
 	private String contextPath;
+	private int tableCount=0;
+	
 	
 	public CommonCriteriaTO(){
 		this.setIPageNumber(0);
@@ -344,6 +346,14 @@ public class CommonCriteriaTO implements Serializable{
 
 	public void setContextPath(String contextPath) {
 		this.contextPath = contextPath;
+	}
+
+	public int getTableCount() {
+		return tableCount;
+	}
+
+	public void setTableCount(int tableCount) {
+		this.tableCount = tableCount;
 	}	
-	
+		
 }
