@@ -19,6 +19,7 @@
 			<xs:element minOccurs="0" name="INSTRUMENT" type="ins:instrument"/>
 			<xs:element minOccurs="0" name="MAXRECORDS" type="xs:int"/>
 			<xs:element minOccurs="0" name="STARTINDEX" type="xs:int"/>
+			<xs:element minOccurs="0" name="JOIN" type="xs:string"/>
 		</xs:sequence>
 	</xs:complexType>
 	
