@@ -11,79 +11,161 @@ public class QueryWhereClauseParser {
 	/*
 	 *Check for null cluase. 
 	 */
-	private static void checkIfNull(String value){
+	private static void checkIfNull(String value,String tableName,String join){
 		String data[]=value.split(",");
-		if(data.length>1 && data[1].equalsIgnoreCase("null")){
-			whereClauseString=whereClauseString+" "+data[0]+" is null"+" AND";
+		if(join!=null && !join.trim().equals("") && join.trim().equals("yes")){
+			if(data.length>1 && data[1].equalsIgnoreCase("null")){
+				 checkIfNull(data[0],data[1]);
+			}
+		}else{
+			if(data.length>1 && data[1].equalsIgnoreCase("null") && data[0].trim().contains(tableName)){
+				 checkIfNull(data[0],data[1]);
+			}
 		}
 		
 	}
 	
-	/*
-	 *Check for is not null cluase. 
+	/**
+	 * Common method of logic
+	 * @param columnName
+	 * @param value
 	 */
-	private static void checkIfNotNull(String value){
-		String data[]=value.split(",");
-		if(data.length>1 && data[1].equalsIgnoreCase("!null")){
-			whereClauseString=whereClauseString+" "+data[0]+" is not null"+" AND";
-		}
-		
+	private static void checkIfNull(String columnName,String value){
+		whereClauseString=whereClauseString+" "+columnName+" is null"+" AND";
 	}
 	
-	/*
-	 *Check for is greater cluase. 
+	/**
+	 * *Check for is not null cluase.
+	 * @param value
+	 * @param tableName
+	 * @param join
 	 */
-	private static void checkIfGreaterThanEqualTo(String value){
+	private static void checkIfNotNull(String value,String tableName,String join){
 		String data[]=value.split(",");
-		if(data.length>1 && data[1].endsWith("/")){
-			// Value
-			String sValue=data[1].replace("/", "");
-			if(testAlphaString(sValue))
-				sValue="'"+sValue+"'";
-			whereClauseString=whereClauseString+" "+data[0]+">="+sValue+" AND";
+		if(join!=null && !join.trim().equals("") && join.trim().equals("yes")){
+			if(data.length>1 && data[1].equalsIgnoreCase("!null")){
+				checkIfNotNull(data[0],data[1]);
+			}
+		}else{
+			if(data.length>1 && data[1].equalsIgnoreCase("!null") && data[0].trim().contains(tableName)){
+				checkIfNotNull(data[0],data[1]);
+			}
+		}
+	}
+	
+	/**
+	 * Common method of logic
+	 * @param columnName
+	 * @param value
+	 */
+	private static void checkIfNotNull(String columnName,String value){
+		whereClauseString=whereClauseString+" "+columnName+" is not null"+" AND";
+	}
+	
+	/**
+	 * @param value
+	 * @param tableName
+	 * @param join
+	 * Check for is greater clause. 
+	 */
+	private static void checkIfGreaterThanEqualTo(String value,String tableName,String join){
+		String data[]=value.split(",");
+		if(join!=null && !join.trim().equals("") && join.trim().equals("yes")){
+			if(data.length>1 && data[1].endsWith("/")){
+				 checkIfGreaterThanEqualTo(data[0],data[1]);
+			}
+		}else{
+			if(data.length>1 && data[0].trim().contains(tableName) && data[1].endsWith("/"))
+			{
+				checkIfGreaterThanEqualTo(data[0],data[1]);
+			}
 		}
 		
 	}
-	
+	/**
+	 * @param columnName
+	 * @param value
+	 * setting values for where clause.
+	 */
+	private static void checkIfGreaterThanEqualTo(String columnName,String value){
+		String sValue=value.replace("/", "");
+		if(testAlphaString(sValue))
+			sValue="'"+sValue+"'";
+		whereClauseString=whereClauseString+" "+columnName+">="+sValue+" AND";
+	}
 	/*
 	 *Check for less then equal to cluase. 
 	 */	
-	private static void checkIfLessThanEqualTo(String value){
+	private static void checkIfLessThanEqualTo(String value,String tableName,String join){
 		String data[]=value.split(",");
-		if(data.length>1 && data[1].startsWith("/")){
-			// Value
-			String sValue=data[1].replace("/", "");
-			if(testAlphaString(sValue))
-				sValue="'"+sValue+"'";
-			whereClauseString=whereClauseString+" "+data[0]+"<="+sValue+" AND";
+		if(join!=null && !join.trim().equals("") && join.trim().equals("yes")){
+			if(data.length>1 && data[1].startsWith("/")){
+				// Value
+				checkIfLessThanEqualTo(data[0],data[1]);
+			}
+		}else{
+			if(data.length>1 && data[0].trim().contains(tableName) && data[1].startsWith("/")){
+				checkIfLessThanEqualTo(data[0],data[1]);
+			}
 		}
 		
+	}
+	
+	/**
+	 * 
+	 * @param columnName
+	 * @param value
+	 */
+	private static void checkIfLessThanEqualTo(String columnName,String value){
+		String sValue=value.replace("/", "");
+		if(testAlphaString(sValue))
+			sValue="'"+sValue+"'";
+			whereClauseString=whereClauseString+" "+columnName+"<="+sValue+" AND";
 	}
 	
 	/*
 	 *Check for between cluase. 
 	 */
-	private static void checkIfBetween(String value){
+	private static void checkIfBetween(String value,String tableName,String join){
 		String data[]=value.split(",");
-		if(data.length>1 && !data[1].startsWith("/") && !data[1].endsWith("/") && data[1].split("/").length>1 && data[1].split("/")[1]!=null && data[1].split("/")[1].trim()!=""){
-			//First Value
-			String firstValue=data[1].split("/")[0];
-			//Secound Value
-			String secoundValue=data[1].split("/")[1];
-			//Test if it has any char.
-			if(testAlphaString(firstValue))
-				firstValue="'"+firstValue+"'";
-			//Secound Value.
-			if(testAlphaString(secoundValue))
-				secoundValue="'"+secoundValue+"'";
-			whereClauseString=whereClauseString+" "+data[0]+" BETWEEN "+firstValue+" AND "+secoundValue+" AND";
+		if(join!=null && !join.trim().equals("") && join.trim().equals("yes")){
+			if(data.length>1 && !data[1].startsWith("/") && !data[1].endsWith("/") && data[1].split("/").length>1 && data[1].split("/")[1]!=null && data[1].split("/")[1].trim()!=""){
+				checkIfBetween(data[0],data[1]);
+			}
+		}else{
+			if(data.length>1 && !data[1].startsWith("/") && !data[1].endsWith("/") && data[1].split("/").length>1 && data[1].split("/")[1]!=null && data[1].split("/")[1].trim()!="" && data[0].trim().contains(tableName)){
+				checkIfBetween(data[0],data[1]);
+			}
 		}
-		
+	}
+	
+	private static void checkIfBetween(String columnName,String value)
+	{
+		//First Value
+		String firstValue=value.split("/")[0];
+		//Secound Value
+		String secoundValue=value.split("/")[1];
+		//Test if it has any char.
+		if(testAlphaString(firstValue))
+			firstValue="'"+firstValue+"'";
+		//Secound Value.
+		if(testAlphaString(secoundValue))
+			secoundValue="'"+secoundValue+"'";
+		whereClauseString=whereClauseString+" "+columnName+" BETWEEN "+firstValue+" AND "+secoundValue+" AND";
 	}
 	
 	/*
 	 *Check for 'or' cluase. 
 	 */
+	private static void checkIfOR(String value,String tableName,String join){
+		String data[]=value.split(",");	
+		if(join!=null && !join.trim().equals("") && join.trim().equals("yes")){
+			checkIfOR(value);
+		}else if(data.length>1 && data[0].trim().contains(tableName)){
+			checkIfOR(value);
+		}
+	}
+	
 	private static void checkIfOR(String value){
 		String orClause="";
 		String data[]=value.split(",");	
@@ -102,22 +184,29 @@ public class QueryWhereClauseParser {
 					whereClauseString=whereClauseString+data[0]+"="+sValue+orClause;
 		    }	
 		   whereClauseString=whereClauseString+" ) AND";
-		}
-		
-		
+		}	
 	}
 	
 	/*
 	 *Check for like cluase. 
 	 */
-	private static void checkIfLike(String value){ 
+	private static void checkIfLike(String value,String tableName,String join){ 
 		String data[]=value.split(",");
-		if(data.length>1 && data[1].startsWith("*") && data[1].endsWith("*")){
-			whereClauseString=whereClauseString+" "+data[0]+" LIKE '"+data[1].replace("*", "%")+"' AND";
+		if(join!=null && !join.trim().equals("") && join.trim().equals("yes")){
+			if(data.length>1 && data[1].startsWith("*") && data[1].endsWith("*")){
+				checkIfLike(data[0],data[1]);
+			}
+		}else{
+			if(data.length>1 && data[1].startsWith("*") && data[1].endsWith("*") && data[0].trim().contains(tableName)){
+				
+			}
 		}
 		
 	}
 
+	private static void checkIfLike(String coulumnName,String value){ 
+		whereClauseString=whereClauseString+" "+coulumnName+" LIKE '"+value.replace("*", "%")+"' AND";
+	}
 	/*
 	 *Check for equals to cluase. 
 	 *		
@@ -134,45 +223,45 @@ public class QueryWhereClauseParser {
 	/*
 	 *Check for all type of cluase. 
 	 */
-	private static void checkAllType(String whereClause){
+	private static void checkAllType(String whereClause,String tableName,String join){
 		String stringForOr="";
 		String prevColumnName="";
-		String coulumnName="";
+		String columnName="";
 		whereClauseString="";
 		String[] whereClauseArray=whereClause.split(";");
 		for(int count=0;count<whereClauseArray.length;count++){
 			prevColumnName="";
-			coulumnName="";
+			columnName="";
 			String 	value=whereClauseArray[count];
 			String data[]=value.split(",");
 			for(int inCount=1;inCount<data.length;inCount++){
-				coulumnName=data[0];
+				columnName=data[0];
 				if(count(data[inCount],"/")>0){
-					checkIfGreaterThanEqualTo(coulumnName+","+data[inCount]);
-					checkIfLessThanEqualTo(coulumnName+","+data[inCount]);
-					checkIfBetween(coulumnName+","+data[inCount]);
+					checkIfGreaterThanEqualTo(columnName+","+data[inCount],tableName,join);
+					checkIfLessThanEqualTo(columnName+","+data[inCount],tableName,join);
+					checkIfBetween(columnName+","+data[inCount],tableName,join);
 				}else if(count(data[inCount],",")==0 && count(data[inCount],"*")>1){
-					checkIfLike(coulumnName+","+data[inCount]);
+					checkIfLike(columnName+","+data[inCount],tableName,join);
 				}else if(count(data[inCount],"!null")==1){
-					checkIfNotNull(coulumnName+","+data[inCount]);					
+					checkIfNotNull(columnName+","+data[inCount],tableName,join);					
 				}else if(count(data[inCount],"null")==1){
-					checkIfNull(coulumnName+","+data[inCount]);	
+					checkIfNull(columnName+","+data[inCount],tableName,join);	
 				}else{
-					if(prevColumnName.equals(coulumnName) || inCount==1)
+					if(prevColumnName.equals(columnName) || inCount==1)
 						stringForOr=stringForOr+data[inCount]+",";
-					else if(inCount!=1 && !prevColumnName.equals(coulumnName)){
-						checkIfOR(coulumnName+","+stringForOr.substring(0,stringForOr.length()-1));
+					else if(inCount!=1 && !prevColumnName.equals(columnName)){
+						checkIfOR(columnName+","+stringForOr.substring(0,stringForOr.length()-1),tableName,join);
 						stringForOr="";
 					}
 					//setting column value.
-					prevColumnName=coulumnName;
+					prevColumnName=columnName;
 				}
 			
 			}
 			
 			//For OR condition.
 			if(!stringForOr.equals("")){
-				checkIfOR(coulumnName+","+stringForOr.substring(0,stringForOr.length()-1));
+				checkIfOR(columnName+","+stringForOr.substring(0,stringForOr.length()-1),tableName,join);
 				stringForOr="";
 			}
 	   }
@@ -218,9 +307,9 @@ public class QueryWhereClauseParser {
 	/*
 	 *Generate the sql based query.
 	 */
-	public static String generateWhereClause(String sWhereClause){
-		//Checking All type of cluase
-		checkAllType(sWhereClause);
+	public static String generateWhereClause(CommonCriteriaTO comCriteriaTO){
+		//Checking All type of clause
+		checkAllType(comCriteriaTO.getWhereClause(),comCriteriaTO.getTableName(),comCriteriaTO.getJoin());
 		//Checking if it ends with AND.
 		if(whereClauseString!=null && whereClauseString.trim().endsWith("AND") )
 			whereClauseString=whereClauseString.substring(0, whereClauseString.length()-3);
@@ -236,9 +325,13 @@ public class QueryWhereClauseParser {
 
 	/*
 	public static void main(String arg[]){
-		String sWhere="vmag,4.5/5.5;imag,4.5/;bmag,/5.5;flag,4,5,6,77y88;vinu,4;jmag,4.5/5.5,/3.0r,I9.0/;name,*Lon*;kmag,4.5/5.5;flux,null;last,1,3,5,u78;flux,!null;xray_class,9999y/X10";
+		CommonCriteriaTO comCriteriaTO=new CommonCriteriaTO();
+		String sWhere="ins.vmag,4.5/5.5;ins.imag,4.5/;ins.bmag,/5.5;ins.flag,4,5,6,77y88;vinu,4;obs.jmag,4.5/5.5,/3.0r,I9.0/;ins.name,*Lon*;ins.kmag,4.5/5.5;ins.flux,null;ins.last,1,3,5,u78;ins.flux,!null;obs.xray_class,9999y/X10";
 		//String sWhere="xray_class,C6/X10";
-		System.out.println(generateWhereClause(sWhere));
+		comCriteriaTO.setWhereClause(sWhere);
+		comCriteriaTO.setJoin("no");
+		comCriteriaTO.setTableName("ins");
+		System.out.println(generateWhereClause(comCriteriaTO));
 	  }
 	*/
 
