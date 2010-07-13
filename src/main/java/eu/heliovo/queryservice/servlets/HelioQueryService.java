@@ -85,6 +85,9 @@ public class HelioQueryService extends HttpServlet {
 		    //Setting SIZE parameter.
 		    String size=request.getParameter("SIZE");
 		    comCriteriaTO.setSize(size);
+		    //Setting join parameter
+		    String sJoin=request.getParameter("JOIN");
+		    comCriteriaTO.setJoin(sJoin);
 			CommonDao commonNameDao= CommonDaoFactory.getInstance().getCommonDAO();
 			commonNameDao.generateVOTableDetails(comCriteriaTO);
 		}catch(Exception e){
