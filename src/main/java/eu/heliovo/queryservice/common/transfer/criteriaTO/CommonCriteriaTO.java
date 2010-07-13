@@ -50,6 +50,8 @@ public class CommonCriteriaTO implements Serializable{
 	private String endDateTimeList[];	
 	private String contextPath;
 	private int tableCount=0;
+	private String queryArray[];
+	private String join;
 	
 	
 	public CommonCriteriaTO(){
@@ -354,6 +356,22 @@ public class CommonCriteriaTO implements Serializable{
 
 	public void setTableCount(int tableCount) {
 		this.tableCount = tableCount;
+	}
+
+	public String[] getQueryArray() {
+		return queryArray;
+	}
+
+	public void setQueryArray(String[] queryArray) {
+		this.queryArray = queryArray;
+	}
+
+	public String getJoin() {
+		return join;
+	}
+
+	public void setJoin(String join) {
+		this.join = join;
 	}	
 		
 }
