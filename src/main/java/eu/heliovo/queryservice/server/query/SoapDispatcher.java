@@ -158,6 +158,12 @@ public class SoapDispatcher implements Provider<Source> {
 				 String noOfRows = inputDoc.getElementsByTagNameNS("*","MAXRECORDS").item(0).getFirstChild().getNodeValue();
 				 comCriteriaTO.setNoOfRows(noOfRows);
 			 }
+			 
+			//Setting for Join query status.
+			 if(inputDoc.getElementsByTagNameNS("*","JOIN").getLength()>0 && inputDoc.getElementsByTagNameNS("*","JOIN").item(0).getFirstChild()!=null){
+				 String join = inputDoc.getElementsByTagNameNS("*","JOIN").item(0).getFirstChild().getNodeValue();
+				 comCriteriaTO.setJoin(join);
+			 }
 	    	 
 			 //Full query interface
 		     if(interfaceName == "Query".intern() || interfaceName == "LongQuery".intern()) {
