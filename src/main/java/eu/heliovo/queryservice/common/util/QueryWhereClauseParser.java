@@ -198,7 +198,7 @@ public class QueryWhereClauseParser {
 			}
 		}else{
 			if(data.length>1 && data[1].startsWith("*") && data[1].endsWith("*") && data[0].trim().contains(tableName)){
-				
+				checkIfLike(data[0],data[1]);
 			}
 		}
 		
@@ -292,7 +292,7 @@ public class QueryWhereClauseParser {
 	}
 	
 	/*
-	 *Check for join query. 
+	 *Check for join query, not in use. 
 	*/
 	public static boolean checkIfJoinQuery(CommonCriteriaTO comCriteriaTO)
 	{
