@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import eu.heliovo.queryservice.common.util.ConfigurationProfiler;
+import uk.ac.starlink.table.DescribedValue;
 import uk.ac.starlink.table.StarTable;
 import uk.ac.starlink.table.Tables;
 import uk.ac.starlink.table.jdbc.SequentialResultSetStarTable;
@@ -138,6 +139,8 @@ public class VOTableMaker {
 	    		String[] columnUcd=getAllColumnUCD(listName);
 	    		//Column U Types.
 	    		String[] columnUTypes=getAllColumnUTypes(listName);
+	    		//
+	    		String[] coulumnNames=getAllColumnNames(listName);
 	    		
 	    		for(int j=0;j<tables.getColumnCount();j++){
 	    			//Setting UCD's for column.
@@ -153,6 +156,11 @@ public class VOTableMaker {
 	    			if(columnUTypes.length>0 && columnUTypes.length==tables.getColumnCount()){
 	    				Tables.setUtype( tables.getColumnInfo( j ), columnUTypes[j] );
 	    			}
+	    			//Handling NAR coulmn value( setting value as 1 if NAR is null)
+	    			if(coulumnNames.length>0 && coulumnNames.length==tables.getColumnCount() && coulumnNames[j]!=null && coulumnNames[j].toLowerCase().equals("nar")){
+	    				tables.getColumnInfo( j ).setAuxDatum( new DescribedValue( Tables.NULL_VALUE_INFO,new Integer( 1 )));
+
+	    			}
 	    		}
     	
     }catch(Exception e){
@@ -161,6 +169,21 @@ public class VOTableMaker {
     }
     	
     }	
+    /**
+     * 
+     * @param listName
+     * @return
+     */
+    private static String[] getAllColumnNames(String listName){
+    	String[] concatArray={};
+    	String[] listNameArray=listName.split(",");
+    	for(int count=0;count<listNameArray.length;count++){
+    		String[] columnName=ConfigurationProfiler.getInstance().getProperty("sql.columnnames."+listNameArray[count]).split("::");
+    		concatArray=addArrays(concatArray,columnName);
+    	}
+    	return concatArray;
+    }
+    
     /**
      * 
      * @param listName
