@@ -139,6 +139,11 @@ public class QueryWhereClauseParser {
 		}
 	}
 	
+	/**
+	 * Check for between clause.
+	 * @param columnName
+	 * @param value
+	 */
 	private static void checkIfBetween(String columnName,String value)
 	{
 		//First Value
@@ -154,19 +159,45 @@ public class QueryWhereClauseParser {
 		whereClauseString=whereClauseString+" "+columnName+" BETWEEN "+firstValue+" AND "+secoundValue+" AND";
 	}
 	
-	/*
-	 *Check for 'or' cluase. 
+
+	/**
+	 * Check for 'OR' clause.
+	 * @param value
+	 * @param tableName
+	 * @param join
 	 */
 	private static void checkIfOR(String value,String tableName,String join){
 		String data[]=value.split(",");	
 		if(join!=null && !join.trim().equals("") && join.trim().equals("yes")){
-			checkIfOR(value);
+			checkIfOR(value,tableName);
 		}else if(data.length>1 && data[0].trim().contains(tableName)){
-			checkIfOR(value);
+			checkIfOR(value,tableName);
 		}
 	}
 	
-	private static void checkIfOR(String value){
+	/**
+	 * Check if the value is a column
+	 * @param value
+	 * @param tableName
+	 * @return
+	 */
+	private static boolean checkValueIsAColumn(String value,String tableName){
+		boolean status=false;
+		if(value!=null){
+			for(int i=0;i<tableName.split(",").length;i++){
+				value=value.replace(tableName.split(",")[i]+".", "");
+			}
+		}
+		//Checking if the value is a column name.
+		for(int i=0;i<tableName.split(",").length;i++){
+			String colNames=ConfigurationProfiler.getInstance().getProperty("sql.columnnames."+tableName.split(",")[i]);
+			if(colNames.trim().contains(value))
+				status=true;
+		}
+		return status;
+	}
+	
+	private static void checkIfOR(String value,String tableName){
 		String orClause="";
 		String data[]=value.split(",");	
 		whereClauseString=whereClauseString+" ( ";
@@ -179,8 +210,10 @@ public class QueryWhereClauseParser {
 					//Creating where clause.
 					String sValue=data[i];
 					//Checking if the value has alpha.
-					if(testAlphaString(sValue))
-						sValue="'"+sValue+"'";
+					if(!checkValueIsAColumn(sValue,tableName)){
+						if(testAlphaString(sValue))
+							sValue="'"+sValue+"'";
+					}
 					whereClauseString=whereClauseString+data[0]+"="+sValue+orClause;
 		    }	
 		   whereClauseString=whereClauseString+" ) AND";
