@@ -411,7 +411,7 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 				//Appending Time clause.
 			queryMaxRecordContraint[intCnt]=ConfigurationProfiler.getInstance().getProperty("sql.query.maxrecord.constraint."+listName.split(",")[intCnt]);
 		}
-		if(queryMaxRecordContraint.length>1)
+		if(queryMaxRecordContraint.length>0)
 			maxAllowedValue=Collections.max(Arrays.asList(queryMaxRecordContraint));
 		
 		return maxAllowedValue;
