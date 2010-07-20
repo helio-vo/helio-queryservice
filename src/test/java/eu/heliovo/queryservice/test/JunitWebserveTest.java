@@ -130,7 +130,7 @@ public class JunitWebserveTest {
 		      System.out.println(" Testing results ");
 	   }	   
 	  */
-	
+	  
 	   @Test
 	   public void testFullQueryQname() throws Exception {
 		   
@@ -416,7 +416,12 @@ public class JunitWebserveTest {
 			 }
 			 
 	   }
-	      
+	   
+	   /**
+	    * 
+	    * @param reader
+	    * @throws IOException
+	    */
 	   private void printPrintReader(PipedReader  reader) throws IOException
 	   {
 		   try{
@@ -438,6 +443,12 @@ public class JunitWebserveTest {
 		   }
 	   }
 	   
+	   /**
+	    * 
+	    * @param reader
+	    * @return
+	    * @throws IOException
+	    */
 	   private String printPrintReaderStringRes(PipedReader  reader) throws IOException
 	   {
 		   try{
