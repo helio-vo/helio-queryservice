@@ -417,6 +417,349 @@ public class JunitWebserveTest {
 			 
 	   }
 	   
+	   
+	   @Test
+	   public void testTwoTableQueryQname() throws Exception {
+		   
+			PipedReader  pr = new PipedReader();
+			PipedWriter pw = new PipedWriter(pr);
+			
+			try{
+				 System.out.println(" Querying on two tables ....");
+				 ClassLoader loader = this.getClass().getClassLoader();
+				 String helioDbPath=loader.getResource("test.txt").getFile();
+				 System.out.println(" : helio db file path  : "+helioDbPath);
+				 InstanceHolders.getInstance().setProperty("hsqldb.database.path",helioDbPath.replace("test.txt", ""));
+				 DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+			     factory.setNamespaceAware(true);
+				 DocumentBuilder builder = factory.newDocumentBuilder();  
+				 //
+				 CommonCriteriaTO comCriteriaTO=new CommonCriteriaTO();
+				 String[]  arrStartTime=new String[1];
+				 String[]  arrEndTime=new String[1];
+				//Start time
+				 arrStartTime[0]="1890-10-20T20:30:56";
+				 arrEndTime[0]="2009-10-20T20:30:56";
+				 // Setting data
+				 comCriteriaTO.setStartDateTimeList(arrStartTime);
+				 comCriteriaTO.setEndDateTimeList(arrEndTime);	
+				 String[]  arr=new String[2];
+				 arr[0]="helio";
+				 arr[1]="helio";
+				 comCriteriaTO.setListTableName(arr);
+				 comCriteriaTO.setStatus("WebService");
+				 comCriteriaTO.setPrintWriter(pw);
+				 System.out.println("Creating a VOTable ....");
+				 new QueryThreadAnalizer(comCriteriaTO).start();
+				 Thread.sleep(20000);
+				 //Print reader
+				 System.out.println("Printing VOTable ....");
+				 printPrintReader(pr);
+				 
+			 }catch(Exception e){
+				  System.out.println(" Exception occured in testQueryQname : "+e);
+			 }
+			 
+			 finally{
+				 
+				 if(pw!=null){
+					pw.close(); 
+				 }
+			     //Setting hsqldb.database.path to null.
+				 InstanceHolders.getInstance().setProperty("hsqldb.database.path",null);
+			 }
+			 
+	   }
+	   
+	   @Test
+	   public void testArrayStartAndEndTimeQueryQname() throws Exception {
+		   
+			PipedReader  pr = new PipedReader();
+			PipedWriter pw = new PipedWriter(pr);
+			
+			try{
+				 System.out.println("Testing array of start and end time ....");
+				 ClassLoader loader = this.getClass().getClassLoader();
+				 String helioDbPath=loader.getResource("test.txt").getFile();
+				 System.out.println(" : helio db file path  : "+helioDbPath);
+				 InstanceHolders.getInstance().setProperty("hsqldb.database.path",helioDbPath.replace("test.txt", ""));
+				 DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+			     factory.setNamespaceAware(true);
+				 DocumentBuilder builder = factory.newDocumentBuilder();  
+				 //
+				 CommonCriteriaTO comCriteriaTO=new CommonCriteriaTO();
+				 String[]  arrStartTime=new String[2];
+				 String[]  arrEndTime=new String[2];
+				//Start time and End time.
+				 arrStartTime[0]="1890-10-20T20:30:56";
+				 arrEndTime[0]="2009-10-20T20:30:56";
+				 //Start time and End time
+				 arrStartTime[1]="1990-10-20T20:30:56";
+				 arrEndTime[1]="2009-10-20T20:30:56";
+				 // Setting data
+				 comCriteriaTO.setStartDateTimeList(arrStartTime);
+				 comCriteriaTO.setEndDateTimeList(arrEndTime);	
+				 String[]  arr=new String[2];
+				 arr[0]="helio";
+				 arr[1]="helio";
+				 comCriteriaTO.setListTableName(arr);
+				 comCriteriaTO.setStatus("WebService");
+				 comCriteriaTO.setPrintWriter(pw);
+				 System.out.println("Creating a VOTable ....");
+				 new QueryThreadAnalizer(comCriteriaTO).start();
+				 Thread.sleep(20000);
+				 //Print reader
+				 System.out.println("Printing VOTable ....");
+				 printPrintReader(pr);
+				 
+			 }catch(Exception e){
+				  System.out.println(" Exception occured in testQueryQname : "+e);
+			 }
+			 
+			 finally{
+				 
+				 if(pw!=null){
+					pw.close(); 
+				 }
+			     //Setting hsqldb.database.path to null.
+				 InstanceHolders.getInstance().setProperty("hsqldb.database.path",null);
+			 }
+			 
+	   }
+	   
+	   @Test
+	   public void testJoinTables() throws Exception {
+		   
+			PipedReader  pr = new PipedReader();
+			PipedWriter pw = new PipedWriter(pr);
+			
+			try{
+				 System.out.println("Joining 2 tables ....");
+				 ClassLoader loader = this.getClass().getClassLoader();
+				 String helioDbPath=loader.getResource("test.txt").getFile();
+				 System.out.println(" : helio db file path  : "+helioDbPath);
+				 InstanceHolders.getInstance().setProperty("hsqldb.database.path",helioDbPath.replace("test.txt", ""));
+				 DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+			     factory.setNamespaceAware(true);
+				 DocumentBuilder builder = factory.newDocumentBuilder();  
+				 //
+				 CommonCriteriaTO comCriteriaTO=new CommonCriteriaTO();
+				 String[]  arrStartTime=new String[2];
+				 String[]  arrEndTime=new String[2];
+				//Start time and End time.
+				 arrStartTime[0]="1890-10-20T20:30:56";
+				 arrEndTime[0]="2009-10-20T20:30:56";
+				 //Start time and End time
+				 arrStartTime[1]="1990-10-20T20:30:56";
+				 arrEndTime[1]="2009-10-20T20:30:56";
+				 // Setting data
+				 comCriteriaTO.setStartDateTimeList(arrStartTime);
+				 comCriteriaTO.setEndDateTimeList(arrEndTime);	
+				 //Joining 2 tables
+				 comCriteriaTO.setJoin("yes");
+				 String[]  arr=new String[2];
+				 arr[0]="helio";
+				 arr[1]="helio";
+				 comCriteriaTO.setListTableName(arr);
+				 comCriteriaTO.setStatus("WebService");
+				 comCriteriaTO.setPrintWriter(pw);
+				 System.out.println("Creating a VOTable ....");
+				 new QueryThreadAnalizer(comCriteriaTO).start();
+				 Thread.sleep(20000);
+				 //Print reader
+				 System.out.println("Printing VOTable ....");
+				 printPrintReader(pr);
+				 
+			 }catch(Exception e){
+				  System.out.println(" Exception occured in testQueryQname : "+e);
+			 }
+			 
+			 finally{
+				 
+				 if(pw!=null){
+					pw.close(); 
+				 }
+			     //Setting hsqldb.database.path to null.
+				 InstanceHolders.getInstance().setProperty("hsqldb.database.path",null);
+			 }
+			 
+	   }
+	   
+	   @Test
+	   public void testTablesWithoutJoin() throws Exception {
+		   
+			PipedReader  pr = new PipedReader();
+			PipedWriter pw = new PipedWriter(pr);
+			
+			try{
+				 System.out.println("Array of start and end time; without join....");
+				 ClassLoader loader = this.getClass().getClassLoader();
+				 String helioDbPath=loader.getResource("test.txt").getFile();
+				 System.out.println(" : helio db file path  : "+helioDbPath);
+				 InstanceHolders.getInstance().setProperty("hsqldb.database.path",helioDbPath.replace("test.txt", ""));
+				 DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+			     factory.setNamespaceAware(true);
+				 DocumentBuilder builder = factory.newDocumentBuilder();  
+				 //
+				 CommonCriteriaTO comCriteriaTO=new CommonCriteriaTO();
+				 String[]  arrStartTime=new String[2];
+				 String[]  arrEndTime=new String[2];
+				//Start time and End time.
+				 arrStartTime[0]="1890-10-20T20:30:56";
+				 arrEndTime[0]="2009-10-20T20:30:56";
+				 //Start time and End time
+				 arrStartTime[1]="1990-10-20T20:30:56";
+				 arrEndTime[1]="2009-10-20T20:30:56";
+				 // Setting data
+				 comCriteriaTO.setStartDateTimeList(arrStartTime);
+				 comCriteriaTO.setEndDateTimeList(arrEndTime);	
+				 //Joining 2 tables
+				 comCriteriaTO.setJoin("no");
+				 String[]  arr=new String[2];
+				 arr[0]="helio";
+				 arr[1]="helio";
+				 comCriteriaTO.setListTableName(arr);
+				 comCriteriaTO.setStatus("WebService");
+				 comCriteriaTO.setPrintWriter(pw);
+				 System.out.println("Creating a VOTable ....");
+				 new QueryThreadAnalizer(comCriteriaTO).start();
+				 Thread.sleep(20000);
+				 //Print reader
+				 System.out.println("Printing VOTable ....");
+				 printPrintReader(pr);
+				 
+			 }catch(Exception e){
+				  System.out.println(" Exception occured in testQueryQname : "+e);
+			 }
+			 
+			 finally{
+				 
+				 if(pw!=null){
+					pw.close(); 
+				 }
+			     //Setting hsqldb.database.path to null.
+				 InstanceHolders.getInstance().setProperty("hsqldb.database.path",null);
+			 }
+			 
+	   }
+	   
+	   @Test
+	   public void testJoinTablesWhere() throws Exception {
+		   
+			PipedReader  pr = new PipedReader();
+			PipedWriter pw = new PipedWriter(pr);
+			
+			try{
+				 System.out.println("Joining 2 tables with where clause....");
+				 ClassLoader loader = this.getClass().getClassLoader();
+				 String helioDbPath=loader.getResource("test.txt").getFile();
+				 System.out.println(" : helio db file path  : "+helioDbPath);
+				 InstanceHolders.getInstance().setProperty("hsqldb.database.path",helioDbPath.replace("test.txt", ""));
+				 DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+			     factory.setNamespaceAware(true);
+				 DocumentBuilder builder = factory.newDocumentBuilder();  
+				 //
+				 CommonCriteriaTO comCriteriaTO=new CommonCriteriaTO();
+				 String[]  arrStartTime=new String[2];
+				 String[]  arrEndTime=new String[2];
+				//Start time and End time.
+				 arrStartTime[0]="1890-10-20T20:30:56";
+				 arrEndTime[0]="2009-10-20T20:30:56";
+				 //Start time and End time
+				 arrStartTime[1]="1990-10-20T20:30:56";
+				 arrEndTime[1]="2009-10-20T20:30:56";
+				 // Setting data
+				 comCriteriaTO.setStartDateTimeList(arrStartTime);
+				 comCriteriaTO.setEndDateTimeList(arrEndTime);	
+				 //Joining 2 tables
+				 comCriteriaTO.setJoin("yes");
+				 comCriteriaTO.setWhereClause("helio.URL,*HelioICS*");
+				 String[]  arr=new String[2];
+				 arr[0]="helio";
+				 arr[1]="helio";
+				 comCriteriaTO.setListTableName(arr);
+				 comCriteriaTO.setStatus("WebService");
+				 comCriteriaTO.setPrintWriter(pw);
+				 System.out.println("Creating a VOTable ....");
+				 new QueryThreadAnalizer(comCriteriaTO).start();
+				 Thread.sleep(20000);
+				 //Print reader
+				 System.out.println("Printing VOTable ....");
+				 printPrintReader(pr);
+				 
+			 }catch(Exception e){
+				  System.out.println(" Exception occured in testQueryQname : "+e);
+			 }
+			 
+			 finally{
+				 
+				 if(pw!=null){
+					pw.close(); 
+				 }
+			     //Setting hsqldb.database.path to null.
+				 InstanceHolders.getInstance().setProperty("hsqldb.database.path",null);
+			 }
+			 
+	   }
+	   
+	   @Test
+	   public void testTablesWithoutJoinAndWithWhereClause() throws Exception {
+		   
+			PipedReader  pr = new PipedReader();
+			PipedWriter pw = new PipedWriter(pr);
+			
+			try{
+				 System.out.println("Joining 2 tables withpit where cluase....");
+				 ClassLoader loader = this.getClass().getClassLoader();
+				 String helioDbPath=loader.getResource("test.txt").getFile();
+				 System.out.println(" : helio db file path  : "+helioDbPath);
+				 InstanceHolders.getInstance().setProperty("hsqldb.database.path",helioDbPath.replace("test.txt", ""));
+				 DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+			     factory.setNamespaceAware(true);
+				 DocumentBuilder builder = factory.newDocumentBuilder();  
+				 //
+				 CommonCriteriaTO comCriteriaTO=new CommonCriteriaTO();
+				 String[]  arrStartTime=new String[2];
+				 String[]  arrEndTime=new String[2];
+				//Start time and End time.
+				 arrStartTime[0]="1890-10-20T20:30:56";
+				 arrEndTime[0]="2009-10-20T20:30:56";
+				 //Start time and End time
+				 arrStartTime[1]="1990-10-20T20:30:56";
+				 arrEndTime[1]="2009-10-20T20:30:56";
+				 // Setting data
+				 comCriteriaTO.setStartDateTimeList(arrStartTime);
+				 comCriteriaTO.setEndDateTimeList(arrEndTime);	
+				 //Joining 2 tables
+				 comCriteriaTO.setJoin("no");
+				 comCriteriaTO.setWhereClause("helio.URL,*HelioICS*");
+				 String[]  arr=new String[2];
+				 arr[0]="helio";
+				 arr[1]="helio";
+				 comCriteriaTO.setListTableName(arr);
+				 comCriteriaTO.setStatus("WebService");
+				 comCriteriaTO.setPrintWriter(pw);
+				 System.out.println("Creating a VOTable ....");
+				 new QueryThreadAnalizer(comCriteriaTO).start();
+				 Thread.sleep(20000);
+				 //Print reader
+				 System.out.println("Printing VOTable ....");
+				 printPrintReader(pr);
+				 
+			 }catch(Exception e){
+				  System.out.println(" Exception occured in testQueryQname : "+e);
+			 }
+			 
+			 finally{
+				 
+				 if(pw!=null){
+					pw.close(); 
+				 }
+			     //Setting hsqldb.database.path to null.
+				 InstanceHolders.getInstance().setProperty("hsqldb.database.path",null);
+			 }
+			 
+	   }
 	   /**
 	    * 
 	    * @param reader
@@ -427,7 +770,7 @@ public class JunitWebserveTest {
 		   try{
 			   while (reader.ready())
 	            {
-				   Thread.sleep(10);
+				   Thread.sleep(5);
 	                System.out.print((char)reader.read());
 	            }
 		    }catch(Exception e){ 
