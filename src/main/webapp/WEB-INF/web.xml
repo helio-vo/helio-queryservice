@@ -112,7 +112,12 @@
 	   <servlet-name>jaxws-servlet</servlet-name>
 	   <url-pattern>/HelioTavernaService</url-pattern>
 	</servlet-mapping>
-	
+	<!-- 
+	<servlet-mapping>
+	   <servlet-name>jaxws-servlet</servlet-name>
+	   <url-pattern>/HelioServiceVotable2</url-pattern>
+	</servlet-mapping>
+	-->
 	<servlet-mapping>
 		<servlet-name>VosiServlet</servlet-name>
 		<url-pattern>/VosiServlet</url-pattern>
@@ -129,7 +134,7 @@
 	<env-entry>
 	   <env-entry-name>property/context</env-entry-name>
 	   <env-entry-type>java.lang.String</env-entry-type>
-	   <env-entry-value>test.txt</env-entry-value>
+	   <env-entry-value>/Users/vineethtshetty/HELIO/helio-ics-r2.txt</env-entry-value>
 	</env-entry>
   
   <welcome-file-list>		
