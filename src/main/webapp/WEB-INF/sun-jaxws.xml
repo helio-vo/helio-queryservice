@@ -26,6 +26,14 @@
     service="{http://helio-vo.eu/xml/QueryService/v0.1}HelioQueryServiceServiceTwo"
     port="{http://helio-vo.eu/xml/QueryService/v0.1}HelioQueryServicePortTwo"
     url-pattern="/HelioTavernaService"/>
-
+   <!--  
+  <endpoint 
+    name="HelioServiceVotable2"                    
+    implementation="eu.heliovo.queryservice.server.query.SoapDispatcher" 
+    wsdl="WEB-INF/wsdl/helio_full_query_votable2.wsdl"
+    service="{http://helio-vo.eu/xml/QueryService/v0.1}HelioQueryServiceVotable2"
+    port="{http://helio-vo.eu/xml/QueryService/v0.1}HelioQueryServicePortVotable2"
+    url-pattern="/HelioServiceVotable2"/>
+	-->
 </endpoints>
 
