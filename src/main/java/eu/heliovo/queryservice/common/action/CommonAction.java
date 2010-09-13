@@ -12,6 +12,7 @@ import eu.heliovo.queryservice.common.dao.CommonDaoFactory;
 import eu.heliovo.queryservice.common.dao.interfaces.ShortNameQueryDao;
 import eu.heliovo.queryservice.common.transfer.CommonTO;
 import eu.heliovo.queryservice.common.transfer.FileResultTO;
+import eu.heliovo.queryservice.common.util.ConfigurationProfiler;
 import eu.heliovo.queryservice.common.util.ConnectionManager;
 import eu.heliovo.queryservice.common.util.FileUtils;
 import eu.heliovo.queryservice.common.util.InstanceHolders;
@@ -48,6 +49,22 @@ public class CommonAction  extends ActionSupport
 		String sReturnStatus="ERROR";
 		Connection con=null;
 		try{
+			String sJdbcDriver=InstanceHolders.getInstance().getProperty("jdbc.driver");
+			String sJdbcUrl=InstanceHolders.getInstance().getProperty("jdbc.url");
+			String sJdbcUser=InstanceHolders.getInstance().getProperty("jdbc.user");
+			String sJdbcPassword=InstanceHolders.getInstance().getProperty("jdbc.password");
+			//Setting jdbc driver name
+			if(sJdbcDriver==null || sJdbcDriver.trim().equals(""))
+				InstanceHolders.getInstance().setProperty("jdbc.driver",ConfigurationProfiler.getInstance().getProperty("jdbc.driver"));
+			//Setting jdbc connection url
+			if(sJdbcUrl==null || sJdbcUrl.trim().equals(""))
+				InstanceHolders.getInstance().setProperty("jdbc.url",ConfigurationProfiler.getInstance().getProperty("jdbc.url"));
+			//Setting jdbc connection user
+			if(sJdbcUser==null || sJdbcUser.trim().equals(""))
+				InstanceHolders.getInstance().setProperty("jdbc.user",ConfigurationProfiler.getInstance().getProperty("jdbc.user"));
+			//Setting jdbc connection password.
+			if(sJdbcPassword==null || sJdbcPassword.trim().equals(""))
+				InstanceHolders.getInstance().setProperty("jdbc.password",ConfigurationProfiler.getInstance().getProperty("jdbc.password"));
 			//Checking for connection
 			con=ConnectionManager.getConnectionForWebApp();
 			if(con!=null){
