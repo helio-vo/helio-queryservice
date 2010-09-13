@@ -3,6 +3,7 @@ package eu.heliovo.queryservice.common.transfer.criteriaTO;
 
 import java.io.Serializable;
 import java.io.Writer;
+import java.sql.Connection;
 import java.util.HashMap;
 import uk.ac.starlink.table.StarTable;
 import eu.heliovo.queryservice.common.transfer.CommonTO;
@@ -52,7 +53,7 @@ public class CommonCriteriaTO implements Serializable{
 	private int tableCount=0;
 	private String queryArray[];
 	private String join;
-	
+	private Connection connection;
 	
 	public CommonCriteriaTO(){
 		this.setIPageNumber(0);
@@ -372,6 +373,13 @@ public class CommonCriteriaTO implements Serializable{
 
 	public void setJoin(String join) {
 		this.join = join;
+	}
+
+	public Connection getConnection() {
+		return connection;
+	}
+
+	public void setConnection(Connection connection) {
+		this.connection = connection;
 	}	
-		
 }
