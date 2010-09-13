@@ -559,31 +559,19 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 			//Setting Table Name.
 			comCriteriaTO.setTableName(comCriteriaTO.getListName());
 			//Connecting to database.						
-			con = getConnectionObject();
+			con = comCriteriaTO.getConnection();
 			st = con.createStatement();
 			rs= st.executeQuery(sRepSql);
 			comCriteriaTO.setQueryStatus("OK");
 			comCriteriaTO.setQuery(sRepSql);
 			resultTO.setResultSet(rs);
 			resultTO.setQuery(sRepSql);
+			System.out.println(" : End of addingResultSetToVOTable() method  : ");
 			return resultTO;
 		}catch(Exception e){
 			e.printStackTrace();
 			throw new Exception("Please check sql syntax, some problem with executing this query.");
 		}
-		
-		finally
-		{
-		    try {
-		    	if(con!=null)
-				{
-		    		con.close();
-		    		con=null;
-				}	    
-			} catch (Exception e) {
-				
-			}
-		}		
 	}
 	
 	/*
@@ -594,7 +582,7 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 	{
 		
 		ResultSet rs=null;
-		
+		Connection con=null;
 		try{
 		
 		logger.info(" : Start of method handlingStartTimeAndEndTime()--> Start time and End time is NULL,select all values. :");
@@ -603,7 +591,7 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 		String sJoin=comCriteriaTO.getJoin();
 		StarTable[] tables=null;
 		int count=listName.length;
-		
+		con=getConnectionObject();
 		// array of queries
 		String[] queryArray=new String[count];
 		int tableCount=0;
@@ -627,6 +615,8 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 				tableName=listName[intCnt];
 			}
 			comCriteriaTO.setTableName(tableName);
+			//Connection object
+			comCriteriaTO.setConnection(con);
 			//getting the result set
 			ResultTO resultTO= addingResultSetToVOTable(comCriteriaTO);
 			rs=resultTO.getResultSet();
@@ -643,14 +633,10 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 		//VOTableMaker.setColInfoProperty(tables, listName);
 		//Writing all details into table.
 		VOTableMaker.writeTables(comCriteriaTO);
-		comCriteriaTO.setTables(tables);
-		//Editing column property.
-		//VOTableMaker.setColInfoProperty(tables, listName);
-		//Writing all details into table.
-		VOTableMaker.writeTables(comCriteriaTO);
 		logger.info(" : VOTable succesfully created :");
 		
 		}catch(Exception e){
+			e.printStackTrace();
 			comCriteriaTO.setQueryStatus("ERROR");
 			comCriteriaTO.setQueryDescription(e.getMessage());
 			VOTableMaker.writeTables(comCriteriaTO);
@@ -663,6 +649,11 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 				{
 					rs.close();
 					rs=null;
+				}
+		    	if(con!=null)
+				{
+					con.close();
+					con=null;
 				}
 			} catch (Exception e) {
 				
@@ -690,6 +681,7 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 		logger.info(" : Start of method handlingStartTimeAndEndTimeArray()--> Array of start time andend time. :");
 		StarTable[] tables=null;
 		ResultSet rs=null;
+		Connection con=null;
 		try{
 		//Join query
 		String sJoin=comCriteriaTO.getJoin();
@@ -701,7 +693,8 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 		String endDateTimeList[]=comCriteriaTO.getEndDateTimeList();
 		//Count of tables in respionse.
 		int count=listName.length*startDateTimeList.length;
-		
+		//Coccetion to database
+		con=getConnectionObject();
 		// array of queries
 		String[] queryArray=new String[count];
 		int tableCount=0;
@@ -740,6 +733,8 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 				}
 				logger.info(" : Start Date ; End Date and List Name : "+startDate+"  : "+endDate+"  : "+tableName);
 				comCriteriaTO.setTableName(tableName);
+				//Connection object
+				comCriteriaTO.setConnection(con);
 				//getting the result set
 				ResultTO resultTO= addingResultSetToVOTable(comCriteriaTO);
 				rs=resultTO.getResultSet();
@@ -776,6 +771,7 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 			VOTableMaker.writeTables(comCriteriaTO);
 		}
 		}catch(Exception e){
+			e.printStackTrace();
 			comCriteriaTO.setQueryStatus("ERROR");
 			comCriteriaTO.setQueryDescription(e.getMessage());
 			VOTableMaker.writeTables(comCriteriaTO);
@@ -790,8 +786,14 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 					rs.close();
 					rs=null;
 				}
+		    	if(con!=null)
+				{
+					con.close();
+					con=null;
+				}
 			} catch (Exception e) {
-				
+				e.printStackTrace();
+				System.out.println("  : Result set closed :  "+e.getMessage());
 			}
 		}
 		return comCriteriaTO;
