@@ -133,6 +133,7 @@ public class VOTableMaker {
     //Setting column property.( New method in use presently)
     public static void setColInfoProperty(StarTable tables,String listName) throws Exception{
     	try{  
+    		   System.out.println(":  Setting UCD and UTYPES :");
     			//Column Description
 	    		String[] columnDesc=getAllColumnDesc(listName);
 	    		//Column UCD's
@@ -162,10 +163,10 @@ public class VOTableMaker {
 
 	    			}
 	    		}
-    	
+	    		System.out.println(":  End setting UCD and UTYPES :");
     }catch(Exception e){
     	System.out.println(" Exception occured setColInfoProperty() "+e.getMessage());
-    	throw new Exception("Couldn't set ucd's||Desc||UTypes. Please check configuration property file.");
+    	throw new Exception("Couldn't set Ucd's||Desc||UTypes. Please check configuration property file.");
     }
     	
     }	
