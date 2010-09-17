@@ -9,7 +9,7 @@ public class QueryWhereClauseParser {
 	private static String whereClauseString="";
 	
 	/*
-	 *Check for null cluase. 
+	 *Check for null clause. 
 	 */
 	private static void checkIfNull(String value,String tableName,String join){
 		String data[]=value.split(",");
@@ -17,12 +17,13 @@ public class QueryWhereClauseParser {
 			if(data.length>1 && data[1].equalsIgnoreCase("null")){
 				 checkIfNull(data[0],data[1]);
 			}
+		}else if(data.length>1 && data[1].equalsIgnoreCase("null") && data[0].trim().contains(tableName)){
+				 checkIfNull(data[0],data[1]);
 		}else{
-			if(data.length>1 && data[1].equalsIgnoreCase("null") && data[0].trim().contains(tableName)){
+			if(data.length>1 && data[1].equalsIgnoreCase("null") && !data[0].trim().contains(".")){
 				 checkIfNull(data[0],data[1]);
 			}
-		}
-		
+		}		
 	}
 	
 	/**
@@ -46,10 +47,11 @@ public class QueryWhereClauseParser {
 			if(data.length>1 && data[1].equalsIgnoreCase("!null")){
 				checkIfNotNull(data[0],data[1]);
 			}
-		}else{
-			if(data.length>1 && data[1].equalsIgnoreCase("!null") && data[0].trim().contains(tableName)){
+		}else if(data.length>1 && data[1].equalsIgnoreCase("!null") && data[0].trim().contains(tableName)){
 				checkIfNotNull(data[0],data[1]);
-			}
+		}else{
+			if(data.length>1 && data[1].equalsIgnoreCase("!null") && !data[0].trim().contains("."))
+				checkIfNotNull(data[0],data[1]);
 		}
 	}
 	
@@ -74,13 +76,14 @@ public class QueryWhereClauseParser {
 			if(data.length>1 && data[1].endsWith("/")){
 				 checkIfGreaterThanEqualTo(data[0],data[1]);
 			}
+		}else if(data.length>1 && data[0].trim().contains(tableName) && data[1].endsWith("/"))
+		{
+				checkIfGreaterThanEqualTo(data[0],data[1]);
 		}else{
-			if(data.length>1 && data[0].trim().contains(tableName) && data[1].endsWith("/"))
-			{
+			if(data.length>1 && !data[0].trim().contains(".") && data[1].endsWith("/")){
 				checkIfGreaterThanEqualTo(data[0],data[1]);
 			}
 		}
-		
 	}
 	/**
 	 * @param columnName
@@ -94,7 +97,7 @@ public class QueryWhereClauseParser {
 		whereClauseString=whereClauseString+" "+columnName+">="+sValue+" AND";
 	}
 	/*
-	 *Check for less then equal to cluase. 
+	 *Check for less then equal to clause. 
 	 */	
 	private static void checkIfLessThanEqualTo(String value,String tableName,String join){
 		String data[]=value.split(",");
@@ -103,12 +106,13 @@ public class QueryWhereClauseParser {
 				// Value
 				checkIfLessThanEqualTo(data[0],data[1]);
 			}
+		}else if(data.length>1 && data[0].trim().contains(tableName) && data[1].startsWith("/")){
+				checkIfLessThanEqualTo(data[0],data[1]);
 		}else{
-			if(data.length>1 && data[0].trim().contains(tableName) && data[1].startsWith("/")){
+			if(data.length>1 && !data[0].trim().contains(".") && data[1].startsWith("/")){
 				checkIfLessThanEqualTo(data[0],data[1]);
 			}
 		}
-		
 	}
 	
 	/**
@@ -124,7 +128,7 @@ public class QueryWhereClauseParser {
 	}
 	
 	/*
-	 *Check for between cluase. 
+	 *Check for between clause. 
 	 */
 	private static void checkIfBetween(String value,String tableName,String join){
 		String data[]=value.split(",");
@@ -132,8 +136,10 @@ public class QueryWhereClauseParser {
 			if(data.length>1 && !data[1].startsWith("/") && !data[1].endsWith("/") && data[1].split("/").length>1 && data[1].split("/")[1]!=null && data[1].split("/")[1].trim()!=""){
 				checkIfBetween(data[0],data[1]);
 			}
+		}else if(data.length>1 && !data[1].startsWith("/") && !data[1].endsWith("/") && data[1].split("/").length>1 && data[1].split("/")[1]!=null && data[1].split("/")[1].trim()!="" && data[0].trim().contains(tableName)){
+				checkIfBetween(data[0],data[1]);
 		}else{
-			if(data.length>1 && !data[1].startsWith("/") && !data[1].endsWith("/") && data[1].split("/").length>1 && data[1].split("/")[1]!=null && data[1].split("/")[1].trim()!="" && data[0].trim().contains(tableName)){
+			if(data.length>1 && !data[0].trim().contains(".") && !data[1].startsWith("/") && !data[1].endsWith("/") && data[1].split("/").length>1 && data[1].split("/")[1]!=null && data[1].split("/")[1].trim()!=""){
 				checkIfBetween(data[0],data[1]);
 			}
 		}
@@ -172,30 +178,12 @@ public class QueryWhereClauseParser {
 			checkIfOR(value,tableName);
 		}else if(data.length>1 && data[0].trim().contains(tableName)){
 			checkIfOR(value,tableName);
+		}else{
+			if(data.length>1 && !data[0].trim().contains("."))
+				checkIfOR(value,tableName);
 		}
 	}
 	
-	/**
-	 * Check if the value is a column
-	 * @param value
-	 * @param tableName
-	 * @return
-	 */
-	private static boolean checkValueIsAColumn(String value,String tableName){
-		boolean status=false;
-		if(value!=null){
-			for(int i=0;i<tableName.split(",").length;i++){
-				value=value.replace(tableName.split(",")[i]+".", "");
-			}
-		}
-		//Checking if the value is a column name.
-		for(int i=0;i<tableName.split(",").length;i++){
-			String colNames=ConfigurationProfiler.getInstance().getProperty("sql.columnnames."+tableName.split(",")[i]);
-			if(colNames.trim().contains(value))
-				status=true;
-		}
-		return status;
-	}
 	
 	private static void checkIfOR(String value,String tableName){
 		String orClause="";
@@ -221,7 +209,7 @@ public class QueryWhereClauseParser {
 	}
 	
 	/*
-	 *Check for like cluase. 
+	 *Check for like clause. 
 	 */
 	private static void checkIfLike(String value,String tableName,String join){ 
 		String data[]=value.split(",");
@@ -229,30 +217,19 @@ public class QueryWhereClauseParser {
 			if(data.length>1 && data[1].startsWith("*") && data[1].endsWith("*")){
 				checkIfLike(data[0],data[1]);
 			}
+		}else if(data.length>1 && data[1].startsWith("*") && data[1].endsWith("*") && data[0].trim().contains(tableName)){
+				checkIfLike(data[0],data[1]);
 		}else{
-			if(data.length>1 && data[1].startsWith("*") && data[1].endsWith("*") && data[0].trim().contains(tableName)){
+			if(data.length>1 && data[1].startsWith("*") && data[1].endsWith("*") && !data[0].trim().contains(".")){
 				checkIfLike(data[0],data[1]);
 			}
 		}
-		
 	}
 
 	private static void checkIfLike(String coulumnName,String value){ 
 		whereClauseString=whereClauseString+" "+coulumnName+" LIKE '"+value.replace("*", "%")+"' AND";
 	}
-	/*
-	 *Check for equals to cluase. 
-	 *		
-	// Not in use now.
-	 */
-	private static void checkIfEqual(String value){
-		String data[]=value.split(",");
-		if(data.length>1){
-			whereClauseString=whereClauseString+" "+data[0]+"="+data[1]+" AND";
-		}
-		
-	}
-
+	
 	/*
 	 *Check for all type of cluase. 
 	 */
@@ -298,7 +275,6 @@ public class QueryWhereClauseParser {
 				stringForOr="";
 			}
 	   }
-		
 	}
 		
 	/*
@@ -323,20 +299,30 @@ public class QueryWhereClauseParser {
 	private static boolean match(String s) {
 		return  p.matcher(s).find();
 	}
-	
-	/*
-	 *Check for join query, not in use. 
-	*/
-	public static boolean checkIfJoinQuery(CommonCriteriaTO comCriteriaTO)
-	{
+
+
+	/**
+	 * Check if the value is a column
+	 * @param value
+	 * @param tableName
+	 * @return
+	 */
+	private static boolean checkValueIsAColumn(String value,String tableName){
 		boolean status=false;
-		String sWhereClause=comCriteriaTO.getWhereClause();
-		
-		if(count(sWhereClause,"J.")>0){
-			status=true;
+		if(value!=null){
+			for(int i=0;i<tableName.split(",").length;i++){
+				value=value.replace(tableName.split(",")[i]+".", "");
+			}
+		}
+		//Checking if the value is a column name.
+		for(int i=0;i<tableName.split(",").length;i++){
+			String colNames=ConfigurationProfiler.getInstance().getProperty("sql.columnnames."+tableName.split(",")[i]);
+			if(colNames.trim().contains(value))
+				status=true;
 		}
 		return status;
 	}
+	
 	/*
 	 *Generate the sql based query.
 	 */
@@ -359,14 +345,13 @@ public class QueryWhereClauseParser {
 	/*
 	public static void main(String arg[]){
 		CommonCriteriaTO comCriteriaTO=new CommonCriteriaTO();
-		String sWhere="ins.vmag,4.5/5.5;ins.imag,4.5/;ins.bmag,/5.5;ins.flag,4,5,6,77y88;vinu,4;obs.jmag,4.5/5.5,/3.0r,I9.0/;ins.name,*Lon*;ins.kmag,4.5/5.5;ins.flux,null;ins.last,1,3,5,u78;ins.flux,!null;obs.xray_class,9999y/X10";
-		//String sWhere="xray_class,C6/X10";
+		//String sWhere="ins.vmag,4.5/5.5;ins.imag,4.5/;ins.bmag,/5.5;ins.flag,4,5,6,77y88;vinu,4;obs.jmag,4.5/5.5,/3.0r,I9.0/;ins.name,*Lon*;ins.kmag,4.5/5.5;ins.flux,null;ins.last,1,3,5,u78;ins.flux,!null;obs.xray_class,9999y/X10";
+		String sWhere="xray_class,C6/X10;xray_class,C6/;xray_class,/X10;xray_class,C6,X16,F56;xray_class,optical_class;xray_class,*hi*";
 		comCriteriaTO.setWhereClause(sWhere);
 		comCriteriaTO.setJoin("no");
-		comCriteriaTO.setTableName("ins");
+		comCriteriaTO.setTableName("goes_xray_flare");
 		System.out.println(generateWhereClause(comCriteriaTO));
 	  }
 	*/
-
 }
 
