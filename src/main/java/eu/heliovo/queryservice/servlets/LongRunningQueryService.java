@@ -70,6 +70,9 @@ public class LongRunningQueryService extends HttpServlet {
 		    //Setting for List Name parameter.
 		    String sListName=request.getParameter("FROM");
 		    comCriteriaTO.setListName(sListName);
+		    if(sListName!=null && !sListName.trim().equals("")){
+		    	comCriteriaTO.setListTableName(sListName.split(","));
+		    }
 		    //Setting where cluase parameter
 		    String whereClause=request.getParameter("WHERE");
 		    comCriteriaTO.setWhereClause(whereClause);
