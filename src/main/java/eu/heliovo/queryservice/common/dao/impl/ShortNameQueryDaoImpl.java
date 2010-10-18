@@ -338,11 +338,12 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 	private String instrumentsQueryConstraint(String listName)
 	{
 		String queryInstContraint="";
+		String instValue="";
 		for(int intCnt=0;intCnt<listName.split(",").length;intCnt++){
 				//Appending Time clause.
-			queryInstContraint=queryInstContraint+ConfigurationProfiler.getInstance().getProperty("sql.query.instr.constraint."+listName.split(",")[intCnt]);
-			if(queryInstContraint!=null && !queryInstContraint.trim().equals("")){
-				queryInstContraint=queryInstContraint+" AND ";
+			instValue=ConfigurationProfiler.getInstance().getProperty("sql.query.instr.constraint."+listName.split(",")[intCnt]);
+			if(instValue!=null && !instValue.trim().equals("")){
+				queryInstContraint=queryInstContraint+instValue+" AND ";
 			}
 		}
 		//Substring
@@ -383,11 +384,12 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 	private String orderByQueryConstraint(String listName)
 	{
 		String queryOrderBYContraint="ORDER BY ";
+		String orderByValue="";
 		for(int intCnt=0;intCnt<listName.split(",").length;intCnt++){
 				//Appending Time clause.
-			queryOrderBYContraint=queryOrderBYContraint+ConfigurationProfiler.getInstance().getProperty("sql.query.orderby.constraint."+listName.split(",")[intCnt]);
-			if(queryOrderBYContraint!=null && !queryOrderBYContraint.trim().equals("") && !queryOrderBYContraint.trim().equals("ORDER BY")){
-				queryOrderBYContraint=queryOrderBYContraint+",";
+			orderByValue=ConfigurationProfiler.getInstance().getProperty("sql.query.orderby.constraint."+listName.split(",")[intCnt]);
+			if(orderByValue!=null && !orderByValue.trim().equals("")){
+				queryOrderBYContraint=queryOrderBYContraint+orderByValue.trim()+",";
 			}
 		}
 		if(queryOrderBYContraint.trim().equals("ORDER BY"))
