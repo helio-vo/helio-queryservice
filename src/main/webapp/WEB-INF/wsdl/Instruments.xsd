@@ -1,14 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema targetNamespace="http://helio-vo.eu/xml/Instruments/v0.1" 
-           xmlns="http://www.w3.org/2001/XMLSchema" 
-           xmlns:xs="http://www.w3.org/2001/XMLSchema" 
-           elementFormDefault="unqualified"
-           attributeFormDefault="unqualified"
-           version="1.02">
-
-<xs:simpleType name="instrument">
-<xs:restriction base="xs:string">
-  <xs:enumeration value="SMM__GRS">
+<xs:schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://helio-vo.eu/xml/Instruments/v0.1" elementFormDefault="unqualified" attributeFormDefault="unqualified" version="1.03">
+ <xs:simpleType name="instrument">
+  <xs:restriction base="xs:string">
+   <xs:enumeration value="SMM__GRS">
     <xs:annotation>
      <xs:documentation>
       Gamma-Ray Spectrometer
@@ -267,14 +261,14 @@
      </xs:documentation>
     </xs:annotation>
    </xs:enumeration>
-   <xs:enumeration value="SPARTAN_201__WLC">
+   <xs:enumeration value="SPARTAN_201_2__WLC">
     <xs:annotation>
      <xs:documentation>
       White Light Coronagraph.
      </xs:documentation>
     </xs:annotation>
    </xs:enumeration>
-   <xs:enumeration value="SPARTAN_201__UVCS">
+   <xs:enumeration value="SPARTAN_201_2__UVCS">
     <xs:annotation>
      <xs:documentation>
       UltraViolet Coronal Spectrometer
@@ -284,21 +278,21 @@
    <xs:enumeration value="TRACE__TRACE_EUV">
     <xs:annotation>
      <xs:documentation>
-      Transition Region and Coronal Explorer
+      TRACE EUV Observations
      </xs:documentation>
     </xs:annotation>
    </xs:enumeration>
    <xs:enumeration value="TRACE__TRACE_UV">
     <xs:annotation>
      <xs:documentation>
-      Transition Region and Coronal Explorer
+      TRACE UV Observations
      </xs:documentation>
     </xs:annotation>
    </xs:enumeration>
    <xs:enumeration value="TRACE__TRACE_VIS">
     <xs:annotation>
      <xs:documentation>
-      Transition Region and Coronal Explorer
+      TRACE Visible Observations
      </xs:documentation>
     </xs:annotation>
    </xs:enumeration>
@@ -340,14 +334,14 @@
    <xs:enumeration value="RHESSI__HESSI_GMR">
     <xs:annotation>
      <xs:documentation>
-      Ramaty High Energy Solar Spectroscopic Imager
+      RHESSI Gamma-ray Observations
      </xs:documentation>
     </xs:annotation>
    </xs:enumeration>
    <xs:enumeration value="RHESSI__HESSI_HXR">
     <xs:annotation>
      <xs:documentation>
-      Ramaty High Energy Solar Spectroscopic Imager
+      RHESSI Hard X-ray Observations
      </xs:documentation>
     </xs:annotation>
    </xs:enumeration>
@@ -396,7 +390,7 @@
    <xs:enumeration value="STEREO_A__COR">
     <xs:annotation>
      <xs:documentation>
-      White light Coronagraph 1 and 2  (SECCHI)
+      White light Coronagraph 1and 2  (SECCHI)
      </xs:documentation>
     </xs:annotation>
    </xs:enumeration>
@@ -550,14 +544,14 @@
    <xs:enumeration value="SDO__AIA_EUV">
     <xs:annotation>
      <xs:documentation>
-      Atmospheric Imaging Assembly
+      Atmospheric Imaging Assembly  (EUV)
      </xs:documentation>
     </xs:annotation>
    </xs:enumeration>
    <xs:enumeration value="SDO__AIA_UV">
     <xs:annotation>
      <xs:documentation>
-      Atmospheric Imaging Assembly
+      Atmospheric Imaging Assembly  (UV)
      </xs:documentation>
     </xs:annotation>
    </xs:enumeration>
@@ -621,6 +615,13 @@
     <xs:annotation>
      <xs:documentation>
       Soft X-ray Imager
+     </xs:documentation>
+    </xs:annotation>
+   </xs:enumeration>
+   <xs:enumeration value="ACE__CRIS">
+    <xs:annotation>
+     <xs:documentation>
+      Cosmic Ray Isotope Spectrometer
      </xs:documentation>
     </xs:annotation>
    </xs:enumeration>
@@ -960,6 +961,118 @@
      </xs:documentation>
     </xs:annotation>
    </xs:enumeration>
+   <xs:enumeration value="DOUBLESTAR_1__ASPOC">
+    <xs:annotation>
+     <xs:documentation>
+      Active Space Potential Control
+     </xs:documentation>
+    </xs:annotation>
+   </xs:enumeration>
+   <xs:enumeration value="DOUBLESTAR_1__PEACE">
+    <xs:annotation>
+     <xs:documentation>
+      Plasma Electron and Current Experiment
+     </xs:documentation>
+    </xs:annotation>
+   </xs:enumeration>
+   <xs:enumeration value="DOUBLESTAR_1__FGM">
+    <xs:annotation>
+     <xs:documentation>
+      Flux Gate Magnetometer
+     </xs:documentation>
+    </xs:annotation>
+   </xs:enumeration>
+   <xs:enumeration value="DOUBLESTAR_1__HIA">
+    <xs:annotation>
+     <xs:documentation>
+      Hot Ion Analyzer
+     </xs:documentation>
+    </xs:annotation>
+   </xs:enumeration>
+   <xs:enumeration value="DOUBLESTAR_1__STAFF_DWP">
+    <xs:annotation>
+     <xs:documentation>
+      Spatio-temporal Analyzer of Field Fluctuations and Digital Wave Processor
+     </xs:documentation>
+    </xs:annotation>
+   </xs:enumeration>
+   <xs:enumeration value="DOUBLESTAR_1__HEED">
+    <xs:annotation>
+     <xs:documentation>
+      High Energy Electron Detector
+     </xs:documentation>
+    </xs:annotation>
+   </xs:enumeration>
+   <xs:enumeration value="DOUBLESTAR_1__HEPD">
+    <xs:annotation>
+     <xs:documentation>
+      High Energy Proton Detector
+     </xs:documentation>
+    </xs:annotation>
+   </xs:enumeration>
+   <xs:enumeration value="DOUBLESTAR_1__HID">
+    <xs:annotation>
+     <xs:documentation>
+      Heavy Ion Detector
+     </xs:documentation>
+    </xs:annotation>
+   </xs:enumeration>
+   <xs:enumeration value="DOUBLESTAR_2__NUADU">
+    <xs:annotation>
+     <xs:documentation>
+      Neutral Atom Detection Unit
+     </xs:documentation>
+    </xs:annotation>
+   </xs:enumeration>
+   <xs:enumeration value="DOUBLESTAR_2__FGM">
+    <xs:annotation>
+     <xs:documentation>
+      Fluxgate Magnetometer
+     </xs:documentation>
+    </xs:annotation>
+   </xs:enumeration>
+   <xs:enumeration value="DOUBLESTAR_2__PEACE">
+    <xs:annotation>
+     <xs:documentation>
+      Plasma Electron and Current Experiment
+     </xs:documentation>
+    </xs:annotation>
+   </xs:enumeration>
+   <xs:enumeration value="DOUBLESTAR_2__LEID">
+    <xs:annotation>
+     <xs:documentation>
+      Low-Energy Ion Detector
+     </xs:documentation>
+    </xs:annotation>
+   </xs:enumeration>
+   <xs:enumeration value="DOUBLESTAR_2__LFEW">
+    <xs:annotation>
+     <xs:documentation>
+      Low-Frequency Electromagnetic Wave Detector
+     </xs:documentation>
+    </xs:annotation>
+   </xs:enumeration>
+   <xs:enumeration value="DOUBLESTAR_2__HEED">
+    <xs:annotation>
+     <xs:documentation>
+      High-Energy Electron Detector
+     </xs:documentation>
+    </xs:annotation>
+   </xs:enumeration>
+   <xs:enumeration value="DOUBLESTAR_2__HEPD">
+    <xs:annotation>
+     <xs:documentation>
+      High-Energy Proton Detector
+     </xs:documentation>
+    </xs:annotation>
+   </xs:enumeration>
+   <xs:enumeration value="DOUBLESTAR_2__HID">
+    <xs:annotation>
+     <xs:documentation>
+      Heavy Ion Detector
+     </xs:documentation>
+    </xs:annotation>
+   </xs:enumeration>
    <xs:enumeration value="THEMIS_A__FGM">
     <xs:annotation>
      <xs:documentation>
@@ -1205,6 +1318,34 @@
      </xs:documentation>
     </xs:annotation>
    </xs:enumeration>
+   <xs:enumeration value="SAMPEX__LICA">
+    <xs:annotation>
+     <xs:documentation>
+      Low-Energy Ion Composition Analyzer 
+     </xs:documentation>
+    </xs:annotation>
+   </xs:enumeration>
+   <xs:enumeration value="SAMPEX__HILT">
+    <xs:annotation>
+     <xs:documentation>
+      Heavy Ion Large Telescope
+     </xs:documentation>
+    </xs:annotation>
+   </xs:enumeration>
+   <xs:enumeration value="SAMPEX__MAST">
+    <xs:annotation>
+     <xs:documentation>
+      Mass Spectrometer Telescope
+     </xs:documentation>
+    </xs:annotation>
+   </xs:enumeration>
+   <xs:enumeration value="SAMPEX__PET">
+    <xs:annotation>
+     <xs:documentation>
+      Proton-Electron Telescope
+     </xs:documentation>
+    </xs:annotation>
+   </xs:enumeration>
    <xs:enumeration value="GEOTAIL__HEP">
     <xs:annotation>
      <xs:documentation>
@@ -1331,6 +1472,34 @@
      </xs:documentation>
     </xs:annotation>
    </xs:enumeration>
+   <xs:enumeration value="FAST__ESA">
+    <xs:annotation>
+     <xs:documentation>
+      Electro-Static Analyzers
+     </xs:documentation>
+    </xs:annotation>
+   </xs:enumeration>
+   <xs:enumeration value="FAST__TEAMS">
+    <xs:annotation>
+     <xs:documentation>
+      Time of Flight Energy Angle Mass Spectrograph
+     </xs:documentation>
+    </xs:annotation>
+   </xs:enumeration>
+   <xs:enumeration value="FAST__?">
+    <xs:annotation>
+     <xs:documentation>
+      Electric Field and Langmuir Probe Experiment 
+     </xs:documentation>
+    </xs:annotation>
+   </xs:enumeration>
+   <xs:enumeration value="FAST__MAG">
+    <xs:annotation>
+     <xs:documentation>
+      Tri-Axial Fluxgate and Search-coil Magnetometers 
+     </xs:documentation>
+    </xs:annotation>
+   </xs:enumeration>
    <xs:enumeration value="IMAGE__RPI">
     <xs:annotation>
      <xs:documentation>
@@ -1370,6 +1539,34 @@
     <xs:annotation>
      <xs:documentation>
       Extreme Ultraviolet Imager
+     </xs:documentation>
+    </xs:annotation>
+   </xs:enumeration>
+   <xs:enumeration value="TIMED__GUVI">
+    <xs:annotation>
+     <xs:documentation>
+      Global Ultraviolet Imager
+     </xs:documentation>
+    </xs:annotation>
+   </xs:enumeration>
+   <xs:enumeration value="TIMED__TIDI">
+    <xs:annotation>
+     <xs:documentation>
+      TIMED Doppler Interferometer
+     </xs:documentation>
+    </xs:annotation>
+   </xs:enumeration>
+   <xs:enumeration value="TIMED__SABER">
+    <xs:annotation>
+     <xs:documentation>
+      Sounding of the Atmosphere using Broadband Emission Radiometry
+     </xs:documentation>
+    </xs:annotation>
+   </xs:enumeration>
+   <xs:enumeration value="TIMED__SEE">
+    <xs:annotation>
+     <xs:documentation>
+      Solar EUV Experiment
      </xs:documentation>
     </xs:annotation>
    </xs:enumeration>
@@ -1863,24 +2060,10 @@
      </xs:documentation>
     </xs:annotation>
    </xs:enumeration>
-   <xs:enumeration value="NANC__NRH">
+   <xs:enumeration value="PDMO__HALPH">
     <xs:annotation>
      <xs:documentation>
-      Nancay Radioheliograph  (164 + 327 MHz)
-     </xs:documentation>
-    </xs:annotation>
-   </xs:enumeration>
-   <xs:enumeration value="NANC__NDA">
-    <xs:annotation>
-     <xs:documentation>
-      Nancay Decametric Array
-     </xs:documentation>
-    </xs:annotation>
-   </xs:enumeration>
-   <xs:enumeration value="NANC__NTRFA">
-    <xs:annotation>
-     <xs:documentation>
-      Nancay Total Radio Flux Antenna
+      Pic-du-Midi H-Alpha Telescope
      </xs:documentation>
     </xs:annotation>
    </xs:enumeration>
@@ -1888,6 +2071,20 @@
     <xs:annotation>
      <xs:documentation>
       Pic-du-Midi H-alpha Coronagraph
+     </xs:documentation>
+    </xs:annotation>
+   </xs:enumeration>
+   <xs:enumeration value="KISF__HALPH">
+    <xs:annotation>
+     <xs:documentation>
+      H-Alpha Telescope  (Patrol)
+     </xs:documentation>
+    </xs:annotation>
+   </xs:enumeration>
+   <xs:enumeration value="THEM__HALPH">
+    <xs:annotation>
+     <xs:documentation>
+      H-Alpha Telescope
      </xs:documentation>
     </xs:annotation>
    </xs:enumeration>
@@ -1916,6 +2113,20 @@
     <xs:annotation>
      <xs:documentation>
       SOLIS Full Disk Patrol
+     </xs:documentation>
+    </xs:annotation>
+   </xs:enumeration>
+   <xs:enumeration value="KPNO__FTS">
+    <xs:annotation>
+     <xs:documentation>
+      McMath Fourier Transform Spectrometer
+     </xs:documentation>
+    </xs:annotation>
+   </xs:enumeration>
+   <xs:enumeration value="KPNO__NAC">
+    <xs:annotation>
+     <xs:documentation>
+      McMath NSO Array Camera
      </xs:documentation>
     </xs:annotation>
    </xs:enumeration>
@@ -1968,6 +2179,13 @@
      </xs:documentation>
     </xs:annotation>
    </xs:enumeration>
+   <xs:enumeration value="MWSO__SHELIO">
+    <xs:annotation>
+     <xs:documentation>
+      Spectroheliograph
+     </xs:documentation>
+    </xs:annotation>
+   </xs:enumeration>
    <xs:enumeration value="MWSO__MAGMP">
     <xs:annotation>
      <xs:documentation>
@@ -1975,17 +2193,45 @@
      </xs:documentation>
     </xs:annotation>
    </xs:enumeration>
-   <xs:enumeration value="KISF__HALPH">
+   <xs:enumeration value="KSFO__CFDT1">
     <xs:annotation>
      <xs:documentation>
-      H-Alpha Telescope  (Patrol)
+      Cartesian Full Disk Telecsope No. 1
      </xs:documentation>
     </xs:annotation>
    </xs:enumeration>
-   <xs:enumeration value="THEM__HALPH">
+   <xs:enumeration value="KSFO__CFDT2">
     <xs:annotation>
      <xs:documentation>
-      H-Alpha Telescope??
+      Cartesian Full Disk Telecsope No. 2
+     </xs:documentation>
+    </xs:annotation>
+   </xs:enumeration>
+   <xs:enumeration value="CUCS__HASTA">
+    <xs:annotation>
+     <xs:documentation>
+      H-Alpha Telescope for Argentina
+     </xs:documentation>
+    </xs:annotation>
+   </xs:enumeration>
+   <xs:enumeration value="NANC__NRH">
+    <xs:annotation>
+     <xs:documentation>
+      Nancay Radioheliograph  (164 + 327 MHz)
+     </xs:documentation>
+    </xs:annotation>
+   </xs:enumeration>
+   <xs:enumeration value="NANC__NDA">
+    <xs:annotation>
+     <xs:documentation>
+      Nancay Decametric Array
+     </xs:documentation>
+    </xs:annotation>
+   </xs:enumeration>
+   <xs:enumeration value="NANC__NTRFA">
+    <xs:annotation>
+     <xs:documentation>
+      Nancay Total Radio Flux Antenna
      </xs:documentation>
     </xs:annotation>
    </xs:enumeration>
@@ -2003,17 +2249,17 @@
      </xs:documentation>
     </xs:annotation>
    </xs:enumeration>
-   <xs:enumeration value="KSFO__CFDT1">
+   <xs:enumeration value="BLEIEN__PHOENIX_2">
     <xs:annotation>
      <xs:documentation>
-      Cartesian Full Disk Telecsope No. 1
+      Phoenix-2 Radio Spectrometer  (0.1 to 4.0 GHz)
      </xs:documentation>
     </xs:annotation>
    </xs:enumeration>
-   <xs:enumeration value="KSFO__CFDT2">
+   <xs:enumeration value="KSAC__ISOON">
     <xs:annotation>
      <xs:documentation>
-      Cartesian Full Disk Telecsope No. 2
+      Improved Solar Observing Optical Network
      </xs:documentation>
     </xs:annotation>
    </xs:enumeration>
@@ -2059,62 +2305,90 @@
      </xs:documentation>
     </xs:annotation>
    </xs:enumeration>
-   <xs:enumeration value="CUCS__HASTA">
+   <xs:enumeration value="LEAR__GONG">
     <xs:annotation>
      <xs:documentation>
-      H-Alpha Telescope for Argentina
+      GONG Instrument (Fourier Tachometer)
      </xs:documentation>
     </xs:annotation>
    </xs:enumeration>
-   <xs:enumeration value="LEAR__GONG_SYN">
+   <xs:enumeration value="UDPR__GONG">
     <xs:annotation>
      <xs:documentation>
-      Magnetograph + Intensity Synoptic 
+      GONG Instrument (Fourier Tachometer)
      </xs:documentation>
     </xs:annotation>
    </xs:enumeration>
-   <xs:enumeration value="UDPR__GONG_SYN">
+   <xs:enumeration value="TEID__GONG">
     <xs:annotation>
      <xs:documentation>
-      Magnetograph + Intensity Synoptic 
+      GONG Instrument (Fourier Tachometer)
      </xs:documentation>
     </xs:annotation>
    </xs:enumeration>
-   <xs:enumeration value="TEID__GONG_SYN">
+   <xs:enumeration value="CTIO__GONG">
     <xs:annotation>
      <xs:documentation>
-      Magnetograph + Intensity Synoptic 
+      GONG Instrument (Fourier Tachometer)
      </xs:documentation>
     </xs:annotation>
    </xs:enumeration>
-   <xs:enumeration value="CTIO__GONG_SYN">
+   <xs:enumeration value="BBSO__GONG">
     <xs:annotation>
      <xs:documentation>
-      Magnetograph + Intensity Synoptic 
+      GONG Instrument (Fourier Tachometer)
      </xs:documentation>
     </xs:annotation>
    </xs:enumeration>
-   <xs:enumeration value="BBSO__GONG_SYN">
+   <xs:enumeration value="MLSO__GONG">
     <xs:annotation>
      <xs:documentation>
-      Magnetograph + Intensity Synoptic 
+      GONG Instrument (Fourier Tachometer)
      </xs:documentation>
     </xs:annotation>
    </xs:enumeration>
-   <xs:enumeration value="MLSO__GONG_SYN">
+   <xs:enumeration value="LEAR__HASYN">
     <xs:annotation>
      <xs:documentation>
-      Magnetograph + Intensity Synoptic 
+      GONG H-Alpha Telescope
      </xs:documentation>
     </xs:annotation>
    </xs:enumeration>
-   <xs:enumeration value="BLEIEN__PHOENIX_2">
+   <xs:enumeration value="UDPR__HASYN">
     <xs:annotation>
      <xs:documentation>
-      Phoenix-2 Radio Spectrometer  (0.1 to 4.0 GHz)
+      GONG H-Alpha Telescope
      </xs:documentation>
     </xs:annotation>
-   </xs:enumeration>             
-</xs:restriction>
-</xs:simpleType>
+   </xs:enumeration>
+   <xs:enumeration value="TEID__HASYN">
+    <xs:annotation>
+     <xs:documentation>
+      GONG H-Alpha Telescope
+     </xs:documentation>
+    </xs:annotation>
+   </xs:enumeration>
+   <xs:enumeration value="CTIO__HASYN">
+    <xs:annotation>
+     <xs:documentation>
+      GONG H-Alpha Telescope
+     </xs:documentation>
+    </xs:annotation>
+   </xs:enumeration>
+   <xs:enumeration value="BBSO__HASYN">
+    <xs:annotation>
+     <xs:documentation>
+      GONG H-Alpha Telescope
+     </xs:documentation>
+    </xs:annotation>
+   </xs:enumeration>
+   <xs:enumeration value="MLSO__HASYN">
+    <xs:annotation>
+     <xs:documentation>
+      GONG H-Alpha Telescope
+     </xs:documentation>
+    </xs:annotation>
+   </xs:enumeration>
+  </xs:restriction>
+ </xs:simpleType>
 </xs:schema>
