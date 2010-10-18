@@ -180,7 +180,7 @@ public class StandardTypeTable extends WrapperStarTable {
           dateFormat.parse(inDate.trim());
         }
         catch (ParseException pe) {
-           pe.printStackTrace();
+           System.out.println("Couldn't parse date ; Sending the date with orignal format : "+inDate);
         }
         return true;
       }
