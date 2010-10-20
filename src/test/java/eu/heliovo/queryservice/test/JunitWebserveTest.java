@@ -141,8 +141,9 @@ public class JunitWebserveTest {
 				 System.out.println("Testing Full Query Service ....");
 				 ClassLoader loader = this.getClass().getClassLoader();
 				 String helioDbPath=loader.getResource("test.txt").getFile();
+				 helioDbPath=helioDbPath.replace("target/classes/test.txt", "")+"src/main"+"/webapp/WEB-INF";
 				 System.out.println(" : helio db file path  : "+helioDbPath);
-				 InstanceHolders.getInstance().setProperty("hsqldb.database.path",helioDbPath.replace("test.txt", ""));
+				 InstanceHolders.getInstance().setProperty("hsqldb.database.path",helioDbPath);
 				 DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			     factory.setNamespaceAware(true);
 				 DocumentBuilder builder = factory.newDocumentBuilder();  
@@ -193,8 +194,9 @@ public class JunitWebserveTest {
 				 System.out.println("Testing Full Query Service ....");
 				 ClassLoader loader = this.getClass().getClassLoader();
 				 String helioDbPath=loader.getResource("test.txt").getFile();
+				 helioDbPath=helioDbPath.replace("target/classes/test.txt", "")+"src/main"+"/webapp/WEB-INF";
 				 System.out.println(" : helio db file path  : "+helioDbPath);
-				 InstanceHolders.getInstance().setProperty("hsqldb.database.path",helioDbPath.replace("test.txt", ""));
+				 InstanceHolders.getInstance().setProperty("hsqldb.database.path",helioDbPath);
 				 DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			     factory.setNamespaceAware(true);
 				 DocumentBuilder builder = factory.newDocumentBuilder();  
@@ -246,8 +248,9 @@ public class JunitWebserveTest {
 				 System.out.println("Testing Full Query Service ....");
 				 ClassLoader loader = this.getClass().getClassLoader();
 				 String helioDbPath=loader.getResource("test.txt").getFile();
+				 helioDbPath=helioDbPath.replace("target/classes/test.txt", "")+"src/main"+"/webapp/WEB-INF";
 				 System.out.println(" : helio db file path  : "+helioDbPath);
-				 InstanceHolders.getInstance().setProperty("hsqldb.database.path",helioDbPath.replace("test.txt", ""));
+				 InstanceHolders.getInstance().setProperty("hsqldb.database.path",helioDbPath);
 				 DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			     factory.setNamespaceAware(true);
 				 DocumentBuilder builder = factory.newDocumentBuilder();  
@@ -428,8 +431,9 @@ public class JunitWebserveTest {
 				 System.out.println(" Querying on two tables ....");
 				 ClassLoader loader = this.getClass().getClassLoader();
 				 String helioDbPath=loader.getResource("test.txt").getFile();
+				 helioDbPath=helioDbPath.replace("target/classes/test.txt", "")+"src/main"+"/webapp/WEB-INF";
 				 System.out.println(" : helio db file path  : "+helioDbPath);
-				 InstanceHolders.getInstance().setProperty("hsqldb.database.path",helioDbPath.replace("test.txt", ""));
+				 InstanceHolders.getInstance().setProperty("hsqldb.database.path",helioDbPath);
 				 DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			     factory.setNamespaceAware(true);
 				 DocumentBuilder builder = factory.newDocumentBuilder();  
@@ -481,8 +485,9 @@ public class JunitWebserveTest {
 				 System.out.println("Testing array of start and end time ....");
 				 ClassLoader loader = this.getClass().getClassLoader();
 				 String helioDbPath=loader.getResource("test.txt").getFile();
+				 helioDbPath=helioDbPath.replace("target/classes/test.txt", "")+"src/main"+"/webapp/WEB-INF";
 				 System.out.println(" : helio db file path  : "+helioDbPath);
-				 InstanceHolders.getInstance().setProperty("hsqldb.database.path",helioDbPath.replace("test.txt", ""));
+				 InstanceHolders.getInstance().setProperty("hsqldb.database.path",helioDbPath);
 				 DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			     factory.setNamespaceAware(true);
 				 DocumentBuilder builder = factory.newDocumentBuilder();  
@@ -537,8 +542,9 @@ public class JunitWebserveTest {
 				 System.out.println("Joining 2 tables ....");
 				 ClassLoader loader = this.getClass().getClassLoader();
 				 String helioDbPath=loader.getResource("test.txt").getFile();
+				 helioDbPath=helioDbPath.replace("target/classes/test.txt", "")+"src/main"+"/webapp/WEB-INF";
 				 System.out.println(" : helio db file path  : "+helioDbPath);
-				 InstanceHolders.getInstance().setProperty("hsqldb.database.path",helioDbPath.replace("test.txt", ""));
+				 InstanceHolders.getInstance().setProperty("hsqldb.database.path",helioDbPath);
 				 DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			     factory.setNamespaceAware(true);
 				 DocumentBuilder builder = factory.newDocumentBuilder();  
@@ -595,8 +601,9 @@ public class JunitWebserveTest {
 				 System.out.println("Array of start and end time; without join....");
 				 ClassLoader loader = this.getClass().getClassLoader();
 				 String helioDbPath=loader.getResource("test.txt").getFile();
+				 helioDbPath=helioDbPath.replace("target/classes/test.txt", "")+"src/main"+"/webapp/WEB-INF";
 				 System.out.println(" : helio db file path  : "+helioDbPath);
-				 InstanceHolders.getInstance().setProperty("hsqldb.database.path",helioDbPath.replace("test.txt", ""));
+				 InstanceHolders.getInstance().setProperty("hsqldb.database.path",helioDbPath);
 				 DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			     factory.setNamespaceAware(true);
 				 DocumentBuilder builder = factory.newDocumentBuilder();  
@@ -653,8 +660,9 @@ public class JunitWebserveTest {
 				 System.out.println("Joining 2 tables with where clause....");
 				 ClassLoader loader = this.getClass().getClassLoader();
 				 String helioDbPath=loader.getResource("test.txt").getFile();
+				 helioDbPath=helioDbPath.replace("target/classes/test.txt", "")+"src/main"+"/webapp/WEB-INF";
 				 System.out.println(" : helio db file path  : "+helioDbPath);
-				 InstanceHolders.getInstance().setProperty("hsqldb.database.path",helioDbPath.replace("test.txt", ""));
+				 InstanceHolders.getInstance().setProperty("hsqldb.database.path",helioDbPath);
 				 DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			     factory.setNamespaceAware(true);
 				 DocumentBuilder builder = factory.newDocumentBuilder();  
@@ -712,8 +720,9 @@ public class JunitWebserveTest {
 				 System.out.println("Joining 2 tables withpit where cluase....");
 				 ClassLoader loader = this.getClass().getClassLoader();
 				 String helioDbPath=loader.getResource("test.txt").getFile();
+				 helioDbPath=helioDbPath.replace("target/classes/test.txt", "")+"src/main"+"/webapp/WEB-INF";
 				 System.out.println(" : helio db file path  : "+helioDbPath);
-				 InstanceHolders.getInstance().setProperty("hsqldb.database.path",helioDbPath.replace("test.txt", ""));
+				 InstanceHolders.getInstance().setProperty("hsqldb.database.path",helioDbPath);
 				 DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			     factory.setNamespaceAware(true);
 				 DocumentBuilder builder = factory.newDocumentBuilder();  
