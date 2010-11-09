@@ -14,7 +14,6 @@ public interface ShortNameQueryDao {
 
 	public void generateVOTableDetails(CommonCriteriaTO comCriteriaTO) throws DetailsNotFoundException,Exception;
 	public HashMap<String,String> getDatabaseTableNames(Connection con) throws Exception;
+	public HashMap<String, String> getTableColumnNames(String tableName) throws Exception;
 	public CommonTO[] getTableColumnNames(Connection con,String tableName) throws Exception;
-	
-	
 }
