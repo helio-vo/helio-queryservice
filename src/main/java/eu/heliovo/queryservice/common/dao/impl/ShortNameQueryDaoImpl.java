@@ -6,6 +6,7 @@ import java.sql.DatabaseMetaData;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -168,6 +169,52 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 			}
 	}	
 		return columnTO;
+	}
+
+	/**
+	 * Overriding the method ;result will be a hashmap
+	 */
+	public HashMap<String, String> getTableColumnNames(String tableName) throws Exception
+	{
+		ResultSet rsColumns = null;
+		CommonTO[] columnTO = null;
+		DatabaseMetaData meta =null;
+		Connection con=null;
+		HashMap<String, String> dataTypeLookup=new LinkedHashMap<String, String>();
+		try{
+			con=getConnectionObject();
+			meta = con.getMetaData();
+		    rsColumns = meta.getColumns(null, null, tableName, null);
+		    if(rsColumns!=null){
+			    while (rsColumns.next()) {
+			      dataTypeLookup.put(rsColumns.getString("COLUMN_NAME").toLowerCase(), rsColumns.getString("TYPE_NAME"));
+			    }
+		    }
+		} catch (Exception e) {			
+			throw new Exception("EXCEPTION ", e);
+		}
+		finally
+		{
+			try {
+				if(rsColumns!=null)
+				{
+					rsColumns.close();
+					rsColumns=null;
+				}
+				if(con!=null)
+				{
+					con.close();
+					con=null;
+				}
+				if(meta!=null)
+				{
+					meta=null;
+				}
+			} catch (Exception e) {
+				
+			}
+	}	
+		return dataTypeLookup;
 	}
 
 	
@@ -684,6 +731,7 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 		StarTable[] tables=null;
 		ResultSet rs=null;
 		Connection con=null;
+		HashMap<String,String> helioInstName=new HashMap<String,String>();
 		try{
 		//Join query
 		String sJoin=comCriteriaTO.getJoin();
