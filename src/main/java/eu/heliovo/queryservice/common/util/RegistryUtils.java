@@ -92,9 +92,9 @@ public class RegistryUtils {
 	         for (int c = 0; c < columns.length; c++) {
 	            tables.append(
 	               "    <column>\n"+
-	               "      <name>"+columns[c]+"</name>\n"+
-	               "      <description>"+columnDesc[c]+"</description>\n"+
-	               "      <datatype>"+dataTypeLookup.get(columns[c].toLowerCase())+"</datatype>\n"
+	               "    <name>"+columns[c]+"</name>\n"+
+	               "    <description>"+columnDesc[c]+"</description>\n"+
+	               "    <datatype>"+dataTypeLookup.get(columns[c].toLowerCase())+"</datatype>\n"
 	            );
 	            //UTypes
 	            if(utypes!=null && utypes.length>0 && utypes.length==columns.length){
