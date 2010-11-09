@@ -2,7 +2,6 @@ package eu.heliovo.queryservice.common.util;
 
 import java.util.Enumeration;
 import java.util.HashMap;
-
 import eu.heliovo.queryservice.common.dao.CommonDaoFactory;
 import eu.heliovo.queryservice.common.dao.interfaces.ShortNameQueryDao;
 
