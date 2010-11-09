@@ -56,10 +56,15 @@ public class VOTableMaker {
 	        out.write( "<VOTABLE version='1.1' xmlns=\"http://www.ivoa.net/xml/VOTable/v1.1\">\n" );
 	        if(tables!=null){
 		        for ( int i = 0; i < tables.length; i++ ){
+		        	String tableName=tables[ i ].getName();
+		        	//
+		        	if(tableName!=null && !tableName.trim().equals(""))
+		        		tableName=tableName.substring(tableName.lastIndexOf("_")+1, tableName.length());
 		        	out.write( "<RESOURCE>\n" );
 		 	        out.write( "<DESCRIPTION>"+ConfigurationProfiler.getInstance().getProperty("sql.votable.head.desc")+"</DESCRIPTION>\n" );
 		 	        out.write( "<INFO name=\"QUERY_STATUS\" value=\""+comCriteriaTO.getQueryStatus()+"\"/>");
 		 	        out.write( "<INFO name=\"EXECUTED_AT\" value=\""+now()+"\"/>");
+		 	        out.write( "<INFO name=\"MAX_RECORD_ALLOWED\" value=\""+ConfigurationProfiler.getInstance().getProperty("sql.query.maxrecord.constraint."+tableName)+"\"/>");
 		 	        out.write("<INFO name=\"QUERY_STRING\" >"+"<![CDATA["+comCriteriaTO.getQueryArray()[i]+"]]>"+"</INFO>");
 		            VOSerializer.makeSerializer( DataFormat.TABLEDATA, tables[ i ] ).writeInlineTableElement( out );
 		            out.write( "</RESOURCE>\n" );

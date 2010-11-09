@@ -1,6 +1,10 @@
 package eu.heliovo.queryservice.common.util;
 
 import java.util.Enumeration;
+import java.util.HashMap;
+
+import eu.heliovo.queryservice.common.dao.CommonDaoFactory;
+import eu.heliovo.queryservice.common.dao.interfaces.ShortNameQueryDao;
 
 
 public class RegistryUtils {
@@ -73,12 +77,14 @@ public class RegistryUtils {
 
 	      StringBuffer tables = new StringBuffer();
 	      String[] catalogNames=getTableNames();
+	      ShortNameQueryDao shortNameDao= CommonDaoFactory.getInstance().getShortNameQueryDao();
+	     
 	      for (int t = 0; t < catalogNames.length; t++) {
 	         tables.append(
 	           "  <table>\n" +
 	           "    <name>"+catalogNames[t]+"</name>\n" 
 	          );
-	         
+	          HashMap<String, String> dataTypeLookup=shortNameDao.getTableColumnNames(catalogNames[t]);
 	          String columns[]=getColumnNames(catalogNames[t]);
 	    	  String columnDesc[]=getColumnDesc(catalogNames[t]);
 	    	  String ucd[]=getUCDNames(catalogNames[t]);
@@ -88,7 +94,8 @@ public class RegistryUtils {
 	            tables.append(
 	               "    <column>\n"+
 	               "      <name>"+columns[c]+"</name>\n"+
-	               "      <description>"+columnDesc[c]+"</description>\n"
+	               "      <description>"+columnDesc[c]+"</description>\n"+
+	               "      <datatype>"+dataTypeLookup.get(columns[c].toLowerCase())+"</datatype>\n"
 	            );
 	            //UTypes
 	            if(utypes!=null && utypes.length>0 && utypes.length==columns.length){
