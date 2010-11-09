@@ -3,12 +3,9 @@ package eu.heliovo.queryservice.common.dao.interfaces;
 
 import java.sql.Connection;
 import java.util.HashMap;
-
 import eu.heliovo.queryservice.common.dao.exception.DetailsNotFoundException;
 import eu.heliovo.queryservice.common.transfer.CommonTO;
 import eu.heliovo.queryservice.common.transfer.criteriaTO.CommonCriteriaTO;
-
-
 
 public interface ShortNameQueryDao {
 
