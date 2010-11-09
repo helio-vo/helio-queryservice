@@ -12,7 +12,7 @@ public class StartupServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	public void init(ServletConfig config) throws ServletException {
-
+		super.init(config);
 		try{
 			 /*ClassLoader loader = this.getClass().getClassLoader();
 			 // check id test.txt available.
