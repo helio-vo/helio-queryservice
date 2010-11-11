@@ -357,27 +357,38 @@ function addColumnsOfSelectedTable()
 	var selectedColumnValues="";
 	var strColumnDesc="";
 	var strColumnUcd="";
+	var strColumnUnits="";
 	var sColNameDt=document.forms[0].sColumnName;
 	var sColDesc=document.forms[0].columnDescription;
 	var sColUcd=document.forms[0].columnUcd;
+	var sColUnits=document.forms[0].columnUnits;
 	
 	for (i=0;i<sColNameDt.length;i++){
 		if(sColNameDt[i].checked){		
 			var sColDes="";
 			var sColUcdValue="";
+			var sColUnitsValue="";
 			selectedColumnValues+= sColNameDt[i].value+'::';	
 			if(sColDesc[i].value!=null && sColDesc[i].value!=""){
 				sColDes=sColDesc[i].value;
 			}else{
 				sColDes=" ";
 			}
+			//
 			if(sColUcd[i].value!=null && sColUcd[i].value!=""){
 				sColUcdValue=sColUcd[i].value;
 			}else{
 				sColUcdValue=" ";
 			}
+			//
+			if(sColUnits[i].value!=null && sColUnits[i].value!=""){
+				sColUnitsValue=sColUnits[i].value;
+			}else{
+				sColUnitsValue=" ";
+			}
 			strColumnDesc+=sColDes+'::';
 			strColumnUcd+=sColUcdValue+'::';
+			strColumnUnits+=sColUnitsValue+'::';
 		}
 	}
 	
@@ -410,6 +421,11 @@ function addColumnsOfSelectedTable()
 	//Coulumn ucd's.
 	if(strColumnUcd!=null && strColumnUcd!=""){
 		strColumnUcd=strColumnUcd.substring(0,strColumnUcd.length-2);
+	}
+	
+	//Coulumn unit's.
+	if(strColumnUnits!=null && strColumnUnits!=""){
+		strColumnUnits=strColumnUnits.substring(0,strColumnUnits.length-2);
 	}
 	
 	//create the Filter Row
@@ -447,7 +463,7 @@ function addColumnsOfSelectedTable()
 		limitConstraint=" ";
 	}
 	//alert(" rowsCount : "+rowsCount);
-	var hiddenValue=tableName+"^$$^"+selectedColumnValues+"^$$^"+timeConstraint+"^$$^"+instrumentConstraint+"^$$^"+coordinateConstraint+"^$$^"+orderByConstraint+"^$$^"+limitConstraint+"^$$^"+strColumnDesc+"^$$^"+strColumnUcd;
+	var hiddenValue=tableName+"^$$^"+selectedColumnValues+"^$$^"+timeConstraint+"^$$^"+instrumentConstraint+"^$$^"+coordinateConstraint+"^$$^"+orderByConstraint+"^$$^"+limitConstraint+"^$$^"+strColumnDesc+"^$$^"+strColumnUcd+"^$$^"+strColumnUnits;
 	var columnHidValue= '<input type="hidden" name="addedTableDetails" id="addedTableDetails'+rowsCount+'" value="'+hiddenValue+'">';
 	
 	var previousRowClassName="";
@@ -504,30 +520,36 @@ function addColumnsOfSelectedTable()
 	oCell.width=300;
 	
 	oCell = newRow.insertCell(5);
-	oCell.innerHTML =trim(timeConstraint);
+	oCell.innerHTML =checkIfValueEmpty(strColumnUnits);
 	oCell.align="left";
 	oCell.style.paddingLeft="10px";
 	oCell.width=300;
 	
 	oCell = newRow.insertCell(6);
-	oCell.innerHTML =trim(instrumentConstraint);
+	oCell.innerHTML =trim(timeConstraint);
 	oCell.align="left";
 	oCell.style.paddingLeft="10px";
 	oCell.width=300;
 	
 	oCell = newRow.insertCell(7);
-	oCell.innerHTML =trim(coordinateConstraint);
+	oCell.innerHTML =trim(instrumentConstraint);
 	oCell.align="left";
 	oCell.style.paddingLeft="10px";
 	oCell.width=300;
 	
 	oCell = newRow.insertCell(8);
-	oCell.innerHTML =trim(orderByConstraint)+columnHidValue;
+	oCell.innerHTML =trim(coordinateConstraint);
 	oCell.align="left";
 	oCell.style.paddingLeft="10px";
 	oCell.width=300;
 	
 	oCell = newRow.insertCell(9);
+	oCell.innerHTML =trim(orderByConstraint)+columnHidValue;
+	oCell.align="left";
+	oCell.style.paddingLeft="10px";
+	oCell.width=300;
+	
+	oCell = newRow.insertCell(10);
 	oCell.innerHTML =trim(limitConstraint);
 	oCell.align="left";
 	oCell.style.paddingLeft="10px";
