@@ -54,6 +54,10 @@ public class CommonCriteriaTO implements Serializable{
 	private String queryArray[];
 	private String join;
 	private Connection connection;
+	private String allStartDate;
+	private String allEndDate;
+	private String contextUrl;
+	
 	
 	public CommonCriteriaTO(){
 		this.setIPageNumber(0);
@@ -381,5 +385,29 @@ public class CommonCriteriaTO implements Serializable{
 
 	public void setConnection(Connection connection) {
 		this.connection = connection;
-	}	
+	}
+
+	public String getAllStartDate() {
+		return allStartDate;
+	}
+
+	public void setAllStartDate(String allStartDate) {
+		this.allStartDate = allStartDate;
+	}
+
+	public String getAllEndDate() {
+		return allEndDate;
+	}
+
+	public void setAllEndDate(String allEndDate) {
+		this.allEndDate = allEndDate;
+	}
+
+	public String getContextUrl() {
+		return contextUrl;
+	}
+
+	public void setContextUrl(String contextUrl) {
+		this.contextUrl = contextUrl;
+	}
 }

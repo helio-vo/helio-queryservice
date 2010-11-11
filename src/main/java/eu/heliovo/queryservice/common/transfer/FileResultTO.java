@@ -26,7 +26,7 @@ public class FileResultTO implements Serializable {
 	private String Status;
 	private String sUrl;
 	private String fileInfo;
-	
+	private String columnUnits;
 	
 	public String getJdbcDriverName() {
 		return jdbcDriverName;
@@ -142,5 +142,10 @@ public class FileResultTO implements Serializable {
 	public void setFileInfo(String fileInfo) {
 		this.fileInfo = fileInfo;
 	}
-	
+	public String getColumnUnits() {
+		return columnUnits;
+	}
+	public void setColumnUnits(String columnUnits) {
+		this.columnUnits = columnUnits;
+	}
 }
