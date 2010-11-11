@@ -353,6 +353,7 @@ public class CommonAction  extends ActionSupport
 						fileResultTO[i].setServiceDesc("sql.votable.head.desc="+serviceDesc);
 						fileResultTO[i].setColumnNames("sql.columnnames."+details[0]+"="+details[1]);
 						fileResultTO[i].setColumnUCD("sql.columnucd."+details[0]+"="+details[8]);
+						fileResultTO[i].setColumnUnits("sql.columnunits."+details[0]+"="+details[9]);
 						fileResultTO[i].setColumnUType("sql.columnutypes."+details[0]+"=");
 						fileResultTO[i].setColumnDesc("sql.columndesc."+details[0]+"="+details[7]);
 						fileResultTO[i].setTimeConstraint("sql.query.time.constraint."+details[0]+"="+details[2]);
