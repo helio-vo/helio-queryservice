@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import eu.heliovo.queryservice.common.dao.CommonDaoFactory;
 import eu.heliovo.queryservice.common.dao.interfaces.CommonDao;
 import eu.heliovo.queryservice.common.transfer.criteriaTO.CommonCriteriaTO;
+import eu.heliovo.queryservice.common.util.CommonUtils;
 
 /**
  * Servlet implementation class HelioQueryService
@@ -41,6 +42,10 @@ public class HelioQueryService extends HttpServlet {
 		    //Setting start time & end time parameter
 		    String sStartTime=request.getParameter("STARTTIME");
 		    String sEndTime=request.getParameter("ENDTIME");
+		    //
+		    comCriteriaTO.setAllStartDate(sStartTime);
+		    comCriteriaTO.setAllEndDate(sEndTime);
+		    comCriteriaTO.setContextUrl(CommonUtils.getUrl(request));
 		   	System.out.println(" sStartTime : "+sStartTime+" sEndTime : "+sEndTime);
 		   	//Start date array list
 		   	if(sStartTime!=null && !sStartTime.equals("")){
