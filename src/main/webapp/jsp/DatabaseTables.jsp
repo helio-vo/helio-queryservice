@@ -131,6 +131,7 @@
 			 			  <td class="txtblackBP">Column Names</td>
 			 			  <td class="txtblackBP">Column Description</td>
 			 			  <td class="txtblackBP">Column UCD</td>
+			 			  <td class="txtblackBP">Column Units</td>
 			              <td class="txtblackBP">Time Constraint</td>
 			              <td class="txtblackBP">Instrument Constraint</td>                       
 			              <td class="txtblackBP">Coordinate Constraint</td>
