@@ -790,7 +790,7 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 				rs=resultTO.getResultSet();
 				queryArray[tableCount]=resultTO.getQuery();
 				tables[tableCount] = new StandardTypeTable( new SequentialResultSetStarTable( rs ) );
-				tables[tableCount].setName(comCriteriaTO.getContextPath()+"_"+tableName);
+				tables[tableCount].setName(tableName);
 				//Editing column property.
 				VOTableMaker.setColInfoProperty(tables[tableCount], tableName);
 				tableCount++;
