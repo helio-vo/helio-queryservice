@@ -145,7 +145,11 @@ public class SoapDispatcher implements Provider<Source> {
 		    		 listName[i]=nodeList.item(i).getFirstChild().getNodeValue();
 		    	 }
 		    	 comCriteriaTO.setListTableName(listName);
-    		 }	 
+    		 }	
+    		 //Setting value for independent query.
+    		 comCriteriaTO.setAllStartDate(CommonUtils.arrayToString(comCriteriaTO.getStartDateTimeList(), ","));
+ 		     comCriteriaTO.setAllEndDate(CommonUtils.arrayToString(comCriteriaTO.getEndDateTimeList(), ","));
+ 		     comCriteriaTO.setContextUrl(CommonUtils.getUrl(req));
 	    	 
     		//Setting for Start Row parameter.
 			 if(inputDoc.getElementsByTagNameNS("*","STARTINDEX").getLength()>0 && inputDoc.getElementsByTagNameNS("*","STARTINDEX").item(0).getFirstChild()!=null){
