@@ -10,6 +10,7 @@ import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 import eu.heliovo.queryservice.common.transfer.FileResultTO;
+import eu.heliovo.queryservice.common.transfer.criteriaTO.CommonCriteriaTO;
 
 
 public class CommonUtils {
@@ -128,7 +129,90 @@ public class CommonUtils {
 	     return xmlString.toString();
       }
  
-	
+	 /**
+	   * Reveals the base URI of the web application.
+	   *
+	   * @return The URI.
+	   */
+	  public static String getUrl(HttpServletRequest req) { 
+		  String scheme = req.getScheme(); // http 
+		  String serverName = req.getServerName(); // hostname.com 
+		  int serverPort = req.getServerPort(); // 80 
+		  String contextPath = req.getContextPath(); // mywebapp 
+		  String url = scheme+"://"+serverName+":"+serverPort+contextPath+"/HelioQueryService?"; 
+		  return url; 
+	  }	 
 	 
+	 /**
+	  * 
+	  * @param commonTO
+	  * @return
+	  */
+	 public static String getFullRequestUrl(CommonCriteriaTO commonTO){
+		 String sActualUrl=commonTO.getContextUrl();
+		 if(commonTO.getAllStartDate()!=null && !commonTO.getAllStartDate().trim().equals(""))
+			 sActualUrl=sActualUrl+"STARTTIME="+commonTO.getAllStartDate();
+		 if(commonTO.getAllEndDate()!=null && !commonTO.getAllEndDate().trim().equals(""))
+			 sActualUrl=sActualUrl+"&ENDTIME="+commonTO.getAllEndDate();
+		 if(commonTO.getInstruments()!=null && !commonTO.getInstruments().trim().equals(""))
+			 sActualUrl=sActualUrl+"&INSTRUMENT="+commonTO.getInstruments();
+		 if(commonTO.getWhereClause()!=null && !commonTO.getWhereClause().trim().equals(""))
+			 sActualUrl=sActualUrl+"&WHERE="+commonTO.getWhereClause();
+		 //Appening From clause, table
+		 sActualUrl=sActualUrl+"&FROM="+commonTO.getListName();
+		 return sActualUrl;
+	 }
+	 
+	 /**
+	  * 
+	  * @param commonTO
+	  * @return
+	  */
+	 public static String getRequestUrl(CommonCriteriaTO commonTO){
+		 String sActualUrl=commonTO.getContextUrl();
+		 String where=getRequestWhereClause(commonTO);
+		 if(commonTO.getStartDateTime()!=null && !commonTO.getStartDateTime().trim().equals(""))
+			 sActualUrl=sActualUrl+"STARTTIME="+commonTO.getStartDateTime();
+		 if(commonTO.getEndDateTime()!=null && !commonTO.getEndDateTime().trim().equals(""))
+			 sActualUrl=sActualUrl+"&ENDTIME="+commonTO.getEndDateTime();
+		 if(commonTO.getInstruments()!=null && !commonTO.getInstruments().trim().equals(""))
+			 sActualUrl=sActualUrl+"&INSTRUMENT="+commonTO.getInstruments();
+		 //WHERE Clause
+		 if(where!=null && !where.trim().equals(""))
+			 sActualUrl=sActualUrl+"&WHERE="+where;
+		 else if(commonTO.getWhereClause()!=null && !commonTO.getWhereClause().trim().equals("") && commonTO.getWhereClause().trim().contains(commonTO.getTableName().trim()))
+			 sActualUrl=sActualUrl+"&WHERE="+commonTO.getWhereClause();
+		 
+		 //Appening From clause, table
+		 sActualUrl=sActualUrl+"&FROM="+commonTO.getTableName();
+		 return sActualUrl;
+	 }
+	
+	 /**
+	  * 
+	  * @param commonTO
+	  * @return
+	  */
+	 public static String getRequestWhereClause(CommonCriteriaTO commonTO){
+		 String sWhere=commonTO.getWhereClause();
+		 String tableName=commonTO.getTableName();
+		 String[] whereClauseArray=null;
+		 String actualValue="";
+		 if(sWhere!=null && !sWhere.trim().equals(""))
+			 whereClauseArray=sWhere.split(";");
+		 //
+		  if(whereClauseArray!=null){
+			for(int count=0;count<whereClauseArray.length;count++){
+				String 	value=whereClauseArray[count];
+				if(value.trim().contains(tableName)){
+					actualValue=actualValue+value+";";
+				}
+			}
+		  }
+			if(actualValue!=null && !actualValue.trim().equals(""))
+				actualValue=actualValue.substring(0, actualValue.length()-1);
+			
+		 return actualValue;
+	 }
 				
 }

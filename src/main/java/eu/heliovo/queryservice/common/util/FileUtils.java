@@ -148,6 +148,8 @@ public class FileUtils {
 	    	 contents.append(System.getProperty("line.separator"));
 	    	 contents.append(fileResultTO[i].getColumnUCD());
 	    	 contents.append(System.getProperty("line.separator"));
+	    	 contents.append(fileResultTO[i].getColumnUnits());
+	    	 contents.append(System.getProperty("line.separator"));
 	    	 contents.append(fileResultTO[i].getColumnUType());
 	    	 contents.append(System.getProperty("line.separator"));
 	    	 contents.append(System.getProperty("line.separator"));

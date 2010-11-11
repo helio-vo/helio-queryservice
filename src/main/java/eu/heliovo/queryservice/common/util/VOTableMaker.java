@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
-
 import org.apache.log4j.Logger;
 import eu.heliovo.queryservice.common.util.ConfigurationProfiler;
 import uk.ac.starlink.table.DescribedValue;
@@ -54,18 +53,22 @@ public class VOTableMaker {
 				out.write("<helio:resultResponse xmlns:helio=\"http://helio-vo.eu/xml/LongQueryService/v0.1\">");
 			}
 	        out.write( "<VOTABLE version='1.1' xmlns=\"http://www.ivoa.net/xml/VOTable/v1.1\">\n" );
+	        //
+	        if((comCriteriaTO.getStartDateTimeList()!=null && comCriteriaTO.getStartDateTimeList().length>1) || (comCriteriaTO.getListTableName()!=null && comCriteriaTO.getListTableName().length>1))
+	   		 out.write("<INFO name=\"QUERY_URL\" >"+"<![CDATA["+CommonUtils.getFullRequestUrl(comCriteriaTO)+"]]>"+"</INFO>");
 	        if(tables!=null){
 		        for ( int i = 0; i < tables.length; i++ ){
 		        	String tableName=tables[ i ].getName();
+		        	comCriteriaTO.setTableName(tableName);
 		        	//
-		        	if(tableName!=null && !tableName.trim().equals(""))
-		        		tableName=tableName.substring(tableName.lastIndexOf("_")+1, tableName.length());
+		        	tables[ i ].setName(comCriteriaTO.getContextPath()+": "+tableName);
 		        	out.write( "<RESOURCE>\n" );
 		 	        out.write( "<DESCRIPTION>"+ConfigurationProfiler.getInstance().getProperty("sql.votable.head.desc")+"</DESCRIPTION>\n" );
 		 	        out.write( "<INFO name=\"QUERY_STATUS\" value=\""+comCriteriaTO.getQueryStatus()+"\"/>");
 		 	        out.write( "<INFO name=\"EXECUTED_AT\" value=\""+now()+"\"/>");
 		 	        out.write( "<INFO name=\"MAX_RECORD_ALLOWED\" value=\""+ConfigurationProfiler.getInstance().getProperty("sql.query.maxrecord.constraint."+tableName)+"\"/>");
 		 	        out.write("<INFO name=\"QUERY_STRING\" >"+"<![CDATA["+comCriteriaTO.getQueryArray()[i]+"]]>"+"</INFO>");
+		 	        out.write("<INFO name=\"QUERY_URL\" >"+"<![CDATA["+CommonUtils.getRequestUrl(comCriteriaTO)+"]]>"+"</INFO>");
 		            VOSerializer.makeSerializer( DataFormat.TABLEDATA, tables[ i ] ).writeInlineTableElement( out );
 		            out.write( "</RESOURCE>\n" );
 		        }

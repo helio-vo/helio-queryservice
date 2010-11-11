@@ -69,6 +69,14 @@ public class RegistryUtils {
 		return columnDesc;
 	}
 	
+	/*
+	 *  getUTypes(String tableName): to get Utypes.
+	 */
+	public String[] getColumnUnits(String tableName) throws Exception{
+		String columnUnits[]=ConfigurationProfiler.getInstance().getProperty("sql.columnunits."+tableName).split("::");
+		return columnUnits;
+	}
+	
 	/** Generates the table descriptions for the CatalogService registration
 	    * for the specified catalog.
 	    */
@@ -88,7 +96,8 @@ public class RegistryUtils {
 	    	  String columnDesc[]=getColumnDesc(catalogNames[t]);
 	    	  String ucd[]=getUCDNames(catalogNames[t]);
 	    	  String utypes[]=getUTypes(catalogNames[t]);	  
-	         
+	    	  String units[]=getColumnUnits(catalogNames[t]);	
+	    	  
 	         for (int c = 0; c < columns.length; c++) {
 	            tables.append(
 	               "    <column>\n"+
@@ -109,6 +118,13 @@ public class RegistryUtils {
 		            if ((ucd[c] != null) && (ucd[c].trim().length()>0)) {
 		               tables.append(
 		                  "      <ucd>"+ucd[c].trim()+"</ucd>\n"
+		               );
+		            }
+	            }
+	            if(units!=null && units.length>0 && units.length==columns.length){
+		            if ((units[c] != null) && (units[c].trim().length()>0)) {
+		               tables.append(
+		                  "      <units>"+units[c].trim()+"</units>\n"
 		               );
 		            }
 	            }
