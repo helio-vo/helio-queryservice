@@ -84,7 +84,9 @@ public class LongRunningQueryService extends HttpServlet {
 		    comCriteriaTO.setNoOfRows(noOfRows);
 		    //Setting save to parameter
 		    String saveTo=request.getParameter("SAVETO");
-		    
+		    String sJoin=request.getParameter("JOIN");
+		    if(sJoin!=null && !sJoin.trim().equals(""))
+		    	comCriteriaTO.setJoin(sJoin.toLowerCase());
 		    // Save To file.
 			if(saveTo==null || saveTo==""){
 			    saveTo= InstanceHolders.getInstance().getProperty("hsqldb.database.path")+"/files";

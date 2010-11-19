@@ -4,12 +4,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import eu.heliovo.queryservice.common.dao.CommonDaoFactory;
 import eu.heliovo.queryservice.common.dao.interfaces.CommonDao;
 import eu.heliovo.queryservice.common.transfer.criteriaTO.CommonCriteriaTO;
@@ -92,7 +90,8 @@ public class HelioQueryService extends HttpServlet {
 		    comCriteriaTO.setSize(size);
 		    //Setting join parameter
 		    String sJoin=request.getParameter("JOIN");
-		    comCriteriaTO.setJoin(sJoin);
+		    if(sJoin!=null && !sJoin.trim().equals(""))
+		    	comCriteriaTO.setJoin(sJoin.toLowerCase());
 			CommonDao commonNameDao= CommonDaoFactory.getInstance().getCommonDAO();
 			commonNameDao.generateVOTableDetails(comCriteriaTO);
 		}catch(Exception e){
