@@ -272,7 +272,7 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 				 query="SELECT "+getColumnNamesFromProperty(listName)+" FROM "+listName;
 			 }
 			 
-			 logger.info(" : Query String with 'Select' and 'From' : "+query);
+			 //logger.info(" : Query String with 'Select' and 'From' : "+query);
 			 //Getting where clause.
 			 if(comCriteriaTO.getWhereClause()!=null && !comCriteriaTO.getWhereClause().equals("")){
 				 queryWhereClause=QueryWhereClauseParser.generateWhereClause(comCriteriaTO);
@@ -296,7 +296,7 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 				 queryConstraint=queryConstraint+" "+queryWhereClause;
 			 }
 			 
-			 logger.info(" : Appending Time Constraint If Avialable : "+queryConstraint);
+			// logger.info(" : Appending Time Constraint If Avialable : "+queryConstraint);
 			 
 			 //Appending Instrument clause.
 			 String queryInstContraint=instrumentsQueryConstraint(listName);
@@ -308,7 +308,7 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 				
 			 }
 			
-			 logger.info(" : Appending Instrument Constraint If Avialable : "+queryConstraint); 
+			 //logger.info(" : Appending Instrument Constraint If Avialable : "+queryConstraint); 
 			 //Appending Coordinate clause.
 			 String queryCoordinateContraint=coordinatesQueryConstraint(listName);
 			 if(queryCoordinateContraint!=null && !queryCoordinateContraint.trim().equals("")){
@@ -319,7 +319,7 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 				
 			 }
 			 
-			 logger.info(" : Appending Coordinate Constraint If Avialable : "+queryConstraint);
+			// logger.info(" : Appending Coordinate Constraint If Avialable : "+queryConstraint);
 			 
 			 //Appending Order By clause.
 			 String queryOrderByContraint=orderByQueryConstraint(listName);
@@ -328,12 +328,12 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 			 if(queryConstraint!=null && !queryConstraint.trim().equals("")){
 				 query=query+" WHERE "+queryConstraint;
 			 }
-			 logger.info(" : Appending Where Clause If Avialable : "+query);
+			 //logger.info(" : Appending Where Clause If Avialable : "+query);
 			 
 			 //Appending ; 'Order By Constraints' .
 			 query=query+" "+queryOrderByContraint;
 			 
-			 logger.info(" : Appending OderBy Constraint If Avialable : "+query);
+			 //logger.info(" : Appending OderBy Constraint If Avialable : "+query);
 			 
 			 //Appending limit clause.
 			 String queryMaxRecords=maxRecordQueryConstraint(listName);
@@ -348,7 +348,7 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 			 //Appending ; 'Limit Constraints' .
 			 query=query+" "+querylimitContraint;
 			 
-			 logger.info(" : Full query for execution : "+query);
+			 //logger.info(" : Full query for execution : "+query);
 			 
 			 
 		 return query;
@@ -604,7 +604,7 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 		try{
 		
 			String sRepSql = CommonUtils.replaceParams(generateQuery(comCriteriaTO.getTableName(),comCriteriaTO), comCriteriaTO.getParamData());
-			logger.info(" : Query String After Replacing Value :"+sRepSql);	
+			//logger.info(" : Query String After Replacing Value :"+sRepSql);	
 			//Setting Table Name.
 			comCriteriaTO.setTableName(comCriteriaTO.getListName());
 			//Connecting to database.						
@@ -731,6 +731,7 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 		StarTable[] tables=null;
 		ResultSet rs=null;
 		Connection con=null;
+		String[] queryArray=null;
 		HashMap<String,String> helioInstName=new HashMap<String,String>();
 		try{
 		//Join query
@@ -742,11 +743,12 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 		//end date values
 		String endDateTimeList[]=comCriteriaTO.getEndDateTimeList();
 		//Count of tables in respionse.
-		int count=listName.length*startDateTimeList.length;
+		int count=0;
 		//Coccetion to database
 		con=getConnectionObject();
-		// array of queries
-		String[] queryArray=new String[count];
+		//Setting connection
+		comCriteriaTO.setConnection(con);
+		//
 		int tableCount=0;
 		int CountOfTable=listName.length;
 		//Handling for join queries
@@ -756,20 +758,39 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 			CountOfTable=1;
 			count=CountOfTable*startDateTimeList.length;
 		}
-		//table count
-		tables=new StarTable[count];
+		
 		if(startDateTimeList.length==endDateTimeList.length){
 		//For loop start
 		for(int intCnt=0;intCnt<CountOfTable;intCnt++){
+			//Setting table name.
+			comCriteriaTO.setTableName(listName[intCnt]);
+			
+			//Checking for proper values
+		if((startDateTimeList.length>1 && endDateTimeList.length>1 && listName.length==1) || (startDateTimeList.length==1 && endDateTimeList.length==1 && listName.length>1) || (startDateTimeList.length==1 && endDateTimeList.length==1 && listName.length==1)){
+			//Count of tables in respionse.
+			 count=listName.length*startDateTimeList.length;
+			//table count
+			if(tableCount==0){
+				tables=new StarTable[count];
+				queryArray=new String[count];
+			}
 			//loop for start date.
 		  for(int intTimeCnt=0;intTimeCnt<startDateTimeList.length;intTimeCnt++){
 			 String startDate=startDateTimeList[intTimeCnt];
 			 String endDate=endDateTimeList[intTimeCnt];
-			 
 			 //Setting start time 
 			comCriteriaTO.setStartDateTime(startDate);
 			//Setting end time
 			comCriteriaTO.setEndDateTime(endDate);
+			//Results for each values
+			HashMap<Object, Object> ambResults=createStartTableForTimeBased(comCriteriaTO);
+			queryArray[tableCount]=(String) ambResults.get("Query");
+			//
+			tables[tableCount]=(StarTable) ambResults.get("StartTable");
+			tableCount++;
+			//
+	
+			/*
 			//Checking if start date or end date is null or no value.
 			if((startDate!=null && !startDate.trim().equals("")) && (endDate!=null && !endDate.trim().equals(""))){
 			//Comparing 2 date value.
@@ -805,7 +826,33 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 				comCriteriaTO.setQueryDescription("Start date and End date cannot be null or no value");
 				VOTableMaker.writeTables(comCriteriaTO);
 			}
+			*/
 		  }
+		}else if(startDateTimeList.length==endDateTimeList.length && listName.length==endDateTimeList.length){
+			count=listName.length;
+			//table count
+			if(tableCount==0){
+				tables=new StarTable[count];
+				queryArray=new String[count];
+			}
+			String startDate=startDateTimeList[intCnt];
+			String endDate=endDateTimeList[intCnt];
+			 //Setting start time 
+			comCriteriaTO.setStartDateTime(startDate);
+			//Setting end time
+			comCriteriaTO.setEndDateTime(endDate);
+			//Results for each values
+			HashMap<Object, Object> ambResults=createStartTableForTimeBased(comCriteriaTO);
+			
+			queryArray[tableCount]=(String) ambResults.get("Query");
+			//
+			tables[tableCount]=(StarTable) ambResults.get("StartTable");
+			tableCount++;
+		}else{
+			comCriteriaTO.setQueryStatus("ERROR");
+			comCriteriaTO.setQueryDescription("Please send proper values, request is not succesfull.");
+			VOTableMaker.writeTables(comCriteriaTO);
+		}
 		}
 		comCriteriaTO.setQueryArray(queryArray);
 		comCriteriaTO.setTables(tables);
@@ -848,4 +895,54 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 		}
 		return comCriteriaTO;
  }
+	
+	
+public HashMap<Object, Object> createStartTableForTimeBased(CommonCriteriaTO comCriteriaTO) throws Exception
+{
+	//
+	 String startDate=comCriteriaTO.getStartDateTime();
+	 String endDate=comCriteriaTO.getEndDateTime();
+	 //Join query
+	 String sJoin=comCriteriaTO.getJoin();
+	 //List data or table names
+	 String[] listName=comCriteriaTO.getListTableName();
+	 ResultSet rs=null;
+	 HashMap<Object, Object> hmpResults=new LinkedHashMap<Object, Object>();
+	if((startDate!=null && !startDate.trim().equals("")) && (endDate!=null && !endDate.trim().equals(""))){
+		//Comparing 2 date value.
+		if(compareToDates(startDate,endDate)){
+			String tableName="";
+			if(sJoin!=null && !sJoin.equals("") && sJoin.equals("yes"))
+			{
+				tableName=arrayToString(listName);
+				logger.info(" : This is a JOIN query : ");
+			}else{
+				tableName=comCriteriaTO.getTableName();
+			}
+			logger.info(" : Start Date ; End Date and List Name : "+startDate+"  : "+endDate+"  : "+tableName);
+			comCriteriaTO.setTableName(tableName);
+			//getting the result set
+			ResultTO resultTO= addingResultSetToVOTable(comCriteriaTO);
+			rs=resultTO.getResultSet();
+			StarTable startTable = new StandardTypeTable( new SequentialResultSetStarTable( rs ) );
+			startTable.setName(tableName);
+			//Editing column property.
+			VOTableMaker.setColInfoProperty(startTable, tableName);
+			hmpResults.put("StartTable", startTable);
+			hmpResults.put("Query", resultTO.getQuery());
+		}else{
+			comCriteriaTO.setQueryStatus("ERROR");
+			comCriteriaTO.setQueryDescription("Start Date should always be less than End Date.");
+			VOTableMaker.writeTables(comCriteriaTO);
+		}
+		}else{
+			comCriteriaTO.setQueryStatus("ERROR");
+			comCriteriaTO.setQueryDescription("Start date and End date cannot be null or no value");
+			VOTableMaker.writeTables(comCriteriaTO);
+		}
+	
+	return hmpResults;
+   }
+
+
 }

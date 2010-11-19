@@ -22,15 +22,16 @@ public class LongRunningQueryDaoImpl implements LongRunningQueryDao {
 	@Override
 	public void insertStatusToHsqlDB(String randomUUIDString,String status) throws DetailsNotFoundException {
 		try{
-			prop=HsqlDbUtils.getInstance().loadPropertyValues();
+		    prop=HsqlDbUtils.getInstance().loadPropertyValues();
 			//Connecting to database.						
 			con = ConnectionManager.getConnectionLongRunningQuery(prop);
 			st = con.createStatement();
-			String query=" insert into job_status_table values('"+randomUUIDString+"','"+status+"')";
-			logger.info("   :  Query to execute  :  "+query);
+			String query=" insert into status_table values('"+randomUUIDString+"','"+status+"')";
+			logger.info("'   :  Query to execute  : ' "+query);
 		    st.executeUpdate(query);
 			con.commit();
 		}catch(Exception e){
+			e.printStackTrace();
 			logger.fatal(" Exception occured in insertStatusToHsqlDB() : ",e);
 		}
 		
@@ -72,11 +73,12 @@ public class LongRunningQueryDaoImpl implements LongRunningQueryDao {
 			//Connecting to database.						
 			con = ConnectionManager.getConnectionLongRunningQuery(prop);
 			st = con.createStatement();
-			String query="insert into job_url_table values('"+randomUUIDString+"','"+url+"')";
+			String query="insert into url_table values('"+randomUUIDString+"','"+url+"')";
 		    st.executeUpdate(query);
 		    logger.info("   :  Query to execute  :  "+query);
 			con.commit();
 		}catch(Exception e){
+			e.printStackTrace();
 			logger.fatal(" Exception occured in insertURLToHsqlDB() : ",e);
 		}
 			
@@ -118,12 +120,13 @@ public class LongRunningQueryDaoImpl implements LongRunningQueryDao {
 			//Connecting to database.						
 			con = ConnectionManager.getConnectionLongRunningQuery(prop);
 			st = con.createStatement();
-		    rs=st.executeQuery("select * from job_status_table where job_id='"+randomUUIDString+"'");
+		    rs=st.executeQuery("select * from status_table where job_id='"+randomUUIDString+"'");
 			con.commit();
 			while(rs.next()){
 				sStatus=rs.getString(2);
 			}
 			}catch(Exception e){
+				e.printStackTrace();
 				logger.fatal(" Exception occured in getStatusFromHsqlDB() : ",e);
 			}
 			
@@ -167,7 +170,7 @@ public class LongRunningQueryDaoImpl implements LongRunningQueryDao {
 			//Connecting to database.						
 			con = ConnectionManager.getConnectionLongRunningQuery(prop);
 			st = con.createStatement();
-		    rs=st.executeQuery("select * from job_url_table where job_id='"+randomUUIDString+"'");
+		    rs=st.executeQuery("select * from url_table where job_id='"+randomUUIDString+"'");
 			con.commit();
 			
 			while(rs.next()){
@@ -175,6 +178,7 @@ public class LongRunningQueryDaoImpl implements LongRunningQueryDao {
 			}
 			
 			}catch(Exception e){
+				e.printStackTrace();
 				logger.fatal(" Exception occured in getUrlFromHsqlDB() : ",e);
 			}
 			
@@ -208,5 +212,50 @@ public class LongRunningQueryDaoImpl implements LongRunningQueryDao {
 			
 		return sUrl;
 	}
+	
+	@Override
+	public void loadProviderAccessTable(String fileName,String tableName) throws DetailsNotFoundException {
+		String sUrl=null;
+		try{
+			System.out.println("  :  -----> Setting uploaded file for provider access table ----->");
+			String query="SET TABLE "+tableName+" SOURCE "+"\""+fileName+"\"";
+			System.out.println("loadProviderAccessTable() method "+query);
+			prop=HsqlDbUtils.getInstance().loadPropertyValues();
+			//Connecting to database.						
+			con = ConnectionManager.getConnectionLongRunningQuery(prop);
+			st = con.createStatement();
+			st.execute(query);
+			con.commit();
+			System.out.println("  :  -----> Done ----->");
+		}catch(Exception e){
+			logger.fatal(" Exception occured in loadProviderAccessTable() : ",e);
+			throw new DetailsNotFoundException("Exception: ",e);
+		}
+		
+		finally 
+		{
+			try {
+				
+				if(rs!=null)
+				{
+					rs.close();
+					rs=null;
+				}
+				if(st!=null)
+				{
+					st.close();
+					st=null;
+				}
+				if(con!=null)
+				{
+					con.close();
+					con=null;
+				}
+			} catch (Exception e) {
+				throw new DetailsNotFoundException("Exception: ",e);
+			}
+		}
+	}
+	
 	
 }
