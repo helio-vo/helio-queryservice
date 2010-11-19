@@ -11,4 +11,5 @@ public interface LongRunningQueryDao {
 	    public void insertURLToHsqlDB(String randomUUIDString,String url) throws DetailsNotFoundException;
 		public String getStatusFromHsqlDB(String randomUUIDString) throws DetailsNotFoundException;
 		public String getUrlFromHsqlDB(String randomUUIDString) throws DetailsNotFoundException;
+		public void loadProviderAccessTable(String fileName,String tableName) throws DetailsNotFoundException;
 }
