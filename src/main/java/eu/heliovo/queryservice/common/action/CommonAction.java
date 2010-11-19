@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
@@ -12,6 +14,7 @@ import eu.heliovo.queryservice.common.dao.CommonDaoFactory;
 import eu.heliovo.queryservice.common.dao.interfaces.ShortNameQueryDao;
 import eu.heliovo.queryservice.common.transfer.CommonTO;
 import eu.heliovo.queryservice.common.transfer.FileResultTO;
+import eu.heliovo.queryservice.common.util.CommonUtils;
 import eu.heliovo.queryservice.common.util.ConfigurationProfiler;
 import eu.heliovo.queryservice.common.util.ConnectionManager;
 import eu.heliovo.queryservice.common.util.FileUtils;
@@ -382,6 +385,23 @@ public class CommonAction  extends ActionSupport
 		
 		return sReturnStatus;
 	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public String showLogFile()
+	{
+		String status="SUCCESS";
+		Map<String, String> hmbDt=CommonUtils.getLogLocations();
+		Iterator it = hmbDt.entrySet().iterator();
+	    while (it.hasNext()) {
+	        Map.Entry pairs = (Map.Entry)it.next();
+	        System.out.println(pairs.getKey() + " = " + pairs.getValue());
+	    }
+
+		
+		return status;
+	}
+	
 	/*
 	 * Yet to implement
 	 */
@@ -402,6 +422,8 @@ public class CommonAction  extends ActionSupport
 		}
 		return "SUCCESS";
 	}
+	
+	
 	
        
 }
