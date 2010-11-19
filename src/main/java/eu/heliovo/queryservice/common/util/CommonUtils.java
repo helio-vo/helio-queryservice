@@ -2,12 +2,22 @@
 package eu.heliovo.queryservice.common.util;
 
 import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
+
+import org.apache.log4j.Appender;
+import org.apache.log4j.FileAppender;
 import org.apache.log4j.Logger;
 import eu.heliovo.queryservice.common.transfer.FileResultTO;
 import eu.heliovo.queryservice.common.transfer.criteriaTO.CommonCriteriaTO;
@@ -231,5 +241,40 @@ public class CommonUtils {
 		    }
 		    return result;
 		}
-				
+	
+	  
+	  @SuppressWarnings("unchecked")
+	  public static Map<String,String> getLogLocations() {
+
+	    Collection<Logger> allLoggers = new ArrayList<Logger>();
+	    Logger rootLogger = Logger.getRootLogger();
+	    allLoggers.add(rootLogger);
+	    for (Enumeration<Logger> loggers =rootLogger.getLoggerRepository().getCurrentLoggers() ;loggers.hasMoreElements() ; ) {
+	      allLoggers.add(loggers.nextElement());
+	    }
+	    
+	    Set<FileAppender> fileAppenders =new LinkedHashSet<FileAppender>();
+
+	    for (Logger logger : allLoggers) {
+	      for (Enumeration<Appender> appenders =
+	              logger.getAllAppenders() ;
+	              appenders.hasMoreElements() ; ) {
+
+	        Appender appender = appenders.nextElement();
+	        if (appender instanceof FileAppender) {
+
+	          fileAppenders.add((FileAppender) appender);
+	        }
+	      }
+	    }
+
+	    Map<String, String> locations =new LinkedHashMap<String,String>();
+
+	    for (FileAppender appender : fileAppenders) {
+	      locations.put(appender.getName(), appender.getFile());
+	    }
+
+	    return locations;
+	  }
+	  
 }

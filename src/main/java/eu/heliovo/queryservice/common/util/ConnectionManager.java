@@ -123,7 +123,7 @@ public class ConnectionManager {
 		int i = 0;
 		int count=0;
 		String jdbcString = prop.getProperty("jdbc.driver");
-	    String jdbcURL = getHsqlDBEmbeddedDatabasePath(prop.getProperty("jdbc.url"));
+	    String jdbcURL = getHsqlDBEmbeddedDatabasePath(prop.getProperty("jdbc.url"))+";hsqldb.default_table_type=cached;shutdown=true";
 	    String user = prop.getProperty("jdbc.user");
 	    String passwd = prop.getProperty("jdbc.password");
 	    System.out.println(" Driver Name : "+jdbcString+" Database URL  : "+jdbcURL+" User : "+user+" Password  "+passwd);
@@ -168,7 +168,7 @@ public class ConnectionManager {
 	//To get HSQL DB embedded database path.
 	private static String getHsqlDBEmbeddedDatabasePath(String url){
 		if(url!=null && InstanceHolders.getInstance().getProperty("hsqldb.database.path")!=null){
-			url=url.replaceAll("kwpath",InstanceHolders.getInstance().getProperty("hsqldb.database.path") );
+			url=url.replaceAll("kwpath",InstanceHolders.getInstance().getProperty("hsqldb.database.path") ) ;
 		}
 		return url;
 	}	

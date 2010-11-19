@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import eu.heliovo.queryservice.common.dao.CommonDaoFactory;
 import eu.heliovo.queryservice.common.dao.exception.DetailsNotFoundException;
 import eu.heliovo.queryservice.common.dao.interfaces.LongRunningQueryDao;
+import eu.heliovo.queryservice.common.dao.interfaces.ShortNameQueryDao;
 
 public class HsqlDbUtils {
 	
@@ -64,6 +65,15 @@ public class HsqlDbUtils {
 		LongRunningQueryDao shortNameDao= CommonDaoFactory.getInstance().getLongRunningQueryDao();
 		String sUrl=shortNameDao.getUrlFromHsqlDB(randomUUIDString);
 		return sUrl;
+	 }
+	 
+	 /*
+	  * 
+	  */
+	 public synchronized void  loadProviderAccessTable(String fileName,String tableName) throws DetailsNotFoundException
+	 {
+		 LongRunningQueryDao shortNameDao= CommonDaoFactory.getInstance().getLongRunningQueryDao();
+		 shortNameDao.loadProviderAccessTable(fileName,tableName);
 	 }
 	 
 	 /*
