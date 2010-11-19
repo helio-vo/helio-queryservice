@@ -166,7 +166,8 @@ public class SoapDispatcher implements Provider<Source> {
 			//Setting for Join query status.
 			 if(inputDoc.getElementsByTagNameNS("*","JOIN").getLength()>0 && inputDoc.getElementsByTagNameNS("*","JOIN").item(0).getFirstChild()!=null){
 				 String join = inputDoc.getElementsByTagNameNS("*","JOIN").item(0).getFirstChild().getNodeValue();
-				 comCriteriaTO.setJoin(join);
+				 if(join!=null && !join.trim().equals(""))
+					 comCriteriaTO.setJoin(join);
 			 }
 	    	 
 			 //Full query interface
