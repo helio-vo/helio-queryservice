@@ -364,7 +364,7 @@ public class SoapDispatcher implements Provider<Source> {
 	
 	/*
 	 * Method used to convert Source to dom object.
-	*/
+	 */
 	private synchronized Element toDocument(Source src) throws TransformerException {
         DOMResult result = new DOMResult();
         Transformer transformer = TransformerFactory.newInstance().newTransformer();
