@@ -603,6 +603,16 @@ function doneDatabaseConnection()
 		
 }
 
+
+function showLogFile() 
+{
+	document.forms[0].target="_self";
+	document.forms[0].action="showLogFile.action";
+	document.forms[0].method="post";
+	document.forms[0].submit();	
+}
+
+
 function deleteTable(rowIndex){		    
   	//alert("  rowIndex  "+rowIndex);
     var table=document.getElementById("addedColumns");
