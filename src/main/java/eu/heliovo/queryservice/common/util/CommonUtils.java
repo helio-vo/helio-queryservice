@@ -1,6 +1,10 @@
 /* #ident	"%W%" */
 package eu.heliovo.queryservice.common.util;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -276,5 +280,19 @@ public class CommonUtils {
 
 	    return locations;
 	  }
+	  
+	  public static StringBuffer readInputStreamAsString(InputStream in) throws IOException {
+		StringBuffer sb=new StringBuffer();
+	    BufferedInputStream bis = new BufferedInputStream(in);
+	    ByteArrayOutputStream buf = new ByteArrayOutputStream();
+	    int result = bis.read();
+	    while(result != -1) {
+	      byte b = (byte)result;
+	      buf.write(b);
+	      result = bis.read();
+	    }        
+	    return sb.append(buf.toString());
+	}
+
 	  
 }

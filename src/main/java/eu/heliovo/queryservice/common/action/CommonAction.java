@@ -1,5 +1,8 @@
 package eu.heliovo.queryservice.common.action;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -386,18 +389,46 @@ public class CommonAction  extends ActionSupport
 		return sReturnStatus;
 	}
 	
+	private String showLogs;
 	
+	public String getShowLogs() {
+		return showLogs;
+	}
+
+	public void setShowLogs(String showLogs) {
+		this.showLogs = showLogs;
+	}
+
 	@SuppressWarnings("unchecked")
 	public String showLogFile()
 	{
 		String status="SUCCESS";
 		Map<String, String> hmbDt=CommonUtils.getLogLocations();
 		Iterator it = hmbDt.entrySet().iterator();
+		String logFileName="";
 	    while (it.hasNext()) {
 	        Map.Entry pairs = (Map.Entry)it.next();
-	        System.out.println(pairs.getKey() + " = " + pairs.getValue());
+	        System.out.println("Log file name  = " + pairs.getValue());
+	        if(pairs!=null){
+	        	logFileName=pairs.getValue().toString();
+	    	} 
+	        break;
 	    }
-
+	    //
+	    try {
+			FileInputStream fileInputStream=new FileInputStream(new File(logFileName));
+			StringBuffer sb=CommonUtils.readInputStreamAsString(fileInputStream);
+			System.out.println(" -----------> String Buffer ---------->"+sb);
+			setShowLogs(sb.toString());
+			//Setting flag to true, database details are correct.
+			setStatusDisplay(true);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		return status;
 	}

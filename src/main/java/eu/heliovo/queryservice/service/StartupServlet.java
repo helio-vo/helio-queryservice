@@ -39,7 +39,7 @@ public class StartupServlet extends HttpServlet {
 	private void switchAppenders(String url) {
 	      Properties props = new Properties();
 	      url=url+InstanceHolders.getInstance().getProperty("hsqldb.database.path") +"/HelioDB/testdb;hsqldb.default_table_type=cached;shutdown=true";
-	      System.out.println(" ------------> : URL of HSQLDB : ---------->"+url);
+	      System.out.println(" ------------> : URL of LOGS Table : ---------->"+url);
 	      try {
 	           InputStream configStream = getClass().getResourceAsStream("/log4j.properties");
 	           props.load(configStream);

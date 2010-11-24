@@ -168,7 +168,7 @@ public class ConnectionManager {
 	//To get HSQL DB embedded database path.
 	private static String getHsqlDBEmbeddedDatabasePath(String url){
 		if(url!=null && InstanceHolders.getInstance().getProperty("hsqldb.database.path")!=null){
-			url=url.replaceAll("kwpath",InstanceHolders.getInstance().getProperty("hsqldb.database.path") ) ;
+			url=url.replaceAll("kwpath",InstanceHolders.getInstance().getProperty("hsqldb.database.path") );
 		}
 		return url;
 	}	

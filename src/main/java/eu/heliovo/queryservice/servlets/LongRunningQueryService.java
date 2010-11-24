@@ -63,7 +63,23 @@ public class LongRunningQueryService extends HttpServlet {
 		    String sEndTime=request.getParameter("ENDTIME");
 		   	System.out.println(" sStartTime : "+sStartTime+" sEndTime : "+sEndTime);			
 			comCriteriaTO.setStartDateTime(sStartTime);
-			comCriteriaTO.setEndDateTime(sEndTime);					
+			comCriteriaTO.setEndDateTime(sEndTime);	
+			comCriteriaTO.setAllStartDate(sStartTime);
+			comCriteriaTO.setAllEndDate(sEndTime);
+			comCriteriaTO.setContextUrl(CommonUtils.getUrl(request));
+			System.out.println(" sStartTime : "+sStartTime+" sEndTime : "+sEndTime);
+		   	//Start date array list
+		   	if(sStartTime!=null && !sStartTime.equals("")){
+		    	comCriteriaTO.setStartDateTimeList(sStartTime.split(","));
+		    }
+		    //End date array list
+		   	if(sEndTime!=null && !sEndTime.equals("")){
+		    	comCriteriaTO.setEndDateTimeList(sEndTime.split(","));
+		    }
+		   	//Setting context path.
+		    if(request.getContextPath()!=null){
+				 comCriteriaTO.setContextPath(request.getContextPath().replace("-", "_").replace("/", ""));
+			 }
 		    //Setting for Instrument parameter.
 		    String sInstrument=request.getParameter("INSTRUMENT");
 		    comCriteriaTO.setInstruments(sInstrument);
