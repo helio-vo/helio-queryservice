@@ -68,7 +68,7 @@
 	      <table width="100%" border="0" cellspacing="0" cellpadding="0">
 		    <tr align="left" valign="middle" class="txtblackBP">
 				<td align="left">&nbsp;
-					<img src="<%=contextPath%>/Images/but_refresh_icon.gif" height="40" width="40" onclick="javascript: showLogFile()">
+						<a href="#" onclick="javascript: showLogFile()" style="cursor:hand" onMouseOver="MM_swapImage('addcol','','<%=contextPath%>/Images/but_refresh_icon.gif',1)" onMouseOut="MM_swapImgRestore()"><img src="<%=contextPath%>/Images/but_refresh_icon.gif" height="40" width="40" name="Close"  border="0" align="left" id="addcol"></a>
 				</td>
 	        </tr>
 	     </table>
