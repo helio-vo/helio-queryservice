@@ -6,8 +6,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -294,5 +297,14 @@ public class CommonUtils {
 	    return sb.append(buf.toString());
 	}
 
-	  
+	public static String changeDateFormat(String formatString,Date date){ 
+			String str=""; 
+			try{ 
+				DateFormat sd1 = new SimpleDateFormat(formatString); 
+				str=sd1.format(date); 
+			}catch(Exception e){ 
+				//Exception
+			} 
+			return str; 
+	}
 }
