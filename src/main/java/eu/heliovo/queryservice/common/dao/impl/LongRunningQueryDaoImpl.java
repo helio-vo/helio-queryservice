@@ -25,9 +25,9 @@ public class LongRunningQueryDaoImpl implements LongRunningQueryDao {
 	@Override
 	public void insertStatusToHsqlDB(String randomUUIDString,String status) throws DetailsNotFoundException {
 		try{
-		    prop=HsqlDbUtils.getInstance().loadPropertyValues();
+		    //prop=HsqlDbUtils.getInstance().loadPropertyValues();
 			//Connecting to database.						
-			con = ConnectionManager.getConnectionLongRunningQuery(prop);
+			con = ConnectionManager.getConnectionLongRunningQuery();
 			st = con.createStatement();
 			String query=" insert into status_table values('"+randomUUIDString+"','"+status+"','"+CommonUtils.changeDateFormat(ConstantKeywords.HrsSQLFORMAT, new Date())+"')";
 			logger.info("'   :  Query to execute  : ' "+query);
@@ -72,9 +72,9 @@ public class LongRunningQueryDaoImpl implements LongRunningQueryDao {
 	public void insertURLToHsqlDB(String randomUUIDString,String url) throws DetailsNotFoundException {
 	
 		try{
-			prop=HsqlDbUtils.getInstance().loadPropertyValues();
+			//prop=HsqlDbUtils.getInstance().loadPropertyValues();
 			//Connecting to database.						
-			con = ConnectionManager.getConnectionLongRunningQuery(prop);
+			con = ConnectionManager.getConnectionLongRunningQuery();
 			st = con.createStatement();
 			String query="insert into url_table values('"+randomUUIDString+"','"+url+"','"+CommonUtils.changeDateFormat(ConstantKeywords.HrsSQLFORMAT, new Date())+"')";
 		    st.executeUpdate(query);
@@ -119,9 +119,9 @@ public class LongRunningQueryDaoImpl implements LongRunningQueryDao {
 	public String getStatusFromHsqlDB(String randomUUIDString) throws DetailsNotFoundException {
 	     String sStatus="";
 		try{
-			prop=HsqlDbUtils.getInstance().loadPropertyValues();
+			//prop=HsqlDbUtils.getInstance().loadPropertyValues();
 			//Connecting to database.						
-			con = ConnectionManager.getConnectionLongRunningQuery(prop);
+			con = ConnectionManager.getConnectionLongRunningQuery();
 			st = con.createStatement();
 		    rs=st.executeQuery("select * from status_table where job_id='"+randomUUIDString+"'");
 			con.commit();
@@ -169,9 +169,9 @@ public class LongRunningQueryDaoImpl implements LongRunningQueryDao {
 	public String getUrlFromHsqlDB(String randomUUIDString) throws DetailsNotFoundException {
 		String sUrl=null;
 		try{
-			prop=HsqlDbUtils.getInstance().loadPropertyValues();
+			//prop=HsqlDbUtils.getInstance().loadPropertyValues();
 			//Connecting to database.						
-			con = ConnectionManager.getConnectionLongRunningQuery(prop);
+			con = ConnectionManager.getConnectionLongRunningQuery();
 			st = con.createStatement();
 		    rs=st.executeQuery("select * from url_table where job_id='"+randomUUIDString+"'");
 			con.commit();
@@ -223,9 +223,9 @@ public class LongRunningQueryDaoImpl implements LongRunningQueryDao {
 			System.out.println("  :  -----> Setting uploaded file for provider access table ----->");
 			String query="SET TABLE "+tableName+" SOURCE "+"\""+fileName+"\"";
 			System.out.println("loadProviderAccessTable() method "+query);
-			prop=HsqlDbUtils.getInstance().loadPropertyValues();
+			//prop=HsqlDbUtils.getInstance().loadPropertyValues();
 			//Connecting to database.						
-			con = ConnectionManager.getConnectionLongRunningQuery(prop);
+			con = ConnectionManager.getConnectionLongRunningQuery();
 			st = con.createStatement();
 			st.execute(query);
 			con.commit();

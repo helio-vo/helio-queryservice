@@ -429,6 +429,10 @@ public class CommonAction  extends ActionSupport
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		return status;
 	}
@@ -454,7 +458,19 @@ public class CommonAction  extends ActionSupport
 		return "SUCCESS";
 	}
 	
-	
+	@SuppressWarnings("unchecked")
+	public String deleteQueryStatus()
+	{
+		String status="SUCCESS";
+	    try {
+			
+			setStatusDisplay(true);
+	    }catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	    }
+		return status;
+	}
 	
        
 }
