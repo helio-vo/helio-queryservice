@@ -49,13 +49,17 @@
             <result  name="SUCCESS" >jsp/ShowLog.jsp</result>	
             <result  name="ERROR" >jsp/ShowLog.jsp</result>	
 	</action>
-	
-	<!-- instrument mapper action mapping -->
+	<!-- 
 	<action name="instrumentMapperPage" method="instrumentMapperPage" class="eu.heliovo.queryservice.common.action.CommonAction">
             <result  name="SUCCESS" >jsp/AdminHome.jsp</result>	
             <result  name="ERROR" >jsp/AdminHome.jsp</result>	
 	</action>
 	
+	<action name="deleteQueryStatus" method="deleteQueryStatus" class="eu.heliovo.queryservice.common.action.CommonAction">
+            <result  name="SUCCESS" >jsp/DeleteQueryStatus.jsp</result>	
+            <result  name="ERROR" >jsp/DeleteQueryStatus.jsp</result>	
+	</action>
+	-->
 	<!-- End of instruments -->
     </package>
 </struts>
