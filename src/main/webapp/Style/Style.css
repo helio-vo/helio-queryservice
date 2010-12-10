@@ -1225,3 +1225,23 @@ font-weight: bold;
 	color: #FFFFFF;
 	background-color: #4D71A3;
 }
+
+input {
+  width: 100px;
+}
+input.calendar {
+  width: 74px;
+}
+button.calendar {
+  background: url(calendar_icon_big.png);
+  border: 0;
+  cursor: pointer;
+  float: left;
+  height: 20px;
+  margin-right: 6px;
+  width: 20px;
+}
+button.calendar:hover,
+button.calendar.active {
+  background-position: left bottom;
+} 
