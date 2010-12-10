@@ -7,8 +7,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Enumeration;
@@ -36,6 +38,8 @@ public class CommonUtils {
 	private static final String ARGPREFIX = "[:";
 	
 	protected final  Logger logger = Logger.getLogger(this.getClass());
+	
+	static SimpleDateFormat df=new SimpleDateFormat(ConstantKeywords.HrsSQLFORMAT);
 	
 	public static String replaceParams(String sText , HashMap<String,String> hmArgs)
 	{
@@ -307,4 +311,58 @@ public class CommonUtils {
 			} 
 			return str; 
 	}
+
+	/**
+	 * 
+	 * @param s
+	 * @return
+	 * @throws ParseException
+	 */
+	public static Calendar dateString2Calendar(String s) throws ParseException {
+	    Calendar cal=Calendar.getInstance();
+	    Date d1=df.parse(s);
+	    cal.setTime(d1);
+	    return cal;
+	  }
+	
+	/**
+	 * 
+	 * @param date
+	 * @return
+	 */
+	public static String date2String(Date date)
+	{
+		// Get the date today using Calendar object.
+		Date today = Calendar.getInstance().getTime();       
+		// Using DateFormat format method we can create a string
+		// representation of a date with the defined format.
+		String reportDate = df.format(today);
+		
+		return reportDate;
+	}
+	
+	/**
+	 * 
+	 * @param sDate
+	 * @return
+	 * @throws ParseException
+	 */
+	public static int getNoOfMonths(String sDate) throws ParseException
+	{
+		int diff=0;
+		//Getting nof of days from start date
+		Calendar startCalendar=dateString2Calendar(sDate);
+		int start_month = startCalendar.get(Calendar.MONTH)+1;
+		System.out.println(" Start day of execution "+start_month);
+		//Getting nof of days from end date
+		Calendar endCalendar = Calendar.getInstance();
+		int end_month = endCalendar.get(Calendar.MONTH)+1;
+		System.out.println(" End day of execution "+end_month);
+		if(start_month>end_month)
+			diff=start_month-end_month;
+		else if(end_month>start_month)
+			diff=end_month-start_month;
+		return diff;
+	}
+	
 }

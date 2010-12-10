@@ -40,19 +40,37 @@ public class HsqlDbUtils {
 	 private static class HsqlProfilerHolder {
 		private static HsqlDbUtils instance = new HsqlDbUtils();
 	 }
-	  
+	 
+	 /**
+	  * 
+	  * @param randomUUIDString
+	  * @param status
+	  * @throws DetailsNotFoundException
+	  */
 	 public synchronized void  insertStatusIntoHsqlDB(String randomUUIDString,String status) throws DetailsNotFoundException
 	 {
 		 LongRunningQueryDao shortNameDao= CommonDaoFactory.getInstance().getLongRunningQueryDao();
 		 shortNameDao.insertStatusToHsqlDB(randomUUIDString, status);
 	 }
 	 
+	 /**
+	  * 
+	  * @param randomUUIDString
+	  * @param url
+	  * @throws DetailsNotFoundException
+	  */
 	 public synchronized void insertURLToHsqlDB(String randomUUIDString,String url) throws DetailsNotFoundException
 	 {
 		 LongRunningQueryDao shortNameDao= CommonDaoFactory.getInstance().getLongRunningQueryDao();
 		 shortNameDao.insertURLToHsqlDB(randomUUIDString, url);
 	 }
 	 
+	 /**
+	  * 
+	  * @param randomUUIDString
+	  * @return
+	  * @throws DetailsNotFoundException
+	  */
 	 public synchronized String  getStatusFromHsqlDB(String randomUUIDString) throws DetailsNotFoundException
 	 {
 		LongRunningQueryDao shortNameDao= CommonDaoFactory.getInstance().getLongRunningQueryDao();
@@ -60,6 +78,12 @@ public class HsqlDbUtils {
 		return sStatus;
 	 }
 	 
+	 /**
+	  * 
+	  * @param randomUUIDString
+	  * @return
+	  * @throws DetailsNotFoundException
+	  */
 	 public synchronized String  getUrlFromHsqlDB(String randomUUIDString) throws DetailsNotFoundException
 	 {
 		LongRunningQueryDao shortNameDao= CommonDaoFactory.getInstance().getLongRunningQueryDao();
@@ -67,8 +91,31 @@ public class HsqlDbUtils {
 		return sUrl;
 	 }
 	 
-	 /*
+	 /**
 	  * 
+	  * @throws DetailsNotFoundException
+	  */
+	 public synchronized void  deleteUrlFromHsqlDB() throws DetailsNotFoundException
+	 {
+		LongRunningQueryDao longRunningDao= CommonDaoFactory.getInstance().getLongRunningQueryDao();
+		longRunningDao.deleteUrlFromHsqlDB();
+	 }
+	 
+	 /**
+	  * 
+	  * @throws DetailsNotFoundException
+	  */
+	 public synchronized void  deleteStatusFromHsqlDB() throws DetailsNotFoundException
+	 {
+		LongRunningQueryDao longRunningDao= CommonDaoFactory.getInstance().getLongRunningQueryDao();
+		longRunningDao.deleteStatusFromHsqlDB();
+	 }
+	 
+	 /**
+	  * 
+	  * @param fileName
+	  * @param tableName
+	  * @throws DetailsNotFoundException
 	  */
 	 public synchronized void  loadProviderAccessTable(String fileName,String tableName) throws DetailsNotFoundException
 	 {
