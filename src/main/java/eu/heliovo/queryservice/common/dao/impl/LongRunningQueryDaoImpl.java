@@ -13,6 +13,7 @@ import eu.heliovo.queryservice.common.util.CommonUtils;
 import eu.heliovo.queryservice.common.util.ConnectionManager;
 import eu.heliovo.queryservice.common.util.ConstantKeywords;
 import eu.heliovo.queryservice.common.util.HsqlDbUtils;
+import eu.heliovo.queryservice.common.util.InstanceHolders;
 
 public class LongRunningQueryDaoImpl implements LongRunningQueryDao { 
 
@@ -182,7 +183,7 @@ public class LongRunningQueryDaoImpl implements LongRunningQueryDao {
 			
 			}catch(Exception e){
 				e.printStackTrace();
-				logger.fatal(" Exception occured in getUrlFromHsqlDB() : ",e);
+				logger.fatal(" Exception occured in deleteStatusFromHsqlDB() : ",e);
 			}
 			
 			finally
@@ -214,6 +215,80 @@ public class LongRunningQueryDaoImpl implements LongRunningQueryDao {
 		}
 			
 		return sUrl;
+	}
+	
+	@Override
+	public void deleteUrlFromHsqlDB() throws DetailsNotFoundException {
+		try{
+			//Connecting to database.						
+			con = ConnectionManager.getConnectionLongRunningQuery();
+			st = con.createStatement();
+		    st.executeUpdate("delete from url_table where insert_date >= '"+InstanceHolders.getInstance().getProperty("hsql.status.delete.date")+"' and  insert_date <= '"+CommonUtils.date2String(new Date())+"'");
+			con.commit();
+			}catch(Exception e){
+				e.printStackTrace();
+				logger.fatal(" Exception occured in deleteUrlFromHsqlDB() : ",e);
+			}
+			
+			finally
+			{
+				try {
+					if(st!=null)
+					{
+						st.close();
+						st=null;
+					}
+					if(con!=null)
+					{
+						con.close();
+						con=null;
+					}
+					if(prop!=null)
+					{
+						prop=null;
+					}
+				} catch (Exception e) {
+					
+				}
+		}
+	}
+	
+	@Override
+	public void deleteStatusFromHsqlDB() throws DetailsNotFoundException {
+		try{
+			//Connecting to database.						
+			con = ConnectionManager.getConnectionLongRunningQuery();
+			st = con.createStatement();
+		    st.executeUpdate("delete from status_table where insert_date >= '"+InstanceHolders.getInstance().getProperty("hsql.status.delete.date")+"' and  insert_date <= '"+CommonUtils.date2String(new Date())+"'");
+			con.commit();
+			}catch(Exception e){
+				e.printStackTrace();
+				logger.fatal(" Exception occured in getUrlFromHsqlDB() : ",e);
+			}
+			
+			finally
+			{
+				try {
+					
+					if(st!=null)
+					{
+						st.close();
+						st=null;
+					}
+					if(con!=null)
+					{
+						con.close();
+						con=null;
+					}
+					if(prop!=null)
+					{
+						prop=null;
+					}
+				} catch (Exception e) {
+					
+				}
+		}
+
 	}
 	
 	@Override
