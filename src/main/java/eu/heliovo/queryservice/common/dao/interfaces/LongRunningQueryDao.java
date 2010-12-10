@@ -12,4 +12,6 @@ public interface LongRunningQueryDao {
 		public String getStatusFromHsqlDB(String randomUUIDString) throws DetailsNotFoundException;
 		public String getUrlFromHsqlDB(String randomUUIDString) throws DetailsNotFoundException;
 		public void loadProviderAccessTable(String fileName,String tableName) throws DetailsNotFoundException;
+		public void deleteUrlFromHsqlDB() throws DetailsNotFoundException;
+		public void deleteStatusFromHsqlDB() throws DetailsNotFoundException;
 }
