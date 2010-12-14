@@ -7,7 +7,6 @@ import org.apache.log4j.Logger;
 import eu.heliovo.queryservice.common.dao.CommonDaoFactory;
 import eu.heliovo.queryservice.common.dao.exception.DetailsNotFoundException;
 import eu.heliovo.queryservice.common.dao.interfaces.LongRunningQueryDao;
-import eu.heliovo.queryservice.common.dao.interfaces.ShortNameQueryDao;
 
 public class HsqlDbUtils {
 	
@@ -109,6 +108,16 @@ public class HsqlDbUtils {
 	 {
 		LongRunningQueryDao longRunningDao= CommonDaoFactory.getInstance().getLongRunningQueryDao();
 		longRunningDao.deleteStatusFromHsqlDB();
+	 }
+	 
+	 /**
+	  * 
+	  * @throws DetailsNotFoundException
+	  */
+	 public synchronized void  deleteSavedVoTable() throws DetailsNotFoundException
+	 {
+		LongRunningQueryDao longRunningDao= CommonDaoFactory.getInstance().getLongRunningQueryDao();
+		longRunningDao.deleteSavedVoTable();
 	 }
 	 
 	 /**

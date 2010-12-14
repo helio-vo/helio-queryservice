@@ -291,6 +291,55 @@ public class LongRunningQueryDaoImpl implements LongRunningQueryDao {
 
 	}
 	
+	
+	@Override
+	public String deleteSavedVoTable() throws DetailsNotFoundException {
+			String sUrl=null;
+			try{
+				logger.info(" Deleting Saved file from the system ");
+				//Connecting to database.						
+				con = ConnectionManager.getConnectionLongRunningQuery();
+				st = con.createStatement();
+			    rs=st.executeQuery("select * from url_table where insert_date >= '"+InstanceHolders.getInstance().getProperty("hsql.status.delete.date")+"' and  insert_date <= '"+CommonUtils.date2String(new Date())+"'");
+				con.commit();
+				
+				while(rs.next()){
+					CommonUtils.deleteFile(rs.getString(2));
+				}
+				
+				}catch(Exception e){
+					e.printStackTrace();
+					logger.fatal(" Exception occured in deleteStatusFromHsqlDB() : ",e);
+				}
+				
+				finally
+				{
+					try {
+						
+						if(rs!=null)
+						{
+							rs.close();
+							rs=null;
+						}
+						if(st!=null)
+						{
+							st.close();
+							st=null;
+						}
+						if(con!=null)
+						{
+							con.close();
+							con=null;
+						}
+					} catch (Exception e) {
+						
+					}
+			}
+				
+			return sUrl;
+		}
+	
+	
 	@Override
 	public void loadProviderAccessTable(String fileName,String tableName) throws DetailsNotFoundException {
 		String sUrl=null;

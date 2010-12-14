@@ -14,4 +14,5 @@ public interface LongRunningQueryDao {
 		public void loadProviderAccessTable(String fileName,String tableName) throws DetailsNotFoundException;
 		public void deleteUrlFromHsqlDB() throws DetailsNotFoundException;
 		public void deleteStatusFromHsqlDB() throws DetailsNotFoundException;
+		public String deleteSavedVoTable() throws DetailsNotFoundException;
 }

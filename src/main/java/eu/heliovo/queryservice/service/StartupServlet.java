@@ -85,6 +85,8 @@ public class StartupServlet extends HttpServlet {
 
 	private void deleteLongRunningQueryStatus() throws DetailsNotFoundException{
 		System.out.println("----------- Deleting Long Running Query --------------");
+		//Deleting Saved File
+		HsqlDbUtils.getInstance().deleteSavedVoTable();
 		//Deleting Status from JOB_STATUS
 		HsqlDbUtils.getInstance().deleteStatusFromHsqlDB();
 		//Deleting Status from JOB_URL
