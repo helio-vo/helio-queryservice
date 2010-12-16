@@ -42,12 +42,11 @@ public class StartupServlet extends HttpServlet {
 				 protected void execute(){
 			      	try{			      		
 			      		int noOfMonth=CommonUtils.getNoOfMonths(InstanceHolders.getInstance().getProperty("hsql.status.delete.date"));
-			      		System.out.println(" ------ No of months ------"+noOfMonth );
+			      		System.out.println(" :  No of months : "+noOfMonth );
 			      		if(noOfMonth>=6){
 			      			deleteLongRunningQueryStatus();
 			      			InstanceHolders.getInstance().setProperty("hsql.status.delete.date",CommonUtils.date2String(new Date()));
 			      		}
-			      		//System.out.println("-------- End ------------");
 				    }catch (Exception e){
 				    	System.out.println(" :  Exception occured in while deleting Long running query saved status and url "+ e);
 			      	}
@@ -56,7 +55,7 @@ public class StartupServlet extends HttpServlet {
 
 			Timer timer = new Timer();
 			// check every 2 day 
-			timer.schedule(task , new Date(), 86400000*2); // refresh after 86400000 miliseconds  = 2 day
+			timer.schedule(task , new Date(), 86400000*2); // refresh after 86400000 miliseconds  = 1 day
 			
 			
 			
@@ -84,7 +83,7 @@ public class StartupServlet extends HttpServlet {
 	     }
 
 	private void deleteLongRunningQueryStatus() throws DetailsNotFoundException{
-		System.out.println("----------- Deleting Long Running Query --------------");
+		System.out.println(":  Deleting Long Running Query :");
 		//Deleting Saved File
 		HsqlDbUtils.getInstance().deleteSavedVoTable();
 		//Deleting Status from JOB_STATUS
