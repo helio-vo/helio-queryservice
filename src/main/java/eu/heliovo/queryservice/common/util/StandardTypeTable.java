@@ -146,7 +146,7 @@ public class StandardTypeTable extends WrapperStarTable {
             return info_;
         }
         Object getValue(Object baseValue) {
-        	String sDate="0000-00-00T00:00:00";
+        	String sDate="";
         	//Checking for Date object.
         	if(baseValue!=null && !baseValue.toString().equals("")){
         		if(isValidDate(baseValue.toString())){
@@ -155,8 +155,6 @@ public class StandardTypeTable extends WrapperStarTable {
         			}else{
         				sDate=baseValue.toString().trim().replaceAll(" ", "T");
         			}
-        		}else if(baseValue.toString().endsWith(".0")){
-        			sDate=baseValue.toString().trim().substring(0, baseValue.toString().length()-2).replaceAll(" ", "T");
         		}
         	}
         	
