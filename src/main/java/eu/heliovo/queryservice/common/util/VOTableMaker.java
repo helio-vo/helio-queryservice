@@ -15,6 +15,7 @@ import uk.ac.starlink.table.Tables;
 import uk.ac.starlink.table.jdbc.SequentialResultSetStarTable;
 import uk.ac.starlink.votable.DataFormat;
 import uk.ac.starlink.votable.VOSerializer;
+import uk.ac.starlink.votable.VOStarTable;
 import uk.ac.starlink.votable.VOTableWriter;
 import eu.heliovo.queryservice.common.transfer.criteriaTO.CommonCriteriaTO;
 
@@ -166,9 +167,12 @@ public class VOTableMaker {
 	    				Tables.setUtype( tables.getColumnInfo( j ), columnUTypes[j] );
 	    			}
 	    			//Handling NAR coulmn value( setting value as 1 if NAR is null)
-	    			if(coulumnNames.length>0 && coulumnNames.length==tables.getColumnCount() && coulumnNames[j]!=null && coulumnNames[j].toLowerCase().equals("nar")){
-	    				tables.getColumnInfo( j ).setAuxDatum( new DescribedValue( Tables.NULL_VALUE_INFO,new Integer( 1 )));
-
+	    			//if(coulumnNames.length>0 && coulumnNames.length==tables.getColumnCount() && coulumnNames[j]!=null && coulumnNames[j].toLowerCase().equals("nar")){
+	    			tables.getColumnInfo( j ).setAuxDatum( new DescribedValue(Tables.NULL_VALUE_INFO,null));
+	    			//}
+	    			//Setting XTYPE value for Time and Date Column
+	    			if(coulumnNames.length>0 && coulumnNames.length==tables.getColumnCount() && coulumnNames[j]!=null && (coulumnNames[j].toLowerCase().contains("date") || coulumnNames[j].toLowerCase().contains("time"))){
+	    				tables.getColumnInfo( j ).setAuxDatum( new DescribedValue( VOStarTable.XTYPE_INFO,"iso8601"));
 	    			}
 	    		}
 	    		System.out.println(":  End setting UCD and UTYPES :");
