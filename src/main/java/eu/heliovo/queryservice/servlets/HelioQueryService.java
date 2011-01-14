@@ -3,6 +3,7 @@ package eu.heliovo.queryservice.servlets;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
+import java.util.Map;
 import java.util.TimeZone;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -31,8 +32,9 @@ public class HelioQueryService extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/xml;charset=UTF-8");
-		 CommonCriteriaTO comCriteriaTO=new CommonCriteriaTO();
-		 PrintWriter printWriter = response.getWriter(); 
+		CommonCriteriaTO comCriteriaTO=new CommonCriteriaTO();
+		PrintWriter printWriter = response.getWriter(); 
+
 		try{
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		    dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
@@ -81,22 +83,34 @@ public class HelioQueryService extends HttpServlet {
 		    if(pos!=null && !pos.equals("")){
 				 String[] arrPos=pos.split(",");
 				 if(arrPos.length>0)
-					 comCriteriaTO.setAlpha(arrPos[0]);
+					 comCriteriaTO.setPosRa(arrPos[0]);
 				 if(arrPos.length>1)
-					 comCriteriaTO.setDelta(arrPos[1]);
+					 comCriteriaTO.setPosDec(arrPos[1]);
+				 if(arrPos.length>2)
+					 comCriteriaTO.setPosRef(arrPos[2]);
 			 }
 		    //Setting SIZE parameter.
 		    String size=request.getParameter("SIZE");
 		    comCriteriaTO.setSize(size);
+		    //Setting region parameter
+		    String sRegion=request.getParameter("REGION");
+		    //Getting parse region.
+		    Map<String,String> map=CommonUtils.parseRegionParameter(sRegion);
+		    //Region.
+		    comCriteriaTO.setsRegion(map.get("region"));
+		    //Region values.
+		    comCriteriaTO.setsRegionValues(map.get("regionvalues"));
 		    //Setting join parameter
 		    String sJoin=request.getParameter("JOIN");
 		    if(sJoin!=null && !sJoin.trim().equals(""))
 		    	comCriteriaTO.setJoin(sJoin.toLowerCase());
+		    //Calling generate VOTable Details.
 			CommonDao commonNameDao= CommonDaoFactory.getInstance().getCommonDAO();
 			commonNameDao.generateVOTableDetails(comCriteriaTO);
 		}catch(Exception e){
 			e.printStackTrace();
-		}		
+		}
+
 		finally
 		{
 			if(printWriter!=null){

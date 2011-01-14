@@ -41,8 +41,9 @@ public class CommonCriteriaTO implements Serializable{
 	private String updatedQuery;
 	private int maxRecordsAllowed;
 	private String size;
-	private String alpha;
-	private String delta;
+	private String posRa;
+	private String posDec;
+	private String posRef;
 	private String saveto;
 	private String dataXml;
 	private String longRunningQueryStatus;
@@ -57,7 +58,8 @@ public class CommonCriteriaTO implements Serializable{
 	private String allStartDate;
 	private String allEndDate;
 	private String contextUrl;
-	
+	private String sRegion;
+	private String sRegionValues;
 	
 	public CommonCriteriaTO(){
 		this.setIPageNumber(0);
@@ -275,22 +277,6 @@ public class CommonCriteriaTO implements Serializable{
 		this.size = size;
 	}
 
-	public String getAlpha() {
-		return alpha;
-	}
-
-	public void setAlpha(String alpha) {
-		this.alpha = alpha;
-	}
-
-	public String getDelta() {
-		return delta;
-	}
-
-	public void setDelta(String delta) {
-		this.delta = delta;
-	}
-
 	public String getSaveto() {
 		return saveto;
 	}
@@ -409,5 +395,45 @@ public class CommonCriteriaTO implements Serializable{
 
 	public void setContextUrl(String contextUrl) {
 		this.contextUrl = contextUrl;
+	}
+
+	public String getPosRa() {
+		return posRa;
+	}
+
+	public void setPosRa(String posRa) {
+		this.posRa = posRa;
+	}
+
+	public String getPosDec() {
+		return posDec;
+	}
+
+	public void setPosDec(String posDec) {
+		this.posDec = posDec;
+	}
+
+	public String getPosRef() {
+		return posRef;
+	}
+
+	public void setPosRef(String posRef) {
+		this.posRef = posRef;
+	}
+
+	public String getsRegion() {
+		return sRegion;
+	}
+
+	public void setsRegion(String sRegion) {
+		this.sRegion = sRegion;
+	}
+
+	public String getsRegionValues() {
+		return sRegionValues;
+	}
+
+	public void setsRegionValues(String sRegionValues) {
+		this.sRegionValues = sRegionValues;
 	}
 }

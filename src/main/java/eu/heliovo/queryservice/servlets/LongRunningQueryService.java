@@ -8,6 +8,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.SimpleDateFormat;
+import java.util.Map;
 import java.util.TimeZone;
 import java.util.UUID;
 import javax.servlet.ServletException;
@@ -118,15 +119,25 @@ public class LongRunningQueryService extends HttpServlet {
 		    //Setting POS ( dec and ra ) parameter
 		    String pos=request.getParameter("POS");
 		    if(pos!=null && !pos.equals("")){
-				 String[] arrPos=pos.split(",");
+		    	String[] arrPos=pos.split(",");
 				 if(arrPos.length>0)
-					 comCriteriaTO.setAlpha(arrPos[0]);
+					 comCriteriaTO.setPosRa(arrPos[0]);
 				 if(arrPos.length>1)
-					 comCriteriaTO.setDelta(arrPos[1]);
+					 comCriteriaTO.setPosDec(arrPos[1]);
+				 if(arrPos.length>2)
+					 comCriteriaTO.setPosRef(arrPos[2]);
 			 }
 		    //Setting SIZE parameter.
 		    String size=request.getParameter("SIZE");
 		    comCriteriaTO.setSize(size);
+		    //Setting region parameter
+		    String sRegion=request.getParameter("REGION");
+		    //Getting parse region.
+		    Map<String,String> map=CommonUtils.parseRegionParameter(sRegion);
+		    //Region.
+		    comCriteriaTO.setsRegion(map.get("region"));
+		    //Region values.
+		    comCriteriaTO.setsRegionValues(map.get("regionvalues"));
 		    //Creating UUID and generating unique ID.
 		    UUID uuid = UUID.randomUUID();
 		    String randomUUIDString = uuid.toString();

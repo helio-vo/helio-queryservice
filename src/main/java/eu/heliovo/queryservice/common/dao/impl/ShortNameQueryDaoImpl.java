@@ -252,15 +252,27 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 			 String queryConstraint="";
 			 String queryWhereClause="";
 			 String query="";
+			 String[] arrayRegionValues=null;
 			 int maxRecordsAllowed=0;
 			 HashMap<String,String> params  = new HashMap<String,String>();
 			 
 			 params.put("kwstartdate", comCriteriaTO.getStartDateTime());
 			 params.put("kwenddate", comCriteriaTO.getEndDateTime());
 			 params.put("kwinstrument", comCriteriaTO.getInstruments());
-			 params.put("kwdec", comCriteriaTO.getDelta());
-			 params.put("kwra", comCriteriaTO.getAlpha());
+			 params.put("kwdec", comCriteriaTO.getPosDec());
+			 params.put("kwra", comCriteriaTO.getPosRa());
 			 params.put("kwsize", comCriteriaTO.getSize());
+			 params.put("kwref", comCriteriaTO.getPosRef());
+			 //Region values
+			 String stringArray=comCriteriaTO.getsRegionValues();
+			 //
+			 if(stringArray!=null)
+				 arrayRegionValues=stringArray.split("::");
+			 //
+			 for(int count=0;count<arrayRegionValues.length;count++)
+			 {
+				 params.put("kwPosNum"+count, arrayRegionValues[count]);
+			 }
 			 //Setting parameter value
 			 comCriteriaTO.setParamData(params);
 			 //Checking for Where Clause 
@@ -310,14 +322,14 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 			
 			 //logger.info(" : Appending Instrument Constraint If Avialable : "+queryConstraint); 
 			 //Appending Coordinate clause.
-			 String queryCoordinateContraint=coordinatesQueryConstraint(listName);
+			 String queryCoordinateContraint=coordinatesQueryConstraint(listName,comCriteriaTO);
 			 if(queryCoordinateContraint!=null && !queryCoordinateContraint.trim().equals("")){
 				 if(queryConstraint!=null && !queryConstraint.trim().equals(""))
 					 queryConstraint=queryConstraint+" AND "+queryCoordinateContraint; 
 				 else
 					 queryConstraint=queryConstraint+" "+queryCoordinateContraint; 
 				
-			 }
+			 }		 
 			 
 			// logger.info(" : Appending Coordinate Constraint If Avialable : "+queryConstraint);
 			 
@@ -352,6 +364,12 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 			 
 			 
 		 return query;
+	}
+	
+	@SuppressWarnings("unused")
+	private String coordinateSystem()
+	{
+		return null;
 	}
 	
 	/**
@@ -405,12 +423,18 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 	 * @param listName
 	 * @return
 	 */
-	private String coordinatesQueryConstraint(String listName)
+	private String coordinatesQueryConstraint(String listName,CommonCriteriaTO comCriteriaTO)
 	{
 		String queryCoordinateContraint="";
 		for(int intCnt=0;intCnt<listName.split(",").length;intCnt++){
 				//Appending Time clause.
-			queryCoordinateContraint=queryCoordinateContraint+ConfigurationProfiler.getInstance().getProperty("sql.query.coordinates.constraint."+listName.split(",")[intCnt]);
+			String propertyCordinateValue="";
+			if(comCriteriaTO.getsRegion()!=null && !comCriteriaTO.getsRegion().equals("") && comCriteriaTO.getsRegion().trim().toLowerCase().equals("ellipse")){
+				propertyCordinateValue=ConfigurationProfiler.getInstance().getProperty("sql.query.coordinates.constraint.ellipse."+listName.split(",")[intCnt]);
+			}else{
+				propertyCordinateValue=ConfigurationProfiler.getInstance().getProperty("sql.query.coordinates.constraint.defualt."+listName.split(",")[intCnt]);
+			}
+			queryCoordinateContraint=queryCoordinateContraint+propertyCordinateValue;
 			if(queryCoordinateContraint!=null && !queryCoordinateContraint.trim().equals("")){
 				queryCoordinateContraint=queryCoordinateContraint+queryCoordinateContraint+" AND ";
 			}

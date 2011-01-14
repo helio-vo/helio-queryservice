@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.PipedReader;
 import java.io.PipedWriter;
+import java.util.Map;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.DocumentBuilder;
@@ -185,18 +186,29 @@ public class SoapDispatcher implements Provider<Source> {
 				 //Coordinates interface
 	    	 } else if(interfaceName == "Coordinates".intern()) {
 	    		 //Setting for POS( RA & DEC) parameter.
-				 if(inputDoc.getElementsByTagNameNS("*","POS").getLength()>0){
+				 if(inputDoc.getElementsByTagNameNS("*","POS").getLength()>0 && inputDoc.getElementsByTagNameNS("*","POS").item(0).getFirstChild()!=null){
 					 String pos = inputDoc.getElementsByTagNameNS("*","POS").item(0).getFirstChild().getNodeValue();
 					 if(pos!=null && !pos.equals("")){
 						 String[] arrPos=pos.split(",");
 						 if(arrPos.length>0)
-						 comCriteriaTO.setAlpha(arrPos[0]);
+							 comCriteriaTO.setPosRa(arrPos[0]);
 						 if(arrPos.length>1)
-						 comCriteriaTO.setDelta(arrPos[1]);
+							 comCriteriaTO.setPosDec(arrPos[1]);
+						 if(arrPos.length>2)
+							 comCriteriaTO.setPosRef(arrPos[2]);
 					 }
 				 }
+				 if(inputDoc.getElementsByTagNameNS("*","REGION").getLength()>0 && inputDoc.getElementsByTagNameNS("*","REGION").item(0).getFirstChild()!=null){
+					 String sRegion = inputDoc.getElementsByTagNameNS("*","REGION").item(0).getFirstChild().getNodeValue();
+					 //Getting parse region.
+					 Map<String,String> map=CommonUtils.parseRegionParameter(sRegion);
+					 //Region.
+					 comCriteriaTO.setsRegion(map.get("region"));
+					 //Region values.
+					  comCriteriaTO.setsRegionValues(map.get("regionvalues"));
+				 }
 				//Setting for SIZE parameter.
-				 if(inputDoc.getElementsByTagNameNS("*","SIZE").getLength()>0){
+				 if(inputDoc.getElementsByTagNameNS("*","SIZE").getLength()>0 && inputDoc.getElementsByTagNameNS("*","SIZE").item(0).getFirstChild()!=null){
 					 String size = inputDoc.getElementsByTagNameNS("*","SIZE").item(0).getFirstChild().getNodeValue();
 					 comCriteriaTO.setSize(size);
 				 }

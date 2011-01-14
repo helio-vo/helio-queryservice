@@ -11,13 +11,16 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -341,6 +344,42 @@ public class CommonUtils {
 		
 		return reportDate;
 	}
+	
+	/**
+	 * 
+	 * @param sRegion
+	 * @return
+	 */
+	public static Map<String,String> parseRegionParameter(String sRegion)
+	{
+		Map<String,String> map=new LinkedHashMap<String, String>();
+		String[] splitRegion=null;
+		if(sRegion!=null && !sRegion.trim().equals(""))
+		{
+			splitRegion=sRegion.split("::");
+			if(splitRegion.length>0)
+				map.put("region", splitRegion[0]);
+			if(splitRegion.length>2)
+				map.put("regionvalues", arrayToString(getRegionValues(splitRegion),"::"));
+		}
+		
+		return map;
+		
+	}
+	
+	
+	/**
+	 * 
+	 * @param sRegionValues
+	 * @return
+	 */
+	public static String[] getRegionValues(String[] sRegionValues){
+		List<String> list = Arrays.asList(sRegionValues);
+		list.remove(0);list.remove(1);
+		sRegionValues=(String[]) list.toArray();
+		return sRegionValues;
+	}
+	
 	
 	/**
 	 * 
