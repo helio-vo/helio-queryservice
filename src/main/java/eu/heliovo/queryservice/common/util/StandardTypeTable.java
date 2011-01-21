@@ -35,8 +35,7 @@ public class StandardTypeTable extends WrapperStarTable {
         int ncol = baseTable.getColumnCount();
         valHandlers_ = new ValueHandler[ncol];
         for (int icol = 0; icol < ncol; icol++) {
-            valHandlers_[icol] =
-                createValueHandler(baseTable.getColumnInfo(icol));
+            valHandlers_[icol] = createValueHandler(baseTable.getColumnInfo(icol));
         }
     }
 
