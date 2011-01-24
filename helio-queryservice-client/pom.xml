@@ -19,16 +19,6 @@
 	</properties>
 
 	<dependencies>
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>helio-queryservice-api</artifactId>
-			<version>0.4-SNAPSHOT</version>
-			<classifier>resources</classifier>
-			<type>zip</type>
-			<!-- Make sure this isn't included on any classpath -->
-			<scope>provided</scope>
-		</dependency>
-
 		<!-- third party libraries -->
 		<dependency>
 			<groupId>axis</groupId>
@@ -40,27 +30,7 @@
 	</dependencies>
 
 	<build>
-		<plugins>
-			<!-- >plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>unpack-shared-resources</id>
-						<goals>
-							<goal>unpack-dependencies</goal>
-						</goals>
-						<phase>generate-sources</phase>
-						<configuration>
-							<outputDirectory>${project.build.directory}/shared-resources</outputDirectory>
-							<includeArtifacIds>shared-resources</includeArtifacIds>
-							<includeGroupIds>${project.groupId}</includeGroupIds>
-							<excludeTransitive>true</excludeTransitive>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin-->
-			
+		<plugins>			
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>jaxws-maven-plugin</artifactId>
