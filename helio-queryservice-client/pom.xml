@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>helio-queryservice</artifactId>
+		<groupId>eu.heliovo</groupId>
+		<version>0.4-SNAPSHOT</version>
+	</parent>
+	<groupId>eu.heliovo</groupId>
+	<artifactId>helio-queryservice-client</artifactId>
+	<version>0.4-SNAPSHOT</version>
+	<name>helio-queryservice-client</name>
+
+	<url>helio-queryservice/helio-queryservice-client</url>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>helio-queryservice-api</artifactId>
+			<version>0.4-SNAPSHOT</version>
+			<classifier>resources</classifier>
+			<type>zip</type>
+			<!-- Make sure this isn't included on any classpath -->
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- third party libraries -->
+		<dependency>
+			<groupId>axis</groupId>
+			<artifactId>axis</artifactId>
+			<version>1.3</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<!-- >plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>unpack-shared-resources</id>
+						<goals>
+							<goal>unpack-dependencies</goal>
+						</goals>
+						<phase>generate-sources</phase>
+						<configuration>
+							<outputDirectory>${project.build.directory}/shared-resources</outputDirectory>
+							<includeArtifacIds>shared-resources</includeArtifacIds>
+							<includeGroupIds>${project.groupId}</includeGroupIds>
+							<excludeTransitive>true</excludeTransitive>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin-->
+			
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>jaxws-maven-plugin</artifactId>
+				<version>1.12</version>
+				<executions>
+					<execution>
+						<id>generate-stubs</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>wsimport</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+				    <verbose>true</verbose>
+					<wsdlDirectory>../src/wsdl</wsdlDirectory>
+					<!-- as no wsdlFiles section is specified all wsdls will be taken -->
+					
+					<!-- *** you need the next line to set the wsdlLocation in the generated 
+						stubs *** <wsdlLocation>http://localhost:8080/test</wsdlLocation> -->
+					<packageName>eu.heliovo.queryservice.client.jaxws</packageName>
+				</configuration>
+				<!-- if you want to use a specific version of JAX-WS, you can do so like 
+					this > 
+				<dependencies>
+					<groupId>com.sun.xml.ws</groupId>
+					<artifactId>jaxws-tools</artifactId>
+					<version>2.1.1</version>
+				</dependencies -->
+			</plugin>
+		</plugins>
+	</build>
+</project>
