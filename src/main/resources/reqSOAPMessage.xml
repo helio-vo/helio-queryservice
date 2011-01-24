@@ -1,6 +1,0 @@
-<helio:Query xmlns:helio="http://helio-vo.eu/xml/QueryService/v0.1">
-	<helio:STARTTIME>1890-10-20T20:30:56</helio:STARTTIME>
-	<helio:ENDTIME>2009-10-20T20:30:56</helio:ENDTIME>
-	<helio:INSTRUMENT>HXT</helio:INSTRUMENT>
-	<helio:FROM>helio</helio:FROM>
-</helio:Query>
