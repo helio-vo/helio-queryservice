@@ -50,16 +50,6 @@
 
 
 	<dependencies>
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>helio-queryservice-api</artifactId>
-			<version>0.4-SNAPSHOT</version>
-			<classifier>resources</classifier>
-			<type>zip</type>
-			<!-- Make sure this isn't included on any classpath -->
-			<scope>provided</scope>
-		</dependency>
-
 		<!-- third party libraries -->
 		<dependency>
 			<groupId>mysql</groupId>
