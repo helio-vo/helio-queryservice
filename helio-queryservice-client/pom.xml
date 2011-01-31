@@ -46,19 +46,21 @@
 				</executions>
 				<configuration>
 				    <verbose>true</verbose>
-					<wsdlDirectory>../src/wsdl</wsdlDirectory>
+					<wsdlDirectory>../src/main/ws/wsdl</wsdlDirectory>
+					
 					<!-- as no wsdlFiles section is specified all wsdls will be taken -->
 					
 					<!-- *** you need the next line to set the wsdlLocation in the generated 
 						stubs *** <wsdlLocation>http://localhost:8080/test</wsdlLocation> -->
-					<packageName>eu.heliovo.queryservice.client.jaxws</packageName>
 				</configuration>
 				<!-- if you want to use a specific version of JAX-WS, you can do so like 
 					this > 
 				<dependencies>
-					<groupId>com.sun.xml.ws</groupId>
-					<artifactId>jaxws-tools</artifactId>
-					<version>2.1.1</version>
+				    <dependency>
+						<groupId>com.sun.xml.ws</groupId>
+						<artifactId>jaxws-tools</artifactId>
+    					<version>2.1.1</version>
+				    </dependency>
 				</dependencies -->
 			</plugin>
 		</plugins>
