@@ -1,6 +1,7 @@
 package eu.heliovo.queryservice.servlets;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -11,6 +12,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
 
 import eu.heliovo.queryservice.common.transfer.FileResultTO;
 import eu.heliovo.queryservice.common.util.CommonUtils;
@@ -75,9 +77,8 @@ public class ResultQueryService extends HttpServlet {
 			}else if(sMode!=null && sMode.equalsIgnoreCase("file")){
 				StringBuilder fileData=null;
 				String sUrl=HsqlDbUtils.getInstance().getUrlFromHsqlDB(sID);
-				if(sUrl!=null && sUrl.startsWith("http")){
-					//http
-				}if(sUrl.startsWith("ftp")){
+				
+				if(sUrl.startsWith("ftp")){
 					//fttp
 					String ftpUrl=HsqlDbUtils.getInstance().getUrlFromHsqlDB(sID);
 					fileData=FileUtils.getFileDataFromFtp(ftpUrl);
@@ -85,7 +86,7 @@ public class ResultQueryService extends HttpServlet {
 					File xmlfile = new File(sUrl);
 			        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			        DocumentBuilder builder = factory.newDocumentBuilder();
-			        Document document = builder.parse(xmlfile);
+			        Document document = builder.parse(new InputSource(new FileReader(xmlfile)));
 			        fileData=FileUtils.readDataFromFile(document);
 				}
 		        logger.info(" : File data :   "+fileData);

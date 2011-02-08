@@ -62,7 +62,7 @@ public class VOTableMaker {
 		        	String tableName=tables[ i ].getName();
 		        	comCriteriaTO.setTableName(tableName);
 		        	//
-		        	tables[ i ].setName(comCriteriaTO.getContextPath()+": "+tableName);
+		        	tables[ i ].setName(comCriteriaTO.getContextPath()+"-"+tableName);
 		        	out.write( "<RESOURCE>\n" );
 		 	        out.write( "<DESCRIPTION>"+ConfigurationProfiler.getInstance().getProperty("sql.votable.head.desc")+"</DESCRIPTION>\n" );
 		 	        out.write( "<INFO name=\"QUERY_STATUS\" value=\""+comCriteriaTO.getQueryStatus()+"\"/>");

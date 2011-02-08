@@ -79,7 +79,7 @@ public class LongRunningQueryService extends HttpServlet {
 		    }
 		   	//Setting context path.
 		    if(request.getContextPath()!=null){
-				 comCriteriaTO.setContextPath(request.getContextPath().replace("-", "_").replace("/", ""));
+				 comCriteriaTO.setContextPath(request.getContextPath().substring(request.getContextPath().indexOf("-")+1,request.getContextPath().length()));
 			 }
 		    //Setting for Instrument parameter.
 		    String sInstrument=request.getParameter("INSTRUMENT");

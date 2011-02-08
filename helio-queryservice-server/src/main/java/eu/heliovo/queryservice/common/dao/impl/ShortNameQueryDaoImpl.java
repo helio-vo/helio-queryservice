@@ -699,7 +699,7 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 			rs=resultTO.getResultSet();
 			queryArray[tableCount]=resultTO.getQuery();
 			tables[tableCount] = new StandardTypeTable( new SequentialResultSetStarTable( rs ) );
-			tables[tableCount].setName(comCriteriaTO.getContextPath()+"_"+tableName);
+			tables[tableCount].setName(tableName);
 			//Editing column property.
 			VOTableMaker.setColInfoProperty(tables[tableCount], tableName);
 			tableCount++;
@@ -817,44 +817,6 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 			tables[tableCount]=(StarTable) ambResults.get("StartTable");
 			tableCount++;
 			//
-	
-			/*
-			//Checking if start date or end date is null or no value.
-			if((startDate!=null && !startDate.trim().equals("")) && (endDate!=null && !endDate.trim().equals(""))){
-			//Comparing 2 date value.
-			if(compareToDates(startDate,endDate)){
-				String tableName="";
-				if(sJoin!=null && !sJoin.equals("") && sJoin.equals("yes"))
-				{
-					tableName=arrayToString(listName);
-				}else{
-					tableName=listName[intCnt];
-				}
-				logger.info(" : Start Date ; End Date and List Name : "+startDate+"  : "+endDate+"  : "+tableName);
-				comCriteriaTO.setTableName(tableName);
-				//Connection object
-				comCriteriaTO.setConnection(con);
-				//getting the result set
-				ResultTO resultTO= addingResultSetToVOTable(comCriteriaTO);
-				rs=resultTO.getResultSet();
-				queryArray[tableCount]=resultTO.getQuery();
-				tables[tableCount] = new StandardTypeTable( new SequentialResultSetStarTable( rs ) );
-				tables[tableCount].setName(tableName);
-				//Editing column property.
-				VOTableMaker.setColInfoProperty(tables[tableCount], tableName);
-				tableCount++;
-				
-			}else{
-				comCriteriaTO.setQueryStatus("ERROR");
-				comCriteriaTO.setQueryDescription("Start Date should always be less than End Date.");
-				VOTableMaker.writeTables(comCriteriaTO);
-			}
-			}else{
-				comCriteriaTO.setQueryStatus("ERROR");
-				comCriteriaTO.setQueryDescription("Start date and End date cannot be null or no value");
-				VOTableMaker.writeTables(comCriteriaTO);
-			}
-			*/
 		  }
 		}else if(startDateTimeList.length==endDateTimeList.length && listName.length==endDateTimeList.length){
 			count=listName.length;
