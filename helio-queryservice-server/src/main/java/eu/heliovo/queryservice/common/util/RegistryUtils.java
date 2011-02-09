@@ -78,9 +78,9 @@ public class RegistryUtils {
 	}
 	
 	/** Generates the table descriptions for the CatalogService registration
-	    * for the specified catalog.
-	    */
-	   public String getTableDescriptions()  throws Exception {
+	 * for the specified catalog.
+	 */
+	 public String getTableDescriptions()  throws Exception {
 
 	      StringBuffer tables = new StringBuffer();
 	      String[] catalogNames=getTableNames();
