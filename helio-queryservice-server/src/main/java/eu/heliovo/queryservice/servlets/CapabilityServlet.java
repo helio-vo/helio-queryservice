@@ -31,6 +31,9 @@ public class CapabilityServlet extends VosiServlet {
       System.out.println(" : URL string : "+getUrl());
       String tapUriHttp          = getUrl() + "HelioQueryService";
       String tapUriWeb          = getUrl() + "HelioService";
+      //
+      String tapLongUriHttp          = getUrl() + "HelioQueryService";
+      String tapLongUriWeb          = getUrl() + "HelioLongQueryService";
       String capabilitiesUri = getUrl() + "VOSI/capabilities";
     
       String tablesUri       = getUrl() + "VOSI/tables";
@@ -67,9 +70,29 @@ public class CapabilityServlet extends VosiServlet {
         writer.write("    <accessURL use='full'>" + tapUriWeb + "</accessURL>\n");
         writer.write("  </interface>\n");
         writer.write("</capability>\n");
+        
+        // Output the TAP capability.
+        writer.write("<capability standardID='ivo://helio-vo.eu/std/FullQuery/WebService/v0.9'>\n");
+        writer.write("  <interface xsi:type='vr:WebService'>\n");
+        writer.write("    <accessURL use='full'>" + tapUriWeb + "</accessURL>\n");
+        writer.write("  </interface>\n");
+        writer.write("</capability>\n");
+                
+        // Output the TAP capability.
+        writer.write("<capability standardID='ivo://helio-vo.eu/std/FullQuery/Http/v0.9'>\n");
+        writer.write("  <interface xsi:type='vs:ParamHTTP'>\n");
+        writer.write("    <accessURL use='full'>" + tapLongUriHttp + "</accessURL>\n");
+        writer.write("  </interface>\n");
+        writer.write("</capability>\n");
+        
+        writer.write("<capability standardID='ivo://helio-vo.eu/std/LongRunningQuery/v0.9'>\n");
+        writer.write("  <interface xsi:type='vr:WebService'>\n");
+        writer.write("    <accessURL use='full'>" + tapLongUriWeb + "</accessURL>\n");
+        writer.write("  </interface>\n");
+        writer.write("</capability>\n");
+                
          
         writer.write(
-          
             // Capability capability - IVOA name
             "<capability standardID=\"ivo://ivoa.net/std/VOSI#capabilities\">\n" +
             "  <interface xsi:type=\"vs:ParamHTTP\">\n" +
@@ -87,11 +110,9 @@ public class CapabilityServlet extends VosiServlet {
             "   <resultType>application/xml</resultType>\n" + 
             "   </interface>\n" + 
             "</capability>\n" 
-
-        	
-            );
-
-         // End of capabilities
+           );
+        
+        // End of capabilities
          writer.write("</cap:capabilities>\n");
        }
        catch (Exception ex) {
