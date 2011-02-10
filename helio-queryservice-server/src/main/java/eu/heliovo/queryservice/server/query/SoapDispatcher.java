@@ -148,8 +148,10 @@ public class SoapDispatcher implements Provider<Source> {
 		    	 comCriteriaTO.setListTableName(listName);
     		 }	
     		 //Setting value for independent query.
-    		 comCriteriaTO.setAllStartDate(CommonUtils.arrayToString(comCriteriaTO.getStartDateTimeList(), ","));
- 		     comCriteriaTO.setAllEndDate(CommonUtils.arrayToString(comCriteriaTO.getEndDateTimeList(), ","));
+    		 if(comCriteriaTO.getStartDateTimeList()!=null)
+    			 comCriteriaTO.setAllStartDate(CommonUtils.arrayToString(comCriteriaTO.getStartDateTimeList(), ","));
+    		 if(comCriteriaTO.getEndDateTimeList()!=null)
+    			 comCriteriaTO.setAllEndDate(CommonUtils.arrayToString(comCriteriaTO.getEndDateTimeList(), ","));
  		     comCriteriaTO.setContextUrl(CommonUtils.getUrl(req));
 	    	 
     		//Setting for Start Row parameter.
@@ -184,7 +186,9 @@ public class SoapDispatcher implements Provider<Source> {
 					 comCriteriaTO.setWhereClause(whereClause);
 				 }
 				 //Coordinates interface
-	    	 } else if(interfaceName == "Coordinates".intern()) {
+	    	 } 
+		     
+		     if(interfaceName == "Coordinates".intern()) {
 	    		 //Setting for POS( RA & DEC) parameter.
 				 if(inputDoc.getElementsByTagNameNS("*","POS").getLength()>0 && inputDoc.getElementsByTagNameNS("*","POS").item(0).getFirstChild()!=null){
 					 String pos = inputDoc.getElementsByTagNameNS("*","POS").item(0).getFirstChild().getNodeValue();
@@ -213,7 +217,9 @@ public class SoapDispatcher implements Provider<Source> {
 					 comCriteriaTO.setSize(size);
 				 }
 				 //Long running query interface.
-	    	 }else if(interfaceName == "LongTimeQuery".intern() || interfaceName == "LongQuery".intern()){
+	    	 }
+		     
+		     if(interfaceName == "LongTimeQuery".intern() || interfaceName == "LongQuery".intern()){
 						 
 	    		 //Setting for No Of Rows parameter.
 				 if(inputDoc.getElementsByTagNameNS("*","SAVETO").getLength()>0 && inputDoc.getElementsByTagNameNS("*","SAVETO").item(0).getFirstChild()!=null){
@@ -334,7 +340,7 @@ public class SoapDispatcher implements Provider<Source> {
 				pw.write(fileData.toString());
 		 }
 		 
-		 if(interfaceName == "Query".intern() || interfaceName == "Coordinates".intern() || interfaceName == "TimeQuery".intern()){ 
+		 if(interfaceName == "Query".intern() || interfaceName == "Coordinates".intern() || interfaceName == "TimeQuery".intern() || interfaceName == "LongQuery".intern() || interfaceName == "LongTimeQuery".intern()){ 
 			 //Setting piped reader 
 			 comCriteriaTO.setPrintWriter(pw);
 	    	 //Thread created to load data into PipeReader.
