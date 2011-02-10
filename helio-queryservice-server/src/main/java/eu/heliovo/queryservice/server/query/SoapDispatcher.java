@@ -251,9 +251,7 @@ public class SoapDispatcher implements Provider<Source> {
 				 CommonDao commonNameDao= CommonDaoFactory.getInstance().getCommonDAO();
 				 commonNameDao.generatelongRunningQueryXML(comCriteriaTO);	
 				 logger.info(" : Done VOTABLE : ");	
-				 if(saveTo!=null && saveTo.startsWith("http")){
-				 //Save file to http.
-				 }else if(saveTo!=null && saveTo.contains("ftp")){
+				 if(saveTo!=null && saveTo.contains("ftp")){
 				    FileUtils.saveFileToFtp(saveTo,"votable_"+randomUUIDString+".xml");	    			    	
 				 }else{
 				 //Save the file to local system.
@@ -340,7 +338,7 @@ public class SoapDispatcher implements Provider<Source> {
 				pw.write(fileData.toString());
 		 }
 		 
-		 if(interfaceName == "Query".intern() || interfaceName == "Coordinates".intern() || interfaceName == "TimeQuery".intern() || interfaceName == "LongQuery".intern() || interfaceName == "LongTimeQuery".intern()){ 
+		 if(interfaceName == "Query".intern() || interfaceName == "Coordinates".intern() || interfaceName == "TimeQuery".intern()){ 
 			 //Setting piped reader 
 			 comCriteriaTO.setPrintWriter(pw);
 	    	 //Thread created to load data into PipeReader.
