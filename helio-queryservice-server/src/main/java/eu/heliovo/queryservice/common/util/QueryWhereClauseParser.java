@@ -208,26 +208,48 @@ public class QueryWhereClauseParser {
 		}	
 	}
 	
-	/*
-	 *Check for like clause. 
+	/**
+	 * 
+	 * @param value
+	 * @param tableName
+	 * @param join
 	 */
-	private static void checkIfLike(String value,String tableName,String join){ 
-		String data[]=value.split(",");
-		if(join!=null && !join.trim().equals("") && join.trim().equals("yes")){
-			if(data.length>1 && data[1].startsWith("*") && data[1].endsWith("*")){
-				checkIfLike(data[0],data[1]);
-			}
-		}else if(data.length>1 && data[1].startsWith("*") && data[1].endsWith("*") && data[0].trim().contains(tableName)){
-				checkIfLike(data[0],data[1]);
-		}else{
-			if(data.length>1 && data[1].startsWith("*") && data[1].endsWith("*") && !data[0].trim().contains(".")){
-				checkIfLike(data[0],data[1]);
-			}
-		}
+	private static void checkIfLike(String value,String tableName,String join){
+		String orClause="";
+		String data[]=value.split(",");	
+		whereClauseString=whereClauseString+" ( ";
+		if(data.length>1){
+		   for(int i=1;i<data.length;i++){
+					if(i==data.length-1)
+						orClause="";
+					else
+						orClause=" OR ";
+					//Creating where clause.
+					String sValue=data[i];
+					//
+					if(join!=null && !join.trim().equals("") && join.trim().equals("yes")){
+						if(sValue.startsWith("*") && sValue.endsWith("*")){
+							checkIfMoreThenOneLikeValue(data[0],sValue,orClause);
+						}
+					}else if(sValue.startsWith("*") && data[1].endsWith("*") && data[0].trim().contains(tableName)){
+						checkIfMoreThenOneLikeValue(data[0],sValue,orClause);
+					}else{
+						if(sValue.startsWith("*") && data[1].endsWith("*") && !data[0].trim().contains(".")){
+							checkIfMoreThenOneLikeValue(data[0],sValue,orClause);
+						}
+					}
+		    }	
+		   whereClauseString=whereClauseString+" ) AND";
+		}	
 	}
-
-	private static void checkIfLike(String coulumnName,String value){ 
-		whereClauseString=whereClauseString+" "+coulumnName+" LIKE '"+value.replace("*", "%")+"' AND";
+	
+	/**
+	 * 
+	 * @param coulumnName
+	 * @param value
+	 */
+	private static void checkIfMoreThenOneLikeValue(String coulumnName,String value,String orClause){ 
+		whereClauseString=whereClauseString+" "+coulumnName+" LIKE '"+value.replace("*", "%")+"' "+orClause;
 	}
 	
 	/*
@@ -235,6 +257,7 @@ public class QueryWhereClauseParser {
 	 */
 	private static void checkAllType(String whereClause,String tableName,String join){
 		String stringForOr="";
+		String stringForLike="";
 		String prevColumnName="";
 		String columnName="";
 		whereClauseString="";
@@ -251,7 +274,14 @@ public class QueryWhereClauseParser {
 					checkIfLessThanEqualTo(columnName+","+data[inCount],tableName,join);
 					checkIfBetween(columnName+","+data[inCount],tableName,join);
 				}else if(count(data[inCount],",")==0 && count(data[inCount],"*")>1){
-					checkIfLike(columnName+","+data[inCount],tableName,join);
+					if(prevColumnName.equals(columnName) || inCount==1)
+						stringForLike=stringForLike+data[inCount]+",";
+					else if(inCount!=1 && !prevColumnName.equals(columnName)){
+						checkIfLike(columnName+","+stringForLike.substring(0,stringForLike.length()-1),tableName,join);
+						stringForLike="";
+					}
+					//setting column value.
+					prevColumnName=columnName;
 				}else if(count(data[inCount],"!null")==1){
 					checkIfNotNull(columnName+","+data[inCount],tableName,join);					
 				}else if(count(data[inCount],"null")==1){
@@ -273,6 +303,11 @@ public class QueryWhereClauseParser {
 			if(!stringForOr.equals("")){
 				checkIfOR(columnName+","+stringForOr.substring(0,stringForOr.length()-1),tableName,join);
 				stringForOr="";
+			}
+			//For LIKE condition.
+			if(!stringForLike.equals("")){
+				checkIfLike(columnName+","+stringForLike.substring(0,stringForLike.length()-1),tableName,join);
+				stringForLike="";
 			}
 	   }
 	}
