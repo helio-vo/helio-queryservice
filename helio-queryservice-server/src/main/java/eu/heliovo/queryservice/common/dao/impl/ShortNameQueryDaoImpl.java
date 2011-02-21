@@ -887,7 +887,12 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 		return comCriteriaTO;
  }
 	
-	
+ /**
+  * 
+  * @param comCriteriaTO
+  * @return
+  * @throws Exception
+  */
 public HashMap<Object, Object> createStartTableForTimeBased(CommonCriteriaTO comCriteriaTO) throws Exception
 {
 	//

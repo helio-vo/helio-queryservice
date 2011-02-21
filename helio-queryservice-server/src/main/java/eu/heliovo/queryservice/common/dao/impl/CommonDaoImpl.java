@@ -30,6 +30,7 @@ public class CommonDaoImpl implements CommonDao {
 		
 	}
 
+	
 	public void generatelongRunningQueryXML(CommonCriteriaTO comCriteriaTO) throws Exception
 	{
 		BufferedWriter out =null;

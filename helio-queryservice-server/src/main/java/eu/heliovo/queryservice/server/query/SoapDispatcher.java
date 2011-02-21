@@ -109,9 +109,7 @@ public class SoapDispatcher implements Provider<Source> {
 			 if(req.getContextPath()!=null){
 				 comCriteriaTO.setContextPath(req.getContextPath().replace("-", "_").replace("/", ""));
 			 }
-			 //Indicator to define VOTABLE for Web Service request
-			 comCriteriaTO.setStatus("WebService");
-		
+			 		
 			 // This is common for Time. interface.
 	    	 //Setting for START TIME parameter.
 			 if(inputDoc.getElementsByTagNameNS("*","STARTTIME").getLength()>0 && inputDoc.getElementsByTagNameNS("*","STARTTIME").item(0).getFirstChild()!=null){
@@ -339,6 +337,8 @@ public class SoapDispatcher implements Provider<Source> {
 		 }
 		 
 		 if(interfaceName == "Query".intern() || interfaceName == "Coordinates".intern() || interfaceName == "TimeQuery".intern()){ 
+			 //Indicator to define VOTABLE for Web Service request
+			 comCriteriaTO.setStatus("WebService");
 			 //Setting piped reader 
 			 comCriteriaTO.setPrintWriter(pw);
 	    	 //Thread created to load data into PipeReader.
