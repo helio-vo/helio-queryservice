@@ -108,49 +108,74 @@ public class CommonUtils {
 	 */
 	 public static String createXmlForWebService(FileResultTO fileTO) throws Exception {
 		 StringBuilder xmlString = new StringBuilder();
-		 xmlString.append("<ResultInfo>");
-		 xmlString.append("<ID>");
-		 xmlString.append(fileTO.getRandomUUIDString());
-		 xmlString.append("</ID>");
+		 String Status=fileTO.getStatus();
+		 //URL 
+		 String sUrl=fileTO.getsUrl();
+		 if((Status==null || Status.trim().equals("")) && (sUrl==null || sUrl.trim().equals(""))){
+			 xmlString.append("<ID>");
+			 xmlString.append(fileTO.getRandomUUIDString());
+			 xmlString.append("</ID>");
+		 }
 		 String sDes=null;
 		 String statusArray[]=null;
-		 String Status=fileTO.getStatus();
-		 //Status of completion.
-		 if(Status!=null && !Status.trim().equals(""))
-			 statusArray=Status.split("::");
-		 //Description if the error occured
-		 if(statusArray!=null && statusArray.length>1)
-			 sDes=statusArray[1];
-		 //Status for the service
-		 if(Status!=null && !Status.trim().equals("")){
-			 xmlString.append("<status>");
-			 xmlString.append(statusArray[0]);
-			 xmlString.append("</status>");
+		 if(sUrl==null || sUrl.trim().equals("")){
+			 //Status of completion.
+			 if(Status!=null && !Status.trim().equals(""))
+				 statusArray=Status.split("::");
+			 //Description if the error occured
+			 if(statusArray!=null && statusArray.length>1)
+				 sDes=statusArray[1];
+			 //Status for the service
+			 if(Status!=null && !Status.trim().equals("")){
+				 xmlString.append("<Status>");
+				 xmlString.append("<status>");
+				 xmlString.append(statusArray[0]);
+				 xmlString.append("</status>");
+			 
+				// Des for the file location.
+				 if(sDes!=null && !sDes.trim().equals("")){
+					 xmlString.append("<statusdescription>");
+					 xmlString.append(sDes);
+					 xmlString.append("</statusdescription>");
+				 }
+				 //
+				 xmlString.append("</Status>");
+			 }
 		 }
-		 
-		// Des for the file location.
-		 if(sDes!=null && !sDes.trim().equals("")){
-			 xmlString.append("<statusdescription>");
-			 xmlString.append(sDes);
-			 xmlString.append("</statusdescription>");
-		 }
-		 String sUrl=fileTO.getsUrl();
 		 // Url for the file location.
 		 if(sUrl!=null && !sUrl.trim().equals("")){
+			 xmlString.append("<ResultInfo>");
 			 xmlString.append("<resultURI>");
 			 xmlString.append(sUrl);
 			 xmlString.append("</resultURI>");
-		 }
-		 String fileInfo=fileTO.getFileInfo();
-		 //Result info
-		 if(fileInfo!=null && !fileInfo.trim().equals("")){
+			 //
+		    String fileInfo=fileTO.getFileInfo();
+		    //Result info
+		    if(fileInfo!=null && !fileInfo.trim().equals("")){
 			 xmlString.append("<fileInfo>");
 			 xmlString.append(fileInfo);
 			 xmlString.append("</fileInfo>");
-		 }
-		 //Result end
-		 xmlString.append("</ResultInfo>");
-		 
+		    }
+		    
+		    if(Status!=null && !Status.trim().equals(""))
+			   statusArray=Status.split("::");
+			   //Description if the error occured
+			 if(statusArray!=null && statusArray.length>1)
+				 sDes=statusArray[1];
+			 //Status for the service
+			 if(Status!=null && !Status.trim().equals("")){
+				 xmlString.append("<status>");
+				 xmlString.append(statusArray[0]);
+				 xmlString.append("</status>");
+  				 // Des for the file location.
+				 if(sDes!=null && !sDes.trim().equals("")){
+					 xmlString.append("<statusdescription>");
+					 xmlString.append(sDes);
+					 xmlString.append("</statusdescription>");
+				 }
+		    }
+			xmlString.append("</ResultInfo>");
+	    }
 	     return xmlString.toString();
       }
  

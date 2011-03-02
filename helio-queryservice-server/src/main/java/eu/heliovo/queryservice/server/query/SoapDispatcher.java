@@ -234,7 +234,7 @@ public class SoapDispatcher implements Provider<Source> {
 				 logger.info(" : save to file location :  "+saveTo);
 				 //passing save to value to common TO.	
 				 comCriteriaTO.setSaveto(saveTo);
-				 comCriteriaTO.setLongRunningQueryStatus("LongRunning");
+				 comCriteriaTO.setLongRunningQueryStatus("id");
 				 //
 				 fileTO.setRandomUUIDString(randomUUIDString);
 
@@ -269,7 +269,8 @@ public class SoapDispatcher implements Provider<Source> {
 			 if(inputDoc.getElementsByTagNameNS("*","ID").getLength()>0 && inputDoc.getElementsByTagNameNS("*","ID").item(0).getFirstChild()!=null){
 	    		 sID = inputDoc.getElementsByTagNameNS("*","ID").item(0).getFirstChild().getNodeValue();
 			 }
-			 
+			 //
+			 comCriteriaTO.setLongRunningQueryStatus("status");
 			 String sStatus=LongRunningQueryIdHolders.getInstance().getProperty(sID);
 				if(sStatus==null || sStatus.trim().equals(""))
 				  sStatus=HsqlDbUtils.getInstance().getStatusFromHsqlDB(sID);
@@ -292,7 +293,8 @@ public class SoapDispatcher implements Provider<Source> {
 			 if(inputDoc.getElementsByTagNameNS("*","ID").getLength()>0 && inputDoc.getElementsByTagNameNS("*","ID").item(0).getFirstChild()!=null){
 	    		 sID = inputDoc.getElementsByTagNameNS("*","ID").item(0).getFirstChild().getNodeValue();
 			 }
-			 
+			 //
+			 comCriteriaTO.setLongRunningQueryStatus("result");
 			 String sStatus=LongRunningQueryIdHolders.getInstance().getProperty(sID);
 				if(sStatus==null || sStatus.trim().equals(""))
 				  sStatus=HsqlDbUtils.getInstance().getStatusFromHsqlDB(sID);
