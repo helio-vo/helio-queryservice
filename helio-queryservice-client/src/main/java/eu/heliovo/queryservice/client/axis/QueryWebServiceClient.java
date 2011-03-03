@@ -70,7 +70,7 @@ public class QueryWebServiceClient {
 		//This configuration for TIME.		  	
 		Element xqueryElemStartTime = doc.createElementNS("http://helio-vo.eu/xml/QueryService/v0.1","helio:STARTTIME");			
 		//xquery should be 'time' so 2009-10-09T00:00:00/2009-10-09T01:00:00
-		xqueryElemStartTime.appendChild(doc.createTextNode("2008-01-01T00:00:00"));
+		xqueryElemStartTime.appendChild(doc.createTextNode("2010-01-01T00:00:00"));
 		
 		Element xqueryElemStartTime1 = doc.createElementNS("http://helio-vo.eu/xml/QueryService/v0.1","helio:STARTTIME");			
 		//xquery should be 'time' so 2009-10-09T00:00:00/2009-10-09T01:00:00
@@ -79,7 +79,7 @@ public class QueryWebServiceClient {
 		//
 		Element xqueryElemEndTime = doc.createElementNS("http://helio-vo.eu/xml/QueryService/v0.1","helio:ENDTIME");			
 		//xquery should be 'time' so 2009-10-09T00:00:00/2009-10-09T01:00:00
-		xqueryElemEndTime.appendChild(doc.createTextNode("2008-02-01T00:00:00"));	
+		xqueryElemEndTime.appendChild(doc.createTextNode("2010-07-01T00:00:00"));	
 		
 		//
 		Element xqueryElemEndTime1 = doc.createElementNS("http://helio-vo.eu/xml/QueryService/v0.1","helio:ENDTIME");			
@@ -88,7 +88,7 @@ public class QueryWebServiceClient {
 		//This configuration for INSTRUMENT.
 		Element xqueryElemIntrument = doc.createElementNS("http://helio-vo.eu/xml/QueryService/v0.1","helio:INSTRUMENT");			
 		//xquery should be 'Instrument' 
-		xqueryElemIntrument.appendChild(doc.createTextNode(""));
+		xqueryElemIntrument.appendChild(doc.createTextNode("MEUD__HELIO"));
 		//This configuration for LISTNAME.
 		Element xqueryElemListName = doc.createElementNS("http://helio-vo.eu/xml/QueryService/v0.1","helio:FROM");			
 		//xquery should be LISTNAME
@@ -101,8 +101,8 @@ public class QueryWebServiceClient {
 		root.appendChild(xqueryElemStartTime); //Start Time Element.
 		root.appendChild(xqueryElemEndTime); //End Time Element.
 		root.appendChild(xqueryElemIntrument); // Instrument Element.
-		root.appendChild(xqueryElemListName); // List Name Element.
-		root.appendChild(xqueryElemListName1); // List Name Element.
+		//root.appendChild(xqueryElemListName); // List Name Element.
+		//root.appendChild(xqueryElemListName1); // List Name Element.
 		//root.appendChild(xqueryElemStartTime1); // List Name Element.
 		//root.appendChild(xqueryElemEndTime1); // List Name Element.
 		doc.appendChild(root);
@@ -165,7 +165,7 @@ public class QueryWebServiceClient {
 	      
 	      //this is finally your endpoint to do
 	      //"http://localhost:8080/HelioQuery/services/HelioService"
-	      _call.setTargetEndpointAddress("http://140.105.77.30:8080/helio-hec-r3/HelioService");
+	      _call.setTargetEndpointAddress("http://localhost:8080/helio-dpas/HelioService");
 	      _call.setSOAPActionURI("");
 	      //_call.setOperationStyle(org.apache.axis.enum.Style.MESSAGE);
 	      //_call.setOperationUse(org.apache.axis.enum.Use.LITERAL);

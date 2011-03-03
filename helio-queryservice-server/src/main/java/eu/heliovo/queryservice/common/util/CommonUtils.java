@@ -128,6 +128,9 @@ public class CommonUtils {
 			 //Status for the service
 			 if(Status!=null && !Status.trim().equals("")){
 				 xmlString.append("<Status>");
+				 xmlString.append("<ID>");
+				 xmlString.append(fileTO.getRandomUUIDString());
+				 xmlString.append("</ID>");
 				 xmlString.append("<status>");
 				 xmlString.append(statusArray[0]);
 				 xmlString.append("</status>");
@@ -144,7 +147,11 @@ public class CommonUtils {
 		 }
 		 // Url for the file location.
 		 if(sUrl!=null && !sUrl.trim().equals("")){
+			 //
 			 xmlString.append("<ResultInfo>");
+			 xmlString.append("<ID>");
+			 xmlString.append(fileTO.getRandomUUIDString());
+			 xmlString.append("</ID>");
 			 xmlString.append("<resultURI>");
 			 xmlString.append(sUrl);
 			 xmlString.append("</resultURI>");
