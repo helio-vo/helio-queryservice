@@ -288,7 +288,7 @@ public class SoapDispatcher implements Provider<Source> {
 				CommonDao commonNameDao= CommonDaoFactory.getInstance().getCommonDAO();
 				commonNameDao.generatelongRunningQueryXML(comCriteriaTO);	
 				//Long running query file location path result.
-		 }else if(interfaceName == "GetResults".intern()){
+		 }else if(interfaceName == "GetResult".intern()){
 			 String sID =null;
 			 if(inputDoc.getElementsByTagNameNS("*","ID").getLength()>0 && inputDoc.getElementsByTagNameNS("*","ID").item(0).getFirstChild()!=null){
 	    		 sID = inputDoc.getElementsByTagNameNS("*","ID").item(0).getFirstChild().getNodeValue();

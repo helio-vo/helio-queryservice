@@ -72,6 +72,7 @@
 		<xs:enumeration value="COMPLETED" />
 		<xs:enumeration value="ERROR" />
 		<xs:enumeration value="PENDING" />
+		<xs:enumeration value="TIMEOUT" />		
 	</xs:restriction>
 </xs:simpleType>
 
@@ -84,9 +85,9 @@
 
 <xs:complexType name="Status">
 	<xs:sequence>
+ 		<xs:element minOccurs="1" maxOccurs="1" name="ID" type="xs:string" />
  		<xs:element minOccurs="1" maxOccurs="1" name="status" type="tns:StatusValue" />
- 		<xs:element minOccurs="1" maxOccurs="1" name="description" type="xs:string" /> 
- 		<xs:element minOccurs="1" name="ID" type="xs:string" />		
+ 		<xs:element minOccurs="0" maxOccurs="1" name="description" type="xs:string" /> 
 	</xs:sequence>
 </xs:complexType>
 
@@ -105,11 +106,11 @@
 
 <xs:complexType name="ResultInfo">
 	<xs:sequence>
+ 		<xs:element minOccurs="1" maxOccurs="1" name="ID" type="xs:string" />
  		<xs:element minOccurs="0" maxOccurs="1" name="resultURI" type="xs:anyURI" />
  		<xs:element minOccurs="0" maxOccurs="1" name="fileInfo" type="xs:string" /> 
  		<xs:element minOccurs="0" maxOccurs="1" name="status" type="tns:StatusValue" />
- 		<xs:element minOccurs="0" maxOccurs="1" name="statusdescription" type="xs:string" /> 	
- 		<xs:element minOccurs="1" maxOccurs="1" name="ID" type="xs:string" />
+ 		<xs:element minOccurs="0" maxOccurs="1" name="description" type="xs:string" /> 	
 	</xs:sequence>
 </xs:complexType>
 
