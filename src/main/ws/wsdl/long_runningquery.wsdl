@@ -17,9 +17,9 @@
 
 	<xs:complexType name="LongQuery">
 		<xs:sequence>
-			<xs:element minOccurs="0" name="STARTTIME" type="xs:string" />
-			<xs:element minOccurs="0" name="ENDTIME" type="xs:string" />
-			<xs:element minOccurs="1" name="FROM" type="xs:string" />
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="STARTTIME" type="xs:string" />
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="ENDTIME" type="xs:string" />
+			<xs:element minOccurs="1" maxOccurs="unbounded" name="FROM" type="xs:string" />
 			<xs:element minOccurs="0" name="WHERE" type="xs:string" />
 			
 			<xs:element minOccurs="0" name="INSTRUMENT" type="ins:instrument" />

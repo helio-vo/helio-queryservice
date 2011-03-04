@@ -107,7 +107,7 @@ public class SoapDispatcher implements Provider<Source> {
 			 pr = new PipedReader();
 			 pw = new PipedWriter(pr);	 
 			 if(req.getContextPath()!=null){
-				 comCriteriaTO.setContextPath(req.getContextPath().replace("-", "_").replace("/", ""));
+				 comCriteriaTO.setContextPath(req.getContextPath().substring(req.getContextPath().indexOf("-")+1,req.getContextPath().length()));
 			 }
 			 		
 			 // This is common for Time. interface.
@@ -207,7 +207,7 @@ public class SoapDispatcher implements Provider<Source> {
 					 //Region.
 					 comCriteriaTO.setsRegion(map.get("region"));
 					 //Region values.
-					  comCriteriaTO.setsRegionValues(map.get("regionvalues"));
+					 comCriteriaTO.setsRegionValues(map.get("regionvalues"));
 				 }
 				//Setting for SIZE parameter.
 				 if(inputDoc.getElementsByTagNameNS("*","SIZE").getLength()>0 && inputDoc.getElementsByTagNameNS("*","SIZE").item(0).getFirstChild()!=null){
