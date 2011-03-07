@@ -47,7 +47,10 @@
 				<configuration>
 				    <verbose>true</verbose>
 					<wsdlDirectory>../src/main/ws/wsdl</wsdlDirectory>
-					
+					<wsdlFiles>
+					    <wsdlFile>long_runningquery.wsdl</wsdlFile>
+                        <wsdlFile>helio_full_query.wsdl</wsdlFile> 
+					</wsdlFiles>
 					<!-- as no wsdlFiles section is specified all wsdls will be taken -->
 					
 					<!-- *** you need the next line to set the wsdlLocation in the generated 
@@ -62,6 +65,38 @@
     					<version>2.1.1</version>
 				    </dependency>
 				</dependencies -->
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>add-source</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>add-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>${basedir}/target/jaxws/wsimport/java</source>
+							</sources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-clean-plugin</artifactId>
+				<version>2.2</version>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>${basedir}/target/jaxws/wsimport/java</directory>
+							<includes>
+								<include>**/*.java</include>
+							</includes>
+						</fileset>
+					</filesets>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
