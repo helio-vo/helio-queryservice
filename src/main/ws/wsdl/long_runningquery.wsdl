@@ -3,7 +3,7 @@
  <wsdl:types>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ins="http://helio-vo.eu/xml/Instruments/v0.1" xmlns:tns="http://helio-vo.eu/xml/LongQueryService/v0.9" elementFormDefault="unqualified" targetNamespace="http://helio-vo.eu/xml/LongQueryService/v0.9" version="1.0">
   
-  <xs:import xmlns:ins="http://helio-vo.eu/xml/Instruments/v0.1" namespace="http://helio-vo.eu/xml/Instruments/v0.1" schemaLocation="http://msslxw.mssl.ucl.ac.uk:8080/helio-ics-r3/HelioLongQueryService?xsd=1" />   
+  <xs:import xmlns:ins="http://helio-vo.eu/xml/Instruments/v0.1" namespace="http://helio-vo.eu/xml/Instruments/v0.1" schemaLocation="http://www.helio-vo.eu/services/xml/instruments.xsd" />   
  
    
 <xs:element name="LongQuery" type="tns:LongQuery" />
@@ -41,9 +41,9 @@
 	
 	<xs:complexType name="LongTimeQuery">
 		<xs:sequence>
-			<xs:element minOccurs="0" name="STARTTIME" type="xs:string" />
-			<xs:element minOccurs="0" name="ENDTIME" type="xs:string" />
-			<xs:element minOccurs="1" name="FROM" type="xs:string" />
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="STARTTIME" type="xs:string" />
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="ENDTIME" type="xs:string" />
+			<xs:element minOccurs="1" maxOccurs="unbounded" name="FROM" type="xs:string" />
 			<xs:element minOccurs="0" name="MAXRECORDS" type="xs:int" />
 			<xs:element minOccurs="0" name="STARTINDEX" type="xs:int" />
 		</xs:sequence>

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is JAX-WS RI 2.1.7-hudson-48-. --><wsdl:definitions xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://helio-vo.eu/xml/QueryService/v0.1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" name="HelioQueryServiceService" targetNamespace="http://helio-vo.eu/xml/QueryService/v0.1">
  <wsdl:types>
 <xs:schema xmlns:ins="http://helio-vo.eu/xml/Instruments/v0.1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://helio-vo.eu/xml/QueryService/v0.1" elementFormDefault="unqualified" targetNamespace="http://helio-vo.eu/xml/QueryService/v0.1" version="1.0">
-  <xs:import xmlns:ins="http://helio-vo.eu/xml/Instruments/v0.1" namespace="http://helio-vo.eu/xml/Instruments/v0.1" schemaLocation="http://msslxw.mssl.ucl.ac.uk:8080/helio-ics/HelioService?xsd=1" />   
+  <xs:import xmlns:ins="http://helio-vo.eu/xml/Instruments/v0.1" namespace="http://helio-vo.eu/xml/Instruments/v0.1" schemaLocation="http://www.helio-vo.eu/services/xml/instruments.xsd" />   
 
 <xs:element name="Query" type="tns:Query" />
 <xs:element name="TimeQuery" type="tns:TimeQuery" />
