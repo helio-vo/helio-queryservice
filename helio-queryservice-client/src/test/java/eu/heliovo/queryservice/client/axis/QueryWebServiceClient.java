@@ -14,7 +14,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import eu.heliovo.queryservice.client.axis.utils.DomHelper;
 
 public class QueryWebServiceClient {
 

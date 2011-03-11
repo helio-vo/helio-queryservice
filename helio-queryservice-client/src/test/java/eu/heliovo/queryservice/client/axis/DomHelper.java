@@ -1,4 +1,4 @@
-package eu.heliovo.queryservice.client.axis.utils;
+package eu.heliovo.queryservice.client.axis;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
