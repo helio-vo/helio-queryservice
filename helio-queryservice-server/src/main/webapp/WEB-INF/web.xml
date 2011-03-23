@@ -134,7 +134,7 @@
 	<env-entry>
 	   <env-entry-name>property/context</env-entry-name>
 	   <env-entry-type>java.lang.String</env-entry-type>
-	   <env-entry-value>/opt/tomcat/helio-ics-cdaw.txt</env-entry-value>
+	   <env-entry-value>test.txt</env-entry-value>
 	</env-entry>
   
   <welcome-file-list>		

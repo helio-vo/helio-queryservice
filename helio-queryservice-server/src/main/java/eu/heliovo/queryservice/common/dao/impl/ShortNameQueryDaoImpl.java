@@ -367,7 +367,7 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 			 //Appending ; 'Limit Constraints' .
 			 query=query+" "+querylimitContraint;
 			 
-			 //logger.info(" : Full query for execution : "+query);
+			 _LOGGER.info(" : Full query for execution : "+query);
 			 
 			 
 		 return query;

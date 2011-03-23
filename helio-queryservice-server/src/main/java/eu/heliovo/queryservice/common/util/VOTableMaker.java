@@ -61,15 +61,24 @@ public class VOTableMaker {
 		        for ( int i = 0; i < tables.length; i++ ){
 		        	String tableName=tables[ i ].getName();
 		        	comCriteriaTO.setTableName(tableName);
+		        	//Info Key Value Pair
+		        	String infoKeyValuePair=ConfigurationProfiler.getInstance().getProperty("votable.query.info."+tableName);
 		        	//
 		        	tables[ i ].setName(comCriteriaTO.getContextPath()+"-"+tableName);
 		        	out.write( "<RESOURCE>\n" );
 		 	        out.write( "<DESCRIPTION>"+ConfigurationProfiler.getInstance().getProperty("sql.votable.head.desc")+"</DESCRIPTION>\n" );
-		 	        out.write( "<INFO name=\"QUERY_STATUS\" value=\""+comCriteriaTO.getQueryStatus()+"\"/>");
-		 	        out.write( "<INFO name=\"EXECUTED_AT\" value=\""+now()+"\"/>");
-		 	        out.write( "<INFO name=\"MAX_RECORD_ALLOWED\" value=\""+ConfigurationProfiler.getInstance().getProperty("sql.query.maxrecord.constraint."+tableName)+"\"/>");
-		 	        out.write("<INFO name=\"QUERY_STRING\" >"+"<![CDATA["+comCriteriaTO.getQueryArray()[i]+"]]>"+"</INFO>");
-		 	        out.write("<INFO name=\"QUERY_URL\" >"+"<![CDATA["+CommonUtils.getRequestUrl(comCriteriaTO)+"]]>"+"</INFO>");
+		 	        out.write( "<INFO name=\"QUERY_STATUS\">"+comCriteriaTO.getQueryStatus()+"</INFO>");
+		 	        out.write( "<INFO name=\"EXECUTED_AT\">"+now()+"</INFO>");
+		 	        out.write( "<INFO name=\"MAX_RECORD_ALLOWED\">"+ConfigurationProfiler.getInstance().getProperty("sql.query.maxrecord.constraint."+tableName)+"</INFO>");
+		 	        out.write("<INFO name=\"QUERY_STRING\">"+"<![CDATA["+comCriteriaTO.getQueryArray()[i]+"]]>"+"</INFO>");
+		 	        out.write("<INFO name=\"QUERY_URL\">"+"<![CDATA["+CommonUtils.getRequestUrl(comCriteriaTO)+"]]>"+"</INFO>");
+		 	        if(infoKeyValuePair!=null && !infoKeyValuePair.trim().equals("")){
+		 	        	String [] infoArrayValuePair=infoKeyValuePair.split("::");
+		 	        	for(int count=0;count<infoArrayValuePair.length;count++){
+		 	        		String[] keyValue=infoArrayValuePair[count].split(",");
+		 	        		 out.write( "<INFO name=\""+keyValue[0]+"\" value=\""+keyValue[1]+"\"/>");
+		 	        	}
+		 	        }
 		            VOSerializer.makeSerializer( DataFormat.TABLEDATA, tables[ i ] ).writeInlineTableElement( out );
 		            out.write( "</RESOURCE>\n" );
 		        }
