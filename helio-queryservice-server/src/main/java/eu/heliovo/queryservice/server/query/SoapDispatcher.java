@@ -136,14 +136,19 @@ public class SoapDispatcher implements Provider<Source> {
     		 
 	    	 //Setting for ListName parameter.
     		 if(inputDoc.getElementsByTagNameNS("*","FROM").getLength()>0){
+    			 String sListName="";
     			 //Node list
     			 NodeList nodeList=inputDoc.getElementsByTagNameNS("*","FROM");
     			 String[] listName=new String[nodeList.getLength()];
     			 //List Name
 		    	 for(int i=0;i<nodeList.getLength();i++){
-		    		 listName[i]=nodeList.item(i).getFirstChild().getNodeValue();
+		    		 String value=nodeList.item(i).getFirstChild().getNodeValue();
+		    		 listName[i]=value;
+		    		 sListName=sListName+value+",";
 		    	 }
 		    	 comCriteriaTO.setListTableName(listName);
+		    	 if(sListName!=null && !sListName.trim().equals(""))
+		    		 comCriteriaTO.setListName(sListName.substring(0, sListName.length()-1));
     		 }	
     		 //Setting value for independent query.
     		 if(comCriteriaTO.getStartDateTimeList()!=null)

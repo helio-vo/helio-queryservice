@@ -64,7 +64,7 @@ public class VOTableMaker {
 		        	//Info Key Value Pair
 		        	String infoKeyValuePair=ConfigurationProfiler.getInstance().getProperty("votable.query.info."+tableName);
 		        	//
-		        	tables[ i ].setName(comCriteriaTO.getContextPath()+"-"+tableName);
+		        	tables[ i ].setName(comCriteriaTO.getContextPath()+"_"+tableName);
 		        	out.write( "<RESOURCE>\n" );
 		 	        out.write( "<DESCRIPTION>"+ConfigurationProfiler.getInstance().getProperty("sql.votable.head.desc")+"</DESCRIPTION>\n" );
 		 	        out.write( "<INFO name=\"QUERY_STATUS\">"+comCriteriaTO.getQueryStatus()+"</INFO>");

@@ -632,7 +632,7 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 		try{
 		
 			String sRepSql = CommonUtils.replaceParams(generateQuery(comCriteriaTO.getTableName(),comCriteriaTO), comCriteriaTO.getParamData());
-			//logger.info(" : Query String After Replacing Value :"+sRepSql);	
+			_LOGGER.info(" : Query String After Replacing Value :"+sRepSql);	
 			//Setting Table Name.
 			comCriteriaTO.setTableName(comCriteriaTO.getListName());
 			//Connecting to database.						
