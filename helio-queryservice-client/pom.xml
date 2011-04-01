@@ -30,6 +30,12 @@
 	</dependencies>
 
 	<build>
+	    <resources>
+	        <resource>
+	            <directory>../src/main/ws/wsdl</directory>
+	            <targetPath>${basedir}/target/classes/wsdl</targetPath>
+	        </resource>
+	    </resources>
 		<plugins>			
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
