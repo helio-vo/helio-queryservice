@@ -152,17 +152,30 @@ public class QueryWhereClauseParser {
 	 */
 	private static void checkIfBetween(String columnName,String value)
 	{
+		String whereValue="";
 		//First Value
 		String firstValue=value.split("/")[0];
 		//Secound Value
 		String secoundValue=value.split("/")[1];
 		//Test if it has any char.
-		if(testAlphaString(firstValue))
+		if(testAlphaString(firstValue) && testAlphaString(secoundValue)){
+			//First Value
 			firstValue="'"+firstValue+"'";
-		//Secound Value.
-		if(testAlphaString(secoundValue))
+			//Second Value
 			secoundValue="'"+secoundValue+"'";
-		whereClauseString=whereClauseString+" "+columnName+" BETWEEN "+firstValue+" AND "+secoundValue+" AND";
+			//
+			whereValue=" "+columnName+"="+firstValue+" AND "+columnName+"="+secoundValue+" AND";
+		}else{
+			//First test Value
+			if(testAlphaString(firstValue))
+					firstValue="'"+firstValue+"'";
+			//Second test value
+			if(testAlphaString(secoundValue))
+				secoundValue="'"+secoundValue+"'";
+			whereValue=" "+columnName+" BETWEEN "+firstValue+" AND "+secoundValue+" AND";
+		}
+
+		whereClauseString=whereClauseString+whereValue;
 	}
 	
 

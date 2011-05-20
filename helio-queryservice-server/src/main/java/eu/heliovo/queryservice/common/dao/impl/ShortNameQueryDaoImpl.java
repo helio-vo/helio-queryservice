@@ -74,7 +74,7 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 				  comCriteriaTO.setQueryDescription("FROM clause value is missing in request xml.");
 				  VOTableMaker.writeTables(comCriteriaTO);
 			}
-		} catch (Exception e){		
+		}catch (Exception e){		
 				//Writing all details into table.
 				comCriteriaTO.setQueryStatus("ERROR");
 				comCriteriaTO.setQueryDescription(e.getMessage());
@@ -253,6 +253,31 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 		return colNamesForTable;
 	}
 	
+	/**
+	 * @param tableName
+	 * @param sSelect
+	 * @return
+	 */
+	private String getColumnsBasedOnSelectParameter(String tableName,String sSelect)
+	{
+		String colNamesForTable="";
+		String colNames[]=null;
+		if(sSelect!=null)
+		  colNames=sSelect.split(",");
+		//for loop col names
+		for(int i=0;i<colNames.length;i++)
+		{
+			if(colNames[i].trim().contains(tableName)){
+				colNamesForTable=colNamesForTable+colNames[i]+",";
+			}
+		}
+		//list of column names
+		if(colNamesForTable.endsWith(",")){
+			colNamesForTable=colNamesForTable.substring(0, colNamesForTable.length()-1);
+		}
+		return colNamesForTable;
+	}
+	
 	
 	private String  generateQuery(String listName,CommonCriteriaTO comCriteriaTO) throws Exception{
 			 String queryConstraint="";
@@ -287,8 +312,17 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 				 //Method to get joined query.( Select items ).
 				 query=getJoinSelectClause(comCriteriaTO);
 			 }else{
+				 String colNamesList="";
+				 //Checking for preference values.
+				 if(comCriteriaTO.getIntListCount()>1 && !getColumnsBasedOnSelectParameter(listName,comCriteriaTO.getSelect()).equals("")){
+				 		colNamesList=getColumnsBasedOnSelectParameter(listName,comCriteriaTO.getSelect());
+			 	 }else if(comCriteriaTO.getIntListCount()==1){
+			 		colNamesList=comCriteriaTO.getSelect();
+			 	 }else{
+				 	colNamesList=getColumnNamesFromProperty(listName);
+				 }
 				 //Normal query
-				 query="SELECT "+getColumnNamesFromProperty(listName)+" FROM "+listName;
+				 query="SELECT "+colNamesList+" FROM "+listName;
 			 }
 			 
 			 //logger.info(" : Query String with 'Select' and 'From' : "+query);
@@ -301,7 +335,6 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 				 
 			 }
 			 
-			
 			 //Appending Time clause.
 			 String queryTimeContraint=timeQueryConstraint(listName);
 			 if(queryTimeContraint!=null && !queryTimeContraint.trim().equals("") && comCriteriaTO.getStartDateTime()!=null && !comCriteriaTO.getStartDateTime().trim().equals("")  && comCriteriaTO.getEndDateTime()!=null && !comCriteriaTO.getEndDateTime().trim().equals("")){
@@ -315,7 +348,7 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 				 queryConstraint=queryConstraint+" "+queryWhereClause;
 			 }
 			 
-			// logger.info(" : Appending Time Constraint If Avialable : "+queryConstraint);
+			 // logger.info(" : Appending Time Constraint If Avialable : "+queryConstraint);
 			 
 			 //Appending Instrument clause.
 			 String queryInstContraint=instrumentsQueryConstraint(listName);
@@ -668,6 +701,8 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 		String sJoin=comCriteriaTO.getJoin();
 		StarTable[] tables=null;
 		int count=listName.length;
+		//No of lists
+		comCriteriaTO.setIntListCount(count);
 		con=getConnectionObject();
 		// array of queries
 		String[] queryArray=new String[count];
@@ -779,6 +814,8 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 		//
 		int tableCount=0;
 		int CountOfTable=listName.length;
+		//No of list.
+		comCriteriaTO.setIntListCount(CountOfTable);
 		//Handling for join queries
 		if(sJoin!=null && !sJoin.equals("") && sJoin.equals("yes"))
 		{

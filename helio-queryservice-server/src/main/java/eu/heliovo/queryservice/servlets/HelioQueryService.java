@@ -31,6 +31,13 @@ public class HelioQueryService extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		doPost(request,response);
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/xml;charset=UTF-8");
 		CommonCriteriaTO comCriteriaTO=new CommonCriteriaTO();
 		PrintWriter printWriter = response.getWriter(); 
@@ -42,7 +49,9 @@ public class HelioQueryService extends HttpServlet {
 		    //Setting start time & end time parameter
 		    String sStartTime=request.getParameter("STARTTIME");
 		    String sEndTime=request.getParameter("ENDTIME");
-		    //
+		    //Setting SELECT parameter
+		    String sSelect=request.getParameter("SELECT");
+		    //Setting values for startime and endtime.
 		    comCriteriaTO.setAllStartDate(sStartTime);
 		    comCriteriaTO.setAllEndDate(sEndTime);
 		    comCriteriaTO.setContextUrl(CommonUtils.getUrl(request));
@@ -59,6 +68,8 @@ public class HelioQueryService extends HttpServlet {
 		    if(request.getContextPath()!=null){
 				 comCriteriaTO.setContextPath(request.getContextPath().substring(request.getContextPath().indexOf("-")+1,request.getContextPath().length()));
 			 }
+		    if(sSelect!=null && !sSelect.trim().equals(""))
+		    	comCriteriaTO.setSelect(sSelect);
 		    //Setting for Instrument parameter.
 		    String sInstrument=request.getParameter("INSTRUMENT");
 		    comCriteriaTO.setInstruments(sInstrument);
@@ -118,13 +129,6 @@ public class HelioQueryService extends HttpServlet {
 				printWriter=null;
 			}
 		}
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
 	}
 
 }

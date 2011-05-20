@@ -52,22 +52,33 @@ public class LongRunningQueryService extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		doPost(request,response);
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/xml;charset=UTF-8");
 		 CommonCriteriaTO comCriteriaTO=new CommonCriteriaTO();
 		 PrintWriter pw = response.getWriter(); 
 		 FileResultTO fileTO=new FileResultTO();
-		try{
+		 try{
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		    dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
 		    //Setting start time & end time parameter
 		    String sStartTime=request.getParameter("STARTTIME");
 		    String sEndTime=request.getParameter("ENDTIME");
+		    //Setting SELECT parameter
+		    String sSelect=request.getParameter("SELECT");
 		   	System.out.println(" sStartTime : "+sStartTime+" sEndTime : "+sEndTime);			
 			comCriteriaTO.setStartDateTime(sStartTime);
 			comCriteriaTO.setEndDateTime(sEndTime);	
 			comCriteriaTO.setAllStartDate(sStartTime);
 			comCriteriaTO.setAllEndDate(sEndTime);
 			comCriteriaTO.setContextUrl(CommonUtils.getUrl(request));
+			if(sSelect!=null && !sSelect.trim().equals(""))
+		    	comCriteriaTO.setSelect(sSelect);
 			System.out.println(" sStartTime : "+sStartTime+" sEndTime : "+sEndTime);
 		   	//Start date array list
 		   	if(sStartTime!=null && !sStartTime.equals("")){
@@ -186,13 +197,6 @@ public class LongRunningQueryService extends HttpServlet {
 				pw=null;
 			}
 		}
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
 	}
 	
 	

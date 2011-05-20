@@ -122,7 +122,7 @@ public class JunitWebserveTest {
 	 * @throws Exception
 	 *             if anything goes wrong.
 	 */
-	@Ignore
+	
 	@Test
 	public void testFullQueryQname() throws Exception {
 		PipedReader pr = new PipedReader();
@@ -161,7 +161,7 @@ public class JunitWebserveTest {
 		}
 	}
 
-	@Ignore
+	
 	@Test
 	public void testMaxRecordsQueryQname() throws Exception {
 
@@ -202,7 +202,7 @@ public class JunitWebserveTest {
 		}
 	}
 
-	@Ignore
+	
 	@Test
 	public void testStartIndexAndMaxRecordsQueryQname() throws Exception {
 
@@ -253,7 +253,7 @@ public class JunitWebserveTest {
 
 	}
 
-	@Ignore
+	
 	@Test
 	public void testLongRunningQueryQname() throws Exception {
 
@@ -316,7 +316,7 @@ public class JunitWebserveTest {
 
 	}
 
-	@Ignore
+	
 	@Test
 	public void testLongRunningQueryAssertEquals() throws Exception {
 
@@ -381,7 +381,7 @@ public class JunitWebserveTest {
 
 	}
 
-	@Ignore
+	
 	@Test
 	public void testTwoTableQueryQname() throws Exception {
 
@@ -431,7 +431,7 @@ public class JunitWebserveTest {
 
 	}
 
-	@Ignore
+	
 	@Test
 	public void testArrayStartAndEndTimeQueryQname() throws Exception {
 
@@ -489,7 +489,7 @@ public class JunitWebserveTest {
 
 	}
 
-	@Ignore
+	
 	@Test
 	public void testJoinTables() throws Exception {
 
@@ -544,7 +544,7 @@ public class JunitWebserveTest {
 
 	}
 
-	@Ignore
+	
 	@Test
 	public void testTablesWithoutJoin() throws Exception {
 
@@ -604,7 +604,7 @@ public class JunitWebserveTest {
 
 	}
 
-	@Ignore
+	
 	@Test
 	public void testJoinTablesWhere() throws Exception {
 
@@ -660,7 +660,7 @@ public class JunitWebserveTest {
 
 	}
 
-	@Ignore
+	
 	@Test
 	public void testTablesWithoutJoinAndWithWhereClause() throws Exception {
 

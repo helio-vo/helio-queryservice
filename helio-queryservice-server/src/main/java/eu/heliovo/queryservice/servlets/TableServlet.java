@@ -42,6 +42,7 @@ public class TableServlet extends VosiServlet {
         writer.write("</tab:tables>\n");
       }
       catch (Exception ex) {
+    	  ex.printStackTrace();
         throw new ServletException(ex.getMessage());
       }
     }

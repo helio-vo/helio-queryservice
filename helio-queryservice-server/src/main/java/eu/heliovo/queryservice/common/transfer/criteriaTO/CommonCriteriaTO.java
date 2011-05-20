@@ -60,6 +60,8 @@ public class CommonCriteriaTO implements Serializable{
 	private String contextUrl;
 	private String sRegion;
 	private String sRegionValues;
+	private String select;
+	private int intListCount=0;
 	
 	public CommonCriteriaTO(){
 		this.setIPageNumber(0);
@@ -435,5 +437,21 @@ public class CommonCriteriaTO implements Serializable{
 
 	public void setsRegionValues(String sRegionValues) {
 		this.sRegionValues = sRegionValues;
+	}
+
+	public String getSelect() {
+		return select;
+	}
+
+	public void setSelect(String select) {
+		this.select = select;
+	}
+
+	public int getIntListCount() {
+		return intListCount;
+	}
+
+	public void setIntListCount(int intListCount) {
+		this.intListCount = intListCount;
 	}
 }
