@@ -56,27 +56,27 @@ public class VOTableMaker {
 	        out.write( "<VOTABLE version='1.1' xmlns=\"http://www.ivoa.net/xml/VOTable/v1.1\">\n" );
 	        //
 	        if((comCriteriaTO.getStartDateTimeList()!=null && comCriteriaTO.getStartDateTimeList().length>1) || (comCriteriaTO.getListTableName()!=null && comCriteriaTO.getListTableName().length>1))
-	   		 out.write("<INFO name=\"QUERY_URL\" >"+"<![CDATA["+CommonUtils.getFullRequestUrl(comCriteriaTO)+"]]>"+"</INFO>");
+	        	out.write("<INFO name=\"QUERY_URL\" >"+"<![CDATA["+CommonUtils.getFullRequestUrl(comCriteriaTO)+"]]>"+"</INFO>");
 	        if(tables!=null){
 		        for ( int i = 0; i < tables.length; i++ ){
 		        	String tableName=tables[ i ].getName();
 		        	comCriteriaTO.setTableName(tableName);
 		        	//Info Key Value Pair
 		        	String infoKeyValuePair=ConfigurationProfiler.getInstance().getProperty("votable.query.info."+tableName);
-		        	//
-		        	tables[ i ].setName(comCriteriaTO.getContextPath()+"_"+tableName);
+		        	// 
+		        	tables[ i ].setName(comCriteriaTO.getContextPath()+"-"+tableName);
 		        	out.write( "<RESOURCE>\n" );
 		 	        out.write( "<DESCRIPTION>"+ConfigurationProfiler.getInstance().getProperty("sql.votable.head.desc")+"</DESCRIPTION>\n" );
-		 	        out.write( "<INFO name=\"QUERY_STATUS\">"+comCriteriaTO.getQueryStatus()+"</INFO>");
-		 	        out.write( "<INFO name=\"EXECUTED_AT\">"+now()+"</INFO>");
-		 	        out.write( "<INFO name=\"MAX_RECORD_ALLOWED\">"+ConfigurationProfiler.getInstance().getProperty("sql.query.maxrecord.constraint."+tableName)+"</INFO>");
-		 	        out.write("<INFO name=\"QUERY_STRING\">"+"<![CDATA["+comCriteriaTO.getQueryArray()[i]+"]]>"+"</INFO>");
-		 	        out.write("<INFO name=\"QUERY_URL\">"+"<![CDATA["+CommonUtils.getRequestUrl(comCriteriaTO)+"]]>"+"</INFO>");
+		 	        out.write( "<INFO name=\"QUERY_STATUS\" value=\""+comCriteriaTO.getQueryStatus()+"\"/>");
+		 	        out.write( "<INFO name=\"EXECUTED_AT\" value=\""+now()+"\"/>");
+		 	        out.write( "<INFO name=\"MAX_RECORD_ALLOWED\" value=\""+ConfigurationProfiler.getInstance().getProperty("sql.query.maxrecord.constraint."+tableName)+"\"/>");
+		 	        out.write("<INFO name=\"QUERY_STRING\" >"+"<![CDATA["+comCriteriaTO.getQueryArray()[i]+"]]>"+"</INFO>");
+		 	        out.write("<INFO name=\"QUERY_URL\" >"+"<![CDATA["+CommonUtils.getFullRequestUrl(comCriteriaTO)+"]]>"+"</INFO>");
 		 	        if(infoKeyValuePair!=null && !infoKeyValuePair.trim().equals("")){
 		 	        	String [] infoArrayValuePair=infoKeyValuePair.split("::");
 		 	        	for(int count=0;count<infoArrayValuePair.length;count++){
 		 	        		String[] keyValue=infoArrayValuePair[count].split(",");
-		 	        		 out.write( "<INFO name=\""+keyValue[0]+"\" value=\""+keyValue[1]+"\"/>");
+		 	        		 out.write( "<INFO name=\""+keyValue[0]+"\" value=\""+keyValue[1]+"\"\"/>");
 		 	        	}
 		 	        }
 		            VOSerializer.makeSerializer( DataFormat.TABLEDATA, tables[ i ] ).writeInlineTableElement( out );
@@ -89,9 +89,9 @@ public class VOTableMaker {
 	 	        out.write( "<INFO name=\"QUERY_STATUS\" value=\""+comCriteriaTO.getQueryStatus()+"\"/>");
 	 	        out.write( "<INFO name=\"EXECUTED_AT\" value=\""+now()+"\"/>");
 	 	        if(comCriteriaTO.getQueryStatus().equals("ERROR")){
-	 	        	 out.write( "<INFO name=\"QUERY_ERROR\" value=\""+comCriteriaTO.getQueryDescription()+"\"/>");
+	 	        	out.write("<INFO name=\"QUERY_ERROR\" >"+comCriteriaTO.getQueryDescription()+"</INFO>");
 	 	        }
-	 	       	out.write("<INFO name=\"QUERY_STRING\" >"+"<![CDATA["+comCriteriaTO.getQuery()+"]]>"+"</INFO>");
+	 	       	out.write("<INFO name=\"QUERY_STRING\" value=\""+comCriteriaTO.getQuery()+"\"/>");
 	 	        out.write( "</RESOURCE>\n" );
 	        }
 	        out.write( "</VOTABLE>\n" );

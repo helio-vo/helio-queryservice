@@ -42,6 +42,8 @@ public class RunService implements Runnable {
 				HsqlDbUtils.getInstance().insertStatusIntoHsqlDB(randomUUIDString, "COMPLETED");
 				//Removing status from instance holder.
 				LongRunningQueryIdHolders.getInstance().removeProperty(randomUUIDString);
+				//Adding back status
+				LongRunningQueryIdHolders.getInstance().setProperty(randomUUIDString,"COMPLETED");
 				//Inserting URL into HSQLDB.
 				System.out.println(" Adding URL in to database... ");
 				HsqlDbUtils.getInstance().insertURLToHsqlDB(randomUUIDString, comCriteriaTO.getSaveto()+"/votable_"+randomUUIDString+".xml");
@@ -55,6 +57,8 @@ public class RunService implements Runnable {
 				//Inserting status into HSQL database
 				HsqlDbUtils.getInstance().insertStatusIntoHsqlDB(randomUUIDString, "ERROR::"+errorDes);
 				LongRunningQueryIdHolders.getInstance().removeProperty(randomUUIDString);
+				//Adding back status
+				LongRunningQueryIdHolders.getInstance().setProperty(randomUUIDString,"ERROR::"+errorDes);
 			} catch (Exception e) {
 				//Removing status from instance holder.
 				LongRunningQueryIdHolders.getInstance().removeProperty(randomUUIDString);

@@ -316,7 +316,7 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 				 //Checking for preference values.
 				 if(comCriteriaTO.getIntListCount()>1 && !getColumnsBasedOnSelectParameter(listName,comCriteriaTO.getSelect()).equals("")){
 				 		colNamesList=getColumnsBasedOnSelectParameter(listName,comCriteriaTO.getSelect());
-			 	 }else if(comCriteriaTO.getIntListCount()==1){
+			 	 }else if(comCriteriaTO.getIntListCount()==1 && comCriteriaTO.getSelect()!=null && !comCriteriaTO.getSelect().trim().equals("")){
 			 		colNamesList=comCriteriaTO.getSelect();
 			 	 }else{
 				 	colNamesList=getColumnNamesFromProperty(listName);

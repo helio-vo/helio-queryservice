@@ -31,7 +31,6 @@ import org.apache.log4j.Logger;
 import eu.heliovo.queryservice.common.transfer.FileResultTO;
 import eu.heliovo.queryservice.common.transfer.criteriaTO.CommonCriteriaTO;
 
-
 public class CommonUtils {
 	private static final String ARGSUFFIX = ":]";
 

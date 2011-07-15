@@ -5,7 +5,6 @@ import java.util.HashMap;
 import eu.heliovo.queryservice.common.dao.CommonDaoFactory;
 import eu.heliovo.queryservice.common.dao.interfaces.ShortNameQueryDao;
 
-
 public class RegistryUtils {
 		
 	private RegistryUtils()
