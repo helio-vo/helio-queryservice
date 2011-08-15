@@ -672,6 +672,9 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 			con = comCriteriaTO.getConnection();
 			st = con.createStatement();
 			rs= st.executeQuery(sRepSql);
+			rs.last();
+			resultTO.setRowCount(rs.getRow());
+			rs.first();
 			comCriteriaTO.setQueryStatus("OK");
 			comCriteriaTO.setQuery(sRepSql);
 			resultTO.setResultSet(rs);
@@ -706,6 +709,7 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 		con=getConnectionObject();
 		// array of queries
 		String[] queryArray=new String[count];
+		Integer[] countArray= new Integer[count];
 		int tableCount=0;
 		
 		//Handling for join queries
@@ -732,6 +736,13 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 			//getting the result set
 			ResultTO resultTO= addingResultSetToVOTable(comCriteriaTO);
 			rs=resultTO.getResultSet();
+			//count returned rows
+			rs.last();
+			int rowCount=rs.getRow();
+			countArray[tableCount]=rowCount;
+			resultTO.setRowCount(rowCount);
+			rs.first();
+			
 			queryArray[tableCount]=resultTO.getQuery();
 			tables[tableCount] = new StandardTypeTable( new SequentialResultSetStarTable( rs ) );
 			tables[tableCount].setName(tableName);
@@ -740,6 +751,7 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 			tableCount++;
 		}
 		comCriteriaTO.setQueryArray(queryArray);
+		comCriteriaTO.setQueryReturnCountArray(countArray);
 		comCriteriaTO.setTables(tables);
 		//Editing column property.
 		//VOTableMaker.setColInfoProperty(tables, listName);
@@ -795,6 +807,7 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 		ResultSet rs=null;
 		Connection con=null;
 		String[] queryArray=null;
+		Integer[] queryReturnCount=null;
 		HashMap<String,String> helioInstName=new HashMap<String,String>();
 		try{
 		//Join query
@@ -838,6 +851,7 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 			if(tableCount==0){
 				tables=new StarTable[count];
 				queryArray=new String[count];
+				queryReturnCount = new Integer[count];
 			}
 			//loop for start date.
 		  for(int intTimeCnt=0;intTimeCnt<startDateTimeList.length;intTimeCnt++){
@@ -850,6 +864,7 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 			//Results for each values
 			HashMap<Object, Object> ambResults=createStartTableForTimeBased(comCriteriaTO);
 			queryArray[tableCount]=(String) ambResults.get("Query");
+			queryReturnCount[tableCount]= (Integer) ambResults.get("ReturnCount");
 			//
 			tables[tableCount]=(StarTable) ambResults.get("StartTable");
 			tableCount++;
@@ -861,6 +876,7 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 			if(tableCount==0){
 				tables=new StarTable[count];
 				queryArray=new String[count];
+				queryReturnCount = new Integer[count];
 			}
 			String startDate=startDateTimeList[intCnt];
 			String endDate=endDateTimeList[intCnt];
@@ -872,6 +888,7 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 			HashMap<Object, Object> ambResults=createStartTableForTimeBased(comCriteriaTO);
 			
 			queryArray[tableCount]=(String) ambResults.get("Query");
+			queryReturnCount[tableCount]= (Integer) ambResults.get("ReturnCount");
 			//
 			tables[tableCount]=(StarTable) ambResults.get("StartTable");
 			tableCount++;
@@ -882,6 +899,7 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 		}
 		}
 		comCriteriaTO.setQueryArray(queryArray);
+		comCriteriaTO.setQueryReturnCountArray(queryReturnCount);
 		comCriteriaTO.setTables(tables);
 		//Editing column property.
 		//VOTableMaker.setColInfoProperty(tables, listName);
@@ -963,6 +981,7 @@ public HashMap<Object, Object> createStartTableForTimeBased(CommonCriteriaTO com
 			VOTableMaker.setColInfoProperty(startTable, tableName);
 			hmpResults.put("StartTable", startTable);
 			hmpResults.put("Query", resultTO.getQuery());
+			hmpResults.put("ReturnCount", resultTO.getRowCount());
 		}else{
 			comCriteriaTO.setQueryStatus("ERROR");
 			comCriteriaTO.setQueryDescription("Start Date should always be less than End Date.");

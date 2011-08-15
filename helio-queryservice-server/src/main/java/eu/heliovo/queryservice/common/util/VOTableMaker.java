@@ -10,6 +10,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import eu.heliovo.queryservice.common.util.ConfigurationProfiler;
 import uk.ac.starlink.table.DescribedValue;
+import uk.ac.starlink.table.RowSequence;
 import uk.ac.starlink.table.StarTable;
 import uk.ac.starlink.table.Tables;
 import uk.ac.starlink.table.jdbc.SequentialResultSetStarTable;
@@ -59,6 +60,7 @@ public class VOTableMaker {
 	        	out.write("<INFO name=\"QUERY_URL\" >"+"<![CDATA["+CommonUtils.getFullRequestUrl(comCriteriaTO)+"]]>"+"</INFO>");
 	        if(tables!=null){
 		        for ( int i = 0; i < tables.length; i++ ){
+		        	StarTable curTable=tables[i];
 		        	String tableName=tables[ i ].getName();
 		        	comCriteriaTO.setTableName(tableName);
 		        	//Info Key Value Pair
@@ -67,11 +69,16 @@ public class VOTableMaker {
 		        	tables[ i ].setName(comCriteriaTO.getContextPath()+"-"+tableName);
 		        	out.write( "<RESOURCE>\n" );
 		 	        out.write( "<DESCRIPTION>"+ConfigurationProfiler.getInstance().getProperty("sql.votable.head.desc")+"</DESCRIPTION>\n" );
-		 	        out.write( "<INFO name=\"QUERY_STATUS\" value=\""+comCriteriaTO.getQueryStatus()+"\"/>");
-		 	        out.write( "<INFO name=\"EXECUTED_AT\" value=\""+now()+"\"/>");
-		 	        out.write( "<INFO name=\"MAX_RECORD_ALLOWED\" value=\""+ConfigurationProfiler.getInstance().getProperty("sql.query.maxrecord.constraint."+tableName)+"\"/>");
-		 	        out.write("<INFO name=\"QUERY_STRING\" >"+"<![CDATA["+comCriteriaTO.getQueryArray()[i]+"]]>"+"</INFO>");
-		 	        out.write("<INFO name=\"QUERY_URL\" >"+"<![CDATA["+CommonUtils.getFullRequestUrl(comCriteriaTO)+"]]>"+"</INFO>");
+		 	        out.write( "<INFO name=\"QUERY_STATUS\" value=\""+comCriteriaTO.getQueryStatus()+"\"/>\n");
+		 	        out.write( "<INFO name=\"EXECUTED_AT\" value=\""+now()+"\"/>\n");
+		 	        out.write( "<INFO name=\"MAX_RECORD_ALLOWED\" value=\""+ConfigurationProfiler.getInstance().getProperty("sql.query.maxrecord.constraint."+tableName)+"\"/>\n");
+		 	        out.write( "<INFO name=\"QUERY_STRING\" >"+"<![CDATA["+comCriteriaTO.getQueryArray()[i]+"]]>"+"</INFO>\n");
+		 	        out.write( "<INFO name=\"QUERY_URL\" >"+"<![CDATA["+CommonUtils.getFullRequestUrl(comCriteriaTO)+"]]>"+"</INFO>\n");
+		 	        int rowCount = comCriteriaTO.getQueryReturnCountArray()[i];
+		            out.write( "<INFO name=\"RETURNED_ROWS\" value=\""+rowCount + "\"/>\n");
+		 	        if(rowCount==comCriteriaTO.getMaxRecordsAllowed() || rowCount==Integer.parseInt(comCriteriaTO.getNoOfRows())){
+		 	        	out.write( "<INFO name=\"QUERY_STATUS\" value=\"OVERFLOW\"/>\n");
+		 	        }
 		 	        if(infoKeyValuePair!=null && !infoKeyValuePair.trim().equals("")){
 		 	        	String [] infoArrayValuePair=infoKeyValuePair.split("::");
 		 	        	for(int count=0;count<infoArrayValuePair.length;count++){
@@ -80,18 +87,20 @@ public class VOTableMaker {
 		 	        	}
 		 	        }
 		            VOSerializer.makeSerializer( DataFormat.TABLEDATA, tables[ i ] ).writeInlineTableElement( out );
+		 
+		 	        
 		            out.write( "</RESOURCE>\n" );
 		        }
 	        }else{
 	        	//Error resource
 	        	out.write( "<RESOURCE>\n" );
 	 	        out.write( "<DESCRIPTION>"+ConfigurationProfiler.getInstance().getProperty("sql.votable.head.desc")+"</DESCRIPTION>\n" );
-	 	        out.write( "<INFO name=\"QUERY_STATUS\" value=\""+comCriteriaTO.getQueryStatus()+"\"/>");
-	 	        out.write( "<INFO name=\"EXECUTED_AT\" value=\""+now()+"\"/>");
+	 	        out.write( "<INFO name=\"QUERY_STATUS\" value=\""+comCriteriaTO.getQueryStatus()+"\"/>\n");
+	 	        out.write( "<INFO name=\"EXECUTED_AT\" value=\""+now()+"\"/>\n");
 	 	        if(comCriteriaTO.getQueryStatus().equals("ERROR")){
-	 	        	out.write("<INFO name=\"QUERY_ERROR\" >"+comCriteriaTO.getQueryDescription()+"</INFO>");
+	 	        	out.write("<INFO name=\"QUERY_ERROR\" value=>"+comCriteriaTO.getQueryDescription()+"</INFO>\n");
 	 	        }
-	 	       	out.write("<INFO name=\"QUERY_STRING\" value=\""+comCriteriaTO.getQuery()+"\"/>");
+	 	       	out.write("<INFO name=\"QUERY_STRING\" value=\""+comCriteriaTO.getQuery()+"\"/>\n");
 	 	        out.write( "</RESOURCE>\n" );
 	        }
 	        out.write( "</VOTABLE>\n" );
@@ -108,7 +117,7 @@ public class VOTableMaker {
         out.flush();
         out.close();
     }
-        
+            
     //Setting column property.This method not in use presently
     public static void setColInfoProperty(StarTable[] tables,String[] listName) throws Exception{
     	try{  

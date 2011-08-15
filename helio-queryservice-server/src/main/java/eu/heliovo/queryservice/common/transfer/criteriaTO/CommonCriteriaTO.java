@@ -53,6 +53,7 @@ public class CommonCriteriaTO implements Serializable{
 	private String contextPath;
 	private int tableCount=0;
 	private String queryArray[];
+	private Integer queryReturnCount[];
 	private String join;
 	private Connection connection;
 	private String allStartDate;
@@ -357,6 +358,14 @@ public class CommonCriteriaTO implements Serializable{
 
 	public void setQueryArray(String[] queryArray) {
 		this.queryArray = queryArray;
+	}
+	
+	public Integer[] getQueryReturnCountArray() {
+		return queryReturnCount;
+	}
+
+	public void setQueryReturnCountArray(Integer[] countArray) {
+		this.queryReturnCount = countArray;
 	}
 
 	public String getJoin() {

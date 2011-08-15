@@ -15,6 +15,13 @@ public class ResultTO implements Serializable {
 	private StarTable tables;
 	private String[] listNameArray;
 	private String listName;
+	private int rowCount;
+	public int getRowCount(){
+		return rowCount;
+	}
+	public void setRowCount(int count){
+		this.rowCount = count;
+	}
 	public ResultSet getResultSet() {
 		return resultSet;
 	}
