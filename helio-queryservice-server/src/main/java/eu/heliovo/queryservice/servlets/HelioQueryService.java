@@ -13,6 +13,7 @@ import eu.heliovo.queryservice.common.dao.CommonDaoFactory;
 import eu.heliovo.queryservice.common.dao.interfaces.CommonDao;
 import eu.heliovo.queryservice.common.transfer.criteriaTO.CommonCriteriaTO;
 import eu.heliovo.queryservice.common.util.CommonUtils;
+import eu.heliovo.queryservice.server.util.ServiceInfo;
 
 /**
  * Servlet implementation class HelioQueryService
@@ -46,6 +47,16 @@ public class HelioQueryService extends HttpServlet {
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		    dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
 		    comCriteriaTO.setPrintWriter(printWriter);
+		    
+		    String tablenames=request.getParameter("TABLENAMES");
+		    String fieldnames=request.getParameter("FIELDNAMES");
+		    
+		    if(tablenames != null){
+		    	ServiceInfo.getInstance().getTableNames(printWriter);
+		    } else if (fieldnames != null && !fieldnames.trim().equals("")){
+		    	ServiceInfo.getInstance().getTableFields(fieldnames, printWriter);
+		    }
+		    
 		    //Setting start time & end time parameter
 		    String sStartTime=request.getParameter("STARTTIME");
 		    String sEndTime=request.getParameter("ENDTIME");
@@ -80,7 +91,7 @@ public class HelioQueryService extends HttpServlet {
 		    if(sListName!=null && !sListName.equals("")){
 		    	comCriteriaTO.setListTableName(sListName.split(","));
 		    }
-		    //Setting where cluase parameter
+		    //Setting where clause parameter
 		    String whereClause=request.getParameter("WHERE");
 		    comCriteriaTO.setWhereClause(whereClause);
 		    //Setting start row parameter
@@ -115,6 +126,32 @@ public class HelioQueryService extends HttpServlet {
 		    String sJoin=request.getParameter("JOIN");
 		    if(sJoin!=null && !sJoin.trim().equals(""))
 		    	comCriteriaTO.setJoin(sJoin.toLowerCase());
+		    //sql query
+		    whereClause=request.getParameter("SQLWHERE");
+		    if(whereClause!=null && whereClause.trim().length()>0){
+		    	comCriteriaTO.setSqlQuery(true);
+		    	comCriteriaTO.setWhereClause(whereClause);
+		    }
+		    String what=request.getParameter("WHAT");
+		    if(what!=null && what.trim().length()>0){
+		    	comCriteriaTO.setSqlQuery(true);
+		    	comCriteriaTO.setSelections(new String[]{what});
+		    }
+		    String order=request.getParameter("ORDER_BY");
+		    if(order!=null && order.trim().length()>0){
+		    	comCriteriaTO.setSqlQuery(true);
+		    	comCriteriaTO.setOrderBy(order);
+		    }
+		    startRow=request.getParameter("OFFSET");
+		    if(startRow!=null && startRow.trim().length()>0){
+		    	comCriteriaTO.setSqlQuery(true);
+		    	comCriteriaTO.setStartRow(startRow);
+		    }
+		    noOfRows=request.getParameter("LIMIT");
+		    if(noOfRows!=null && noOfRows.trim().length()>0){
+		    	comCriteriaTO.setSqlQuery(true);
+		    	comCriteriaTO.setNoOfRows(noOfRows);
+		    }
 		    //Calling generate VOTable Details.
 			CommonDao commonNameDao= CommonDaoFactory.getInstance().getCommonDAO();
 			commonNameDao.generateVOTableDetails(comCriteriaTO);

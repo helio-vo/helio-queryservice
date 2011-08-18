@@ -57,12 +57,16 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 		//end date values
 		String endDateTimeList[]=comCriteriaTO.getEndDateTimeList();
 		//Join clause
-		String sJoin=comCriteriaTO.getJoin();
+		//String sJoin=comCriteriaTO.getJoin();
 		
 		try{
 			//Checking for list name.
 		  	if(listName!=null){
-					if(startDateTimeList!=null && endDateTimeList!=null){
+		  		    if(comCriteriaTO.isSqlQuery()){
+		  		    	_LOGGER.info(" IS SQL query ?" +comCriteriaTO.isSqlQuery());
+		  		    	comCriteriaTO=handlingSQLBased(comCriteriaTO);
+		  		    }
+		  		    else if(startDateTimeList!=null && endDateTimeList!=null){
 						//Start time & End time array of time.
 						comCriteriaTO=handlingStartTimeAndEndTimeArray(comCriteriaTO);
 					}else{
@@ -85,6 +89,7 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 		 }
 		
 	}
+	
 	
 	/*
 	 * Get the list of Tables in a Database.
@@ -406,6 +411,141 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 		 return query;
 	}
 	
+	private String  generateQuerySQL(String listName,CommonCriteriaTO comCriteriaTO, int pos) throws Exception{
+		 String queryWhereClause="";
+		 String query="";
+		 int maxRecordsAllowed=0;
+		 HashMap<String,String> params  = new HashMap<String,String>();
+		 		 
+		 //Setting parameter value
+		 comCriteriaTO.setParamData(params);
+		 //Checking for Where Clause 
+		 
+		 String colNamesList="";
+		 //Checking for preference values.
+		 if(comCriteriaTO.getSelections()!=null && comCriteriaTO.getSelections().length>=pos && comCriteriaTO.getSelections()[pos].trim().length()>0){
+			 colNamesList=comCriteriaTO.getSelections()[pos];
+		 } else if(comCriteriaTO.getSelections()!=null && comCriteriaTO.getSelections().length<pos && comCriteriaTO.getSelections()[0].trim().length()>0){
+			 colNamesList=comCriteriaTO.getSelections()[0];
+		 } else if(comCriteriaTO.getIntListCount()>1 && !getColumnsBasedOnSelectParameter(listName,comCriteriaTO.getSelect()).equals("")){
+		 		colNamesList=getColumnsBasedOnSelectParameter(listName,comCriteriaTO.getSelect());
+	 	 }else if(comCriteriaTO.getIntListCount()==1 && comCriteriaTO.getSelect()!=null && !comCriteriaTO.getSelect().trim().equals("")){
+	 		colNamesList=comCriteriaTO.getSelect();
+	 	 }else{
+		 	colNamesList=getColumnNamesFromProperty(listName);
+		 }
+		 //Normal query
+		 query="SELECT "+colNamesList+" FROM "+listName;
+
+		 
+		 //logger.info(" : Query String with 'Select' and 'From' : "+query);
+		 //Getting where clause.
+		 if(comCriteriaTO.getWhereClause()!=null && !comCriteriaTO.getWhereClause().equals("")){
+			 queryWhereClause=comCriteriaTO.getWhereClause();
+		 }
+		  
+		 //Appending Order By clause.
+		 String queryOrderByContraint;
+		 if(comCriteriaTO.getOrderBy()!=null && comCriteriaTO.getOrderBy().trim().length()>0){
+			 queryOrderByContraint=comCriteriaTO.getOrderBy();
+		 } else {
+		   queryOrderByContraint=orderByQueryConstraint(listName);
+		 }
+		
+		 //Appending 'Select Part' ; 'Where Constraints' .
+		 if(queryWhereClause!=null && !queryWhereClause.trim().equals("")){
+			 query=query+" WHERE "+queryWhereClause;
+		 }
+		 //logger.info(" : Appending Where Clause If Avialable : "+query);
+		 
+		 //Appending ; 'Order By Constraints' .
+		 query=query+" "+queryOrderByContraint;
+		 
+		 //logger.info(" : Appending OderBy Constraint If Avialable : "+query);
+		 
+		 //Appending limit clause.
+		 String queryMaxRecords=maxRecordQueryConstraint(listName);
+		 if(queryMaxRecords!=null && !queryMaxRecords.trim().equals("")){
+			 maxRecordsAllowed=Integer.parseInt(queryMaxRecords);
+		 }
+		 //Setting max record
+		 comCriteriaTO.setMaxRecordsAllowed(maxRecordsAllowed);
+		 //Getting Limit Constraint. 
+		 String querylimitContraint=generateLimitConstraintBasedOnDatabase(comCriteriaTO);
+		
+		 //Appending ; 'Limit Constraints' .
+		 query=query+" "+querylimitContraint;
+		 query = checkQuery(query,comCriteriaTO);
+		 
+		 _LOGGER.info(" : Full sql query for execution : "+query);
+		 
+		 
+	 return query;
+}
+	
+	private String checkQuery(String query, CommonCriteriaTO comCriteriaTO) {
+		String[] parts=query.split("\\s");
+		for(int i = 0; i< parts.length; i++){
+			if(parts[i].toLowerCase().equals("insert")){
+				query = query.replaceAll(parts[i], "");
+				comCriteriaTO.addWaring("insert not allowed in statement");
+			}
+			else if(parts[i].toLowerCase().equals("drop")){
+				query = query.replaceAll(parts[i], "");
+				comCriteriaTO.addWaring("drop not allowed in statement");
+			}
+			else if(parts[i].toLowerCase().equals("delete")){
+				query = query.replaceAll(parts[i], "");
+				comCriteriaTO.addWaring("delete not allowed in statement");
+			}
+			else if(parts[i].toLowerCase().equals("update")){
+				query = query.replaceAll(parts[i], "");
+				comCriteriaTO.addWaring("update not allowed in statement");
+			}
+			else if(parts[i].toLowerCase().equals("create")){
+				query = query.replaceAll(parts[i], "");
+				comCriteriaTO.addWaring("create not allowed in statement");
+			}
+			else if(parts[i].toLowerCase().equals("grant")){
+				query = query.replaceAll(parts[i], "");
+				comCriteriaTO.addWaring("grant not allowed in statement");
+			}
+			else if(parts[i].toLowerCase().equals("revoke")){
+				query = query.replaceAll(parts[i], "");
+				comCriteriaTO.addWaring("revoke not allowed in statement");
+			}
+			else if(parts[i].toLowerCase().equals("prepare")){
+				query = query.replaceAll(parts[i], "");
+				comCriteriaTO.addWaring("prepare not allowed in statement");
+			}
+			else if(parts[i].toLowerCase().equals("truncate")){
+				query = query.replaceAll(parts[i], "");
+				comCriteriaTO.addWaring("truncate not allowed in statement");
+			}
+			else if(parts[i].toLowerCase().equals("declare")){
+				query = query.replaceAll(parts[i], "");
+				comCriteriaTO.addWaring("declare not allowed in statement");
+			}
+			else if(parts[i].toLowerCase().equals("attach")){
+				query = query.replaceAll(parts[i], "");
+				comCriteriaTO.addWaring("attach not allowed in statement");
+			}
+			else if(parts[i].toLowerCase().equals("detach")){
+				query = query.replaceAll(parts[i], "");
+				comCriteriaTO.addWaring("detach not allowed in statement");
+			}
+			else if(parts[i].toLowerCase().equals("transaction")){
+				query = query.replaceAll(parts[i], "");
+				comCriteriaTO.addWaring("transaction not allowed in statement");
+			}
+			else if(parts[i].toLowerCase().equals("alter")){
+				query = query.replaceAll(parts[i], "");
+				comCriteriaTO.addWaring("alter not allowed in statement");
+			}
+		}
+		return query;
+	}
+
 	@SuppressWarnings("unused")
 	private String coordinateSystem()
 	{
@@ -653,6 +793,38 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 	    return status;
 	}
 	
+	private ResultTO addingResultSetSQLToVOTable(CommonCriteriaTO comCriteriaTO, int pos) throws Exception
+	{
+		Connection con = null;
+		Statement st = null;
+		ResultSet rs=null;
+		ResultTO resultTO=new ResultTO();
+		try{
+		
+			String sRepSql = CommonUtils.replaceParams(generateQuerySQL(comCriteriaTO.getTableName(),comCriteriaTO, pos), comCriteriaTO.getParamData());
+			_LOGGER.info(" : SQL Query String After Replacing Value :"+sRepSql);	
+			//Setting Table Name.
+			comCriteriaTO.setTableName(comCriteriaTO.getListName());
+			//Connecting to database.						
+			con = comCriteriaTO.getConnection();
+			st = con.createStatement();
+			rs= st.executeQuery(sRepSql);
+			rs.last();
+			resultTO.setRowCount(rs.getRow());
+			rs.beforeFirst();
+			comCriteriaTO.setQueryStatus("OK");
+			comCriteriaTO.setQuery(sRepSql);
+			resultTO.setResultSet(rs);
+			resultTO.setQuery(sRepSql);
+			if (_LOGGER.isDebugEnabled()) {
+				_LOGGER.debug(" : End of addingResultSetToVOTable() method  : ");				
+			}
+			return resultTO;
+		} catch(Exception e) {
+			throw new RuntimeException("Please check sql syntax, some problem with executing this query.", e);
+		}
+	}
+	
 	/*
 	 * Method to add result set data to VOTable.
 	 */
@@ -674,7 +846,7 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 			rs= st.executeQuery(sRepSql);
 			rs.last();
 			resultTO.setRowCount(rs.getRow());
-			rs.first();
+			rs.beforeFirst();
 			comCriteriaTO.setQueryStatus("OK");
 			comCriteriaTO.setQuery(sRepSql);
 			resultTO.setResultSet(rs);
@@ -687,6 +859,8 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 			throw new RuntimeException("Please check sql syntax, some problem with executing this query.", e);
 		}
 	}
+	
+	
 	
 	/*
 	 * start time and end time is null or no value.
@@ -741,7 +915,89 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 			int rowCount=rs.getRow();
 			countArray[tableCount]=rowCount;
 			resultTO.setRowCount(rowCount);
-			rs.first();
+			rs.beforeFirst();
+			
+			queryArray[tableCount]=resultTO.getQuery();
+			tables[tableCount] = new StandardTypeTable( new SequentialResultSetStarTable( rs ) );
+			tables[tableCount].setName(tableName);
+			//Editing column property.
+			VOTableMaker.setColInfoProperty(tables[tableCount], tableName);
+			tableCount++;
+		}
+		comCriteriaTO.setQueryArray(queryArray);
+		comCriteriaTO.setQueryReturnCountArray(countArray);
+		comCriteriaTO.setTables(tables);
+		//Editing column property.
+		//VOTableMaker.setColInfoProperty(tables, listName);
+		//Writing all details into table.
+		VOTableMaker.writeTables(comCriteriaTO);
+		_LOGGER.info(" : VOTable succesfully created :");
+		
+		}catch(Exception e){
+			e.printStackTrace();
+			comCriteriaTO.setQueryStatus("ERROR");
+			comCriteriaTO.setQueryDescription(e.getMessage());
+			VOTableMaker.writeTables(comCriteriaTO);
+		}
+		
+		finally
+		{
+		    try {
+		    	if(rs!=null)
+				{
+					rs.close();
+					rs=null;
+				}
+		    	if(con!=null)
+				{
+					con.close();
+					con=null;
+				}
+			} catch (Exception e) {
+				
+			}
+		}
+		return comCriteriaTO;
+	}
+	
+	/*
+	 * SQL query.
+	 */
+	private CommonCriteriaTO handlingSQLBased(CommonCriteriaTO comCriteriaTO) throws SQLException, Exception
+	{
+		
+		ResultSet rs=null;
+		Connection con=null;
+		try{
+		
+		_LOGGER.info(" : Start of method handlingSQLBased()");
+		//List data or table names
+		String[] listName=comCriteriaTO.getListTableName();
+		int count=listName.length;
+		StarTable[] tables=new StarTable[count];
+		comCriteriaTO.setIntListCount(count);
+		con=getConnectionObject();
+		// array of queries
+		String[] queryArray=new String[count];
+		Integer[] countArray= new Integer[count];
+		int tableCount=0;
+
+		//For loop start
+		for(int intCnt=0;intCnt<count;intCnt++){
+			String tableName=listName[intCnt];
+			
+			comCriteriaTO.setTableName(tableName);
+			//Connection object
+			comCriteriaTO.setConnection(con);
+			//getting the result set
+			ResultTO resultTO= addingResultSetSQLToVOTable(comCriteriaTO, intCnt);
+			rs=resultTO.getResultSet();
+			//count returned rows
+			rs.last();
+			int rowCount=rs.getRow();
+			countArray[tableCount]=rowCount;
+			resultTO.setRowCount(rowCount);
+			rs.beforeFirst();
 			
 			queryArray[tableCount]=resultTO.getQuery();
 			tables[tableCount] = new StandardTypeTable( new SequentialResultSetStarTable( rs ) );

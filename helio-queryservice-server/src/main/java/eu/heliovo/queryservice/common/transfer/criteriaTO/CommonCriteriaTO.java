@@ -4,6 +4,7 @@ package eu.heliovo.queryservice.common.transfer.criteriaTO;
 import java.io.Serializable;
 import java.io.Writer;
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.HashMap;
 import uk.ac.starlink.table.StarTable;
 import eu.heliovo.queryservice.common.transfer.CommonTO;
@@ -63,10 +64,16 @@ public class CommonCriteriaTO implements Serializable{
 	private String sRegionValues;
 	private String select;
 	private int intListCount=0;
+	// new sql query settings
+	private boolean sqlquery=false;
+	private String[] selections;
+	private String orderBy;
+	private ArrayList<String> warnings;
 	
 	public CommonCriteriaTO(){
 		this.setIPageNumber(0);
 		this.setIRowsPerPage(10);
+		this.warnings=new ArrayList<String>();
 	}
 	
 	public String getQueryDescription() {
@@ -462,5 +469,37 @@ public class CommonCriteriaTO implements Serializable{
 
 	public void setIntListCount(int intListCount) {
 		this.intListCount = intListCount;
+	}
+	
+	public void setSqlQuery(boolean isSqlQuery){
+		this.sqlquery=isSqlQuery;
+	}
+	
+	public boolean isSqlQuery(){
+		return this.sqlquery;
+	}
+	
+	public void setSelections(String[] what){
+		this.selections=what;
+	}
+	
+	public String[] getSelections(){
+		return this.selections;
+	}
+	
+	public void setOrderBy(String order){
+		this.orderBy=order;
+	}
+	
+	public String getOrderBy(){
+		return this.orderBy;
+	}
+	
+	public void addWaring(String warn){
+		this.warnings.add(warn);
+	}
+	
+	public ArrayList<String> getWarnings(){
+		return this.warnings;
 	}
 }

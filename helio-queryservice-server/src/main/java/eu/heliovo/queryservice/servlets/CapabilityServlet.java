@@ -46,6 +46,9 @@ public class CapabilityServlet extends VosiServlet {
 
         // Output the capabilities header stuff
         writer.write(
+        	"<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n"+
+           	"<?xml-stylesheet type=\"text/xsl\" href=\""+ this.getUrl()+ "Style/vosi_capabilities.xsl\"?> \n"+
+            "\n"+
             "<cap:capabilities\n" +
             "   xmlns:vr=\"http://www.ivoa.net/xml/VOResource/v1.0\"\n" +
             "   xmlns:vs=\"http://www.ivoa.net/xml/VODataService/v1.0\"\n" +

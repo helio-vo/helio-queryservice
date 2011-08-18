@@ -26,10 +26,13 @@ public class TableServlet extends VosiServlet {
      * Emits an XML document describing the tables.
      */
     protected void output(Writer   writer) throws ServletException {
-
+    	
       try {
         writer.write(
-             "<tab:tables\n" +
+        	 "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n"+
+        	 "<?xml-stylesheet type=\"text/xsl\" href=\""+ this.getUrl()+ "Style/vosi_tables.xsl\"?> \n"+
+             "\n"+
+        	 "<tab:tables\n" +
              "   xmlns:vr='http://www.ivoa.net/xml/VOResource/v1.0'\n" +
              "   xmlns:vs='http://www.ivoa.net/xml/VODataService/v1.0'\n" +
              "   xmlns:tab='urn:astrogrid:schema:TableMetadata'\n" +

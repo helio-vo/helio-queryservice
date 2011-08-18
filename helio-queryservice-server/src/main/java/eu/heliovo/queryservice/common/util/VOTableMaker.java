@@ -83,8 +83,12 @@ public class VOTableMaker {
 		 	        	String [] infoArrayValuePair=infoKeyValuePair.split("::");
 		 	        	for(int count=0;count<infoArrayValuePair.length;count++){
 		 	        		String[] keyValue=infoArrayValuePair[count].split(",");
-		 	        		 out.write( "<INFO name=\""+keyValue[0]+"\" value=\""+keyValue[1]+"\"\"/>");
+		 	        		 out.write( "<INFO name=\""+keyValue[0]+"\" value=\""+keyValue[1]+"\"/>");
 		 	        	}
+		 	        }
+		 	        ArrayList<String> warnings= comCriteriaTO.getWarnings();
+		 	        for(int j=0; j<warnings.size();j++){
+		 	        	out.write( "<INFO name=\"WARNING\" value=\""+warnings.get(j)+"\"/>\n");
 		 	        }
 		            VOSerializer.makeSerializer( DataFormat.TABLEDATA, tables[ i ] ).writeInlineTableElement( out );
 		 
@@ -97,8 +101,12 @@ public class VOTableMaker {
 	 	        out.write( "<DESCRIPTION>"+ConfigurationProfiler.getInstance().getProperty("sql.votable.head.desc")+"</DESCRIPTION>\n" );
 	 	        out.write( "<INFO name=\"QUERY_STATUS\" value=\""+comCriteriaTO.getQueryStatus()+"\"/>\n");
 	 	        out.write( "<INFO name=\"EXECUTED_AT\" value=\""+now()+"\"/>\n");
+	 	        ArrayList<String> warnings= comCriteriaTO.getWarnings();
+	 	        for(int j=0; j<warnings.size();j++){
+	 	        	out.write( "<INFO name=\"WARNING\" value=\""+warnings.get(j)+"\"/>\n");
+	 	        }
 	 	        if(comCriteriaTO.getQueryStatus().equals("ERROR")){
-	 	        	out.write("<INFO name=\"QUERY_ERROR\" value=>"+comCriteriaTO.getQueryDescription()+"</INFO>\n");
+	 	        	out.write("<INFO name=\"QUERY_ERROR\" value=\""+comCriteriaTO.getQueryDescription()+"\" />\n");
 	 	        }
 	 	       	out.write("<INFO name=\"QUERY_STRING\" value=\""+comCriteriaTO.getQuery()+"\"/>\n");
 	 	        out.write( "</RESOURCE>\n" );

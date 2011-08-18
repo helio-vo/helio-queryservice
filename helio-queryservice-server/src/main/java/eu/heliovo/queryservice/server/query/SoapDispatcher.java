@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.PipedReader;
 import java.io.PipedWriter;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
@@ -40,6 +41,7 @@ import eu.heliovo.queryservice.common.util.InstanceHolders;
 import eu.heliovo.queryservice.common.util.LongRunningQueryIdHolders;
 import eu.heliovo.queryservice.common.util.RunService;
 import eu.heliovo.queryservice.server.util.QueryThreadAnalizer;
+import eu.heliovo.queryservice.server.util.ServiceInfo;
 
 /**
  * Class: SoapDispatcher
@@ -101,6 +103,7 @@ public class SoapDispatcher implements Provider<Source> {
 			 HttpServletRequest req = (HttpServletRequest)mc.get(MessageContext.SERVLET_REQUEST);
 			 
 		     String interfaceName = inputDoc.getLocalName().intern();
+		     logger.info("interfacename: " + interfaceName);
 		     //since this service will be used a lot, supposedly .intern() can be quicker
 	   	     //each method should return a XMLStreamReader that is streamed back to the client.
 		     comCriteriaTO=new CommonCriteriaTO(); 
@@ -111,7 +114,7 @@ public class SoapDispatcher implements Provider<Source> {
 			 }
 			 		
 			 // This is common for Time. interface.
-	    	 //Setting for START TIME parameter.
+	    	 //Setting for START TIME parameter.			 
 			 if(inputDoc.getElementsByTagNameNS("*","STARTTIME").getLength()>0 && inputDoc.getElementsByTagNameNS("*","STARTTIME").item(0).getFirstChild()!=null){
 				 NodeList nodeList=inputDoc.getElementsByTagNameNS("*","STARTTIME");
     			 String[] startTime=new String[nodeList.getLength()];
@@ -177,7 +180,7 @@ public class SoapDispatcher implements Provider<Source> {
 			 }
 	    	 
 			 //Full query interface
-		     if(interfaceName == "Query".intern() || interfaceName == "LongQuery".intern()) {
+		     if(interfaceName != "TimeQuery".intern())  {
 		    	 //Setting for Instrument parameter.
 				 if(inputDoc.getElementsByTagNameNS("*","INSTRUMENT").getLength()>0 && inputDoc.getElementsByTagNameNS("*","INSTRUMENT").item(0).getFirstChild()!=null){
 					 String instruments = inputDoc.getElementsByTagNameNS("*","INSTRUMENT").item(0).getFirstChild().getNodeValue();
@@ -188,10 +191,38 @@ public class SoapDispatcher implements Provider<Source> {
 					 String whereClause = inputDoc.getElementsByTagNameNS("*","WHERE").item(0).getFirstChild().getNodeValue();
 					 comCriteriaTO.setWhereClause(whereClause);
 				 }
-				 //Coordinates interface
+				
 	    	 } 
 		     
-		     if(interfaceName == "Coordinates".intern()) {
+		     if(interfaceName == "SQLSelect".intern()){
+		    	 comCriteriaTO.setSqlQuery(true);
+		    	 
+		    	 if(inputDoc.getElementsByTagNameNS("*","WHAT").getLength()>0){
+	    			 //Node list
+	    			 NodeList nodeList=inputDoc.getElementsByTagNameNS("*","WHAT");
+	    			 String[] whats=new String[nodeList.getLength()];
+	    			 logger.info("WHAT size " + nodeList.getLength());
+	    			 //List Name
+			    	 for(int i=0;i<nodeList.getLength();i++){
+			    		 String value=nodeList.item(i).getFirstChild().getNodeValue();
+			    		 whats[i]=value;
+			    	 }
+			    	 comCriteriaTO.setSelections(whats);
+	    		 }
+		    	 
+
+		    	 if(inputDoc.getElementsByTagNameNS("*","LIMIT").getLength()>0 && inputDoc.getElementsByTagNameNS("*","LIMIT").item(0).getFirstChild()!=null){
+					 String noOfRows = inputDoc.getElementsByTagNameNS("*","LIMIT").item(0).getFirstChild().getNodeValue();
+					 comCriteriaTO.setNoOfRows(noOfRows);
+				 }
+		    	 
+		    	 if(inputDoc.getElementsByTagNameNS("*","OFFSET").getLength()>0 && inputDoc.getElementsByTagNameNS("*","OFFSET").item(0).getFirstChild()!=null){
+					 String startRow = inputDoc.getElementsByTagNameNS("*","OFFSET").item(0).getFirstChild().getNodeValue();
+					 comCriteriaTO.setStartRow(startRow);
+				 }
+		     }
+		     
+		     if(interfaceName == "CoordinateQuery".intern()) {
 	    		 //Setting for POS( RA & DEC) parameter.
 				 if(inputDoc.getElementsByTagNameNS("*","POS").getLength()>0 && inputDoc.getElementsByTagNameNS("*","POS").item(0).getFirstChild()!=null){
 					 String pos = inputDoc.getElementsByTagNameNS("*","POS").item(0).getFirstChild().getNodeValue();
@@ -222,7 +253,18 @@ public class SoapDispatcher implements Provider<Source> {
 				 //Long running query interface.
 	    	 }
 		     
-		     if(interfaceName == "LongTimeQuery".intern() || interfaceName == "LongQuery".intern()){
+			 if(interfaceName == "getTableNames".intern()){
+				 ServiceInfo.getInstance().getTableNames(pw);
+				 
+				 
+			 } else if(interfaceName == "getTableFields".intern()){
+				 if(inputDoc.getElementsByTagNameNS("*","table_name").getLength()>0 && inputDoc.getElementsByTagNameNS("*","table_name").item(0).getFirstChild()!=null){
+					 String table_name = inputDoc.getElementsByTagNameNS("*","table_name").item(0).getFirstChild().getNodeValue();
+					 ServiceInfo.getInstance().getTableFields(table_name, pw);
+				 }
+				 
+				 
+			 } else if(interfaceName == "LongTimeQuery".intern() || interfaceName == "LongQuery".intern()){
 						 
 	    		 //Setting for No Of Rows parameter.
 				 if(inputDoc.getElementsByTagNameNS("*","SAVETO").getLength()>0 && inputDoc.getElementsByTagNameNS("*","SAVETO").item(0).getFirstChild()!=null){
@@ -343,7 +385,7 @@ public class SoapDispatcher implements Provider<Source> {
 				pw.write(fileData.toString());
 		 }
 		 
-		 if(interfaceName == "Query".intern() || interfaceName == "Coordinates".intern() || interfaceName == "TimeQuery".intern()){ 
+		 if(interfaceName == "Query".intern() || interfaceName == "CoordinateQuery".intern() || interfaceName == "TimeQuery".intern() || interfaceName == "SQLSelect".intern()){ 
 			 //Indicator to define VOTABLE for Web Service request
 			 comCriteriaTO.setStatus("WebService");
 			 //Setting piped reader 
