@@ -130,13 +130,15 @@ public class LongRunningQueryService extends HttpServlet {
 		    //Setting POS ( dec and ra ) parameter
 		    String pos=request.getParameter("POS");
 		    if(pos!=null && !pos.equals("")){
-		    	String[] arrPos=pos.split(",");
+		    	 String[] posArr=pos.split(";");
+				 if(posArr.length>1){
+					 comCriteriaTO.setPosRef(posArr[1]);
+				 }
+				 String[] arrPos=posArr[0].split(",");
 				 if(arrPos.length>0)
 					 comCriteriaTO.setPosRa(arrPos[0]);
 				 if(arrPos.length>1)
 					 comCriteriaTO.setPosDec(arrPos[1]);
-				 if(arrPos.length>2)
-					 comCriteriaTO.setPosRef(arrPos[2]);
 			 }
 		    //Setting SIZE parameter.
 		    String size=request.getParameter("SIZE");

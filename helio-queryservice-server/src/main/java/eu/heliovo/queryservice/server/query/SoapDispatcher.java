@@ -227,13 +227,15 @@ public class SoapDispatcher implements Provider<Source> {
 				 if(inputDoc.getElementsByTagNameNS("*","POS").getLength()>0 && inputDoc.getElementsByTagNameNS("*","POS").item(0).getFirstChild()!=null){
 					 String pos = inputDoc.getElementsByTagNameNS("*","POS").item(0).getFirstChild().getNodeValue();
 					 if(pos!=null && !pos.equals("")){
-						 String[] arrPos=pos.split(",");
+						 String[] posArr=pos.split(";");
+						 if(posArr.length>1){
+							 comCriteriaTO.setPosRef(posArr[1]);
+						 }
+						 String[] arrPos=posArr[0].split(",");
 						 if(arrPos.length>0)
 							 comCriteriaTO.setPosRa(arrPos[0]);
 						 if(arrPos.length>1)
 							 comCriteriaTO.setPosDec(arrPos[1]);
-						 if(arrPos.length>2)
-							 comCriteriaTO.setPosRef(arrPos[2]);
 					 }
 				 }
 				 if(inputDoc.getElementsByTagNameNS("*","REGION").getLength()>0 && inputDoc.getElementsByTagNameNS("*","REGION").item(0).getFirstChild()!=null){

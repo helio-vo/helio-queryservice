@@ -605,23 +605,84 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 	 */
 	private String coordinatesQueryConstraint(String listName,CommonCriteriaTO comCriteriaTO)
 	{
+		_LOGGER.info("coordinatesQueryConstraint");
 		String queryCoordinateContraint="";
 		for(int intCnt=0;intCnt<listName.split(",").length;intCnt++){
 				//Appending Time clause.
 			String propertyCordinateValue="";
+			String propertyPosLongitudeValue="";
+			String propertyPosLatitudeValue="";
+			String propertyPosNameValue="";
+			// POS
+			float ra=0;
+			float dec=0;
+			float size=0;
+			String name=null;
+			if(comCriteriaTO.getPosDec()!=null && !comCriteriaTO.getPosDec().equals("")){
+				try {
+				  _LOGGER.info("coordinatesQueryConstraint " + comCriteriaTO.getPosRa() + " " + comCriteriaTO.getPosDec());
+				  ra=Float.parseFloat(comCriteriaTO.getPosRa());
+				  dec=Float.parseFloat(comCriteriaTO.getPosDec());
+				  name=comCriteriaTO.getPosRef();
+				  propertyPosLongitudeValue=ConfigurationProfiler.getInstance().getProperty("sql.pos.long."+listName.split(",")[intCnt]);
+				  propertyPosLatitudeValue=ConfigurationProfiler.getInstance().getProperty("sql.pos.lat."+listName.split(",")[intCnt]);
+				  propertyPosNameValue=ConfigurationProfiler.getInstance().getProperty("sql.pos.name."+listName.split(",")[intCnt]);
+				  if(propertyPosLongitudeValue==null ||propertyPosLongitudeValue.trim().length()<1 ||
+						  propertyPosLatitudeValue==null ||propertyPosLatitudeValue.trim().length()<1 ||
+						  propertyPosNameValue==null ||propertyPosNameValue.trim().length()<1){
+					  throw new PropertyMissingException();
+				  }
+				  int coordSystem=0;
+ 				  if(name!=null && name.trim().length()>0){
+					  String[] nameArray=propertyPosNameValue.split("::");
+					  for(int i=0;i<nameArray.length;i++){
+						  if(nameArray[i].trim().intern().compareToIgnoreCase(name.trim().intern())==0){
+							  coordSystem=i;
+							  break;
+						  }
+					  }
+				  }
+ 				 String[] longitudes=propertyPosLongitudeValue.split("::");
+				 String[] latitudes=propertyPosLatitudeValue.split("::");
+				//SIZE
+				  if(comCriteriaTO.getSize()!=null && !comCriteriaTO.getSize().equals("")){
+				    size=Float.parseFloat(comCriteriaTO.getSize());
+				    //long <= ra + sqrt(pow(size,2) - pow((lat -dec),2)) 
+				    //long >= ra - sqrt(pow(size,2) - pow((lat -dec),2)) 
+				    queryCoordinateContraint=queryCoordinateContraint+
+				            longitudes[coordSystem]+"<="+ra+" + sqrt(pow("+size+",2)-" + "pow(("+latitudes[coordSystem]+"-"+dec+"),2)) AND " + 
+				    		longitudes[coordSystem]+">="+ra+" - sqrt(pow("+size+",2)-" + "pow(("+latitudes[coordSystem]+"-"+dec+"),2)) AND " +
+				    		//lat <= dec + sqrt(pow(size,2) - pow((long -ra),2)) 
+						    //lat >= dec - sqrt(pow(size,2) - pow((long -ra),2))
+				    		latitudes[coordSystem]+"<="+dec+" + sqrt(pow("+size+",2)-" + "pow(("+longitudes[coordSystem]+"-"+ra+"),2)) AND " + 
+				    		latitudes[coordSystem]+">="+dec+" - sqrt(pow("+size+",2)-" + "pow(("+longitudes[coordSystem]+"-"+ra+"),2))";
+				  } else {
+					  //no SIZE search on ray
+					  queryCoordinateContraint=queryCoordinateContraint+longitudes[coordSystem]+"="+ra+" AND " +
+					    latitudes[coordSystem] + "=" + dec;
+				  }
+				} catch(NumberFormatException e){
+					comCriteriaTO.addWaring("POS, SIZE requires floating point values! Ignore POS/SIZE constraint");
+				} catch (PropertyMissingException e) {
+					comCriteriaTO.addWaring(e.getMessage());
+				}
+			}
+			
+			
+			// REGION
 			if(comCriteriaTO.getsRegion()!=null && !comCriteriaTO.getsRegion().equals("") && comCriteriaTO.getsRegion().trim().toLowerCase().equals("ellipse")){
 				propertyCordinateValue=ConfigurationProfiler.getInstance().getProperty("sql.query.coordinates.constraint.ellipse."+listName.split(",")[intCnt]);
 			}else{
 				propertyCordinateValue=ConfigurationProfiler.getInstance().getProperty("sql.query.coordinates.constraint.defualt."+listName.split(",")[intCnt]);
 			}
 			queryCoordinateContraint=queryCoordinateContraint+propertyCordinateValue;
-			if(queryCoordinateContraint!=null && !queryCoordinateContraint.trim().equals("")){
-				queryCoordinateContraint=queryCoordinateContraint+queryCoordinateContraint+" AND ";
-			}
+//			if(queryCoordinateContraint!=null && !queryCoordinateContraint.trim().equals("")){
+//				queryCoordinateContraint=queryCoordinateContraint+" AND ";
+//			}
 		}
 		//Substring
-		if(queryCoordinateContraint!=null && !queryCoordinateContraint.trim().equals(""))
-			queryCoordinateContraint=queryCoordinateContraint.substring(0, queryCoordinateContraint.length()-1);
+//		if(queryCoordinateContraint!=null && !queryCoordinateContraint.trim().equals(""))
+//			queryCoordinateContraint=queryCoordinateContraint.substring(0, queryCoordinateContraint.length()-1);
 		
 		return queryCoordinateContraint;
 	}
@@ -1100,7 +1161,9 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 			comCriteriaTO.setTableName(listName[intCnt]);
 			
 			//Checking for proper values
-		if((startDateTimeList.length>1 && endDateTimeList.length>1 && listName.length==1) || (startDateTimeList.length==1 && endDateTimeList.length==1 && listName.length>1) || (startDateTimeList.length==1 && endDateTimeList.length==1 && listName.length==1)){
+		if((startDateTimeList.length>1 && endDateTimeList.length>1 && listName.length==1) || 
+				(startDateTimeList.length==1 && endDateTimeList.length==1 && listName.length>1) || 
+				(startDateTimeList.length==1 && endDateTimeList.length==1 && listName.length==1)){
 			//Count of tables in respionse.
 			 count=listName.length*startDateTimeList.length;
 			//table count
@@ -1252,5 +1315,16 @@ public HashMap<Object, Object> createStartTableForTimeBased(CommonCriteriaTO com
 	return hmpResults;
    }
 
+   private class PropertyMissingException extends Exception {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	public PropertyMissingException(){
+		super("The configuration file does not contain the required properties");
+	}
+	   
+   }
 
 }
