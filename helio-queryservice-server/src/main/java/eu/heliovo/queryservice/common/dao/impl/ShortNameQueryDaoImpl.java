@@ -12,6 +12,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 
@@ -139,22 +140,25 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 	public CommonTO[] getTableColumnNames(Connection con,String tableName) throws Exception
 	{
 		ResultSet rsColumns = null;
-		CommonTO[] columnTO = null;
+		CommonTO columnTO = null;
 		DatabaseMetaData meta =null;
+		ArrayList<CommonTO> columnAL = new ArrayList<CommonTO>();
 		try{
 			meta = con.getMetaData();
 		    rsColumns = meta.getColumns(null, null, tableName, null);
-		    rsColumns.last();
-		    int intCount=rsColumns.getRow();
-		    rsColumns.beforeFirst();
+		    //rsColumns.last();
+		    //int intCount=rsColumns.getRow();
+		    //rsColumns.beforeFirst();
 		    if(rsColumns!=null){
-		    	columnTO = new CommonTO[intCount];
+		    	//columnTO = new CommonTO[intCount];
+		    	
 	     		int i=0;
 			    while (rsColumns.next()) {
-			      columnTO[i]=new CommonTO();
-			      columnTO[i].setColumnName(rsColumns.getString("COLUMN_NAME"));
-			      columnTO[i].setColumnType(rsColumns.getString("TYPE_NAME"));
-			      i++;
+			      columnTO=new CommonTO();
+			      columnTO.setColumnName(rsColumns.getString("COLUMN_NAME"));
+			      columnTO.setColumnType(rsColumns.getString("TYPE_NAME"));
+			      columnAL.add(columnTO);
+			      //i++;
 			    }
 		    }
 		} catch (Exception e) {			
@@ -181,7 +185,8 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 				
 			}
 	   }	
-		return columnTO;
+		//return columnTO;
+		return columnAL.toArray(new CommonTO[0]);
 	}
 
 	/**
@@ -269,6 +274,7 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 		String colNames[]=null;
 		if(sSelect!=null)
 		  colNames=sSelect.split(",");
+		//KMB LOOK AGAIN LATER REQUIRES TABLENAME IN THE SELECT.
 		//for loop col names
 		for(int i=0;i<colNames.length;i++)
 		{
@@ -870,9 +876,21 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 			con = comCriteriaTO.getConnection();
 			st = con.createStatement();
 			rs= st.executeQuery(sRepSql);
-			rs.last();
-			resultTO.setRowCount(rs.getRow());
-			rs.beforeFirst();
+
+			int rowCount = -1;
+			try {
+				if(rs.getType() != ResultSet.TYPE_FORWARD_ONLY) {
+					rs.last();
+					rowCount=rs.getRow();
+					rs.beforeFirst();
+				}
+			}catch(java.sql.SQLFeatureNotSupportedException sqe) {
+					//do nothing. Hopefully the jdbc provider throws this on last()
+			}
+			resultTO.setRowCount(rowCount);
+			
+			
+			
 			comCriteriaTO.setQueryStatus("OK");
 			comCriteriaTO.setQuery(sRepSql);
 			resultTO.setResultSet(rs);
@@ -905,9 +923,17 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 			con = comCriteriaTO.getConnection();
 			st = con.createStatement();
 			rs= st.executeQuery(sRepSql);
-			rs.last();
-			resultTO.setRowCount(rs.getRow());
-			rs.beforeFirst();
+			int rowCount = -1;
+			try {
+				if(rs.getType() != ResultSet.TYPE_FORWARD_ONLY) {
+					rs.last();
+					rowCount=rs.getRow();
+					rs.beforeFirst();
+				}
+			}catch(java.sql.SQLFeatureNotSupportedException sqe) {
+					//do nothing. Hopefully the jdbc provider throws this on last()
+			}
+			resultTO.setRowCount(rowCount);
 			comCriteriaTO.setQueryStatus("OK");
 			comCriteriaTO.setQuery(sRepSql);
 			resultTO.setResultSet(rs);
@@ -972,11 +998,18 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 			ResultTO resultTO= addingResultSetToVOTable(comCriteriaTO);
 			rs=resultTO.getResultSet();
 			//count returned rows
-			rs.last();
-			int rowCount=rs.getRow();
-			countArray[tableCount]=rowCount;
+			int rowCount = -1;
+			try {
+				if(rs.getType() != ResultSet.TYPE_FORWARD_ONLY) {
+					rs.last();
+					rowCount=rs.getRow();
+					rs.beforeFirst();
+				}
+			}catch(java.sql.SQLFeatureNotSupportedException sqe) {
+					//do nothing. Hopefully the jdbc provider throws this on last()
+			}
 			resultTO.setRowCount(rowCount);
-			rs.beforeFirst();
+			countArray[tableCount]=rowCount;
 			
 			queryArray[tableCount]=resultTO.getQuery();
 			tables[tableCount] = new StandardTypeTable( new SequentialResultSetStarTable( rs ) );
@@ -1054,11 +1087,19 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 			ResultTO resultTO= addingResultSetSQLToVOTable(comCriteriaTO, intCnt);
 			rs=resultTO.getResultSet();
 			//count returned rows
-			rs.last();
-			int rowCount=rs.getRow();
+			int rowCount = -1;
+			try {
+				if(rs.getType() != ResultSet.TYPE_FORWARD_ONLY) {
+					rs.last();
+					rowCount=rs.getRow();
+					rs.beforeFirst();
+				}
+			}catch(java.sql.SQLFeatureNotSupportedException sqe) {
+					//do nothing. Hopefully the jdbc provider throws this on last()
+			}
 			countArray[tableCount]=rowCount;
 			resultTO.setRowCount(rowCount);
-			rs.beforeFirst();
+			
 			
 			queryArray[tableCount]=resultTO.getQuery();
 			tables[tableCount] = new StandardTypeTable( new SequentialResultSetStarTable( rs ) );

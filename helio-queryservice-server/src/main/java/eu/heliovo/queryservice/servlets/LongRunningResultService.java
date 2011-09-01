@@ -22,16 +22,15 @@ import eu.heliovo.queryservice.common.util.LongRunningQueryIdHolders;
 
 /**
  * Servlet implementation class HelioQueryService
- * @deprecated -- Now is handled by LongRunningQueryService
  */
-public class ResultQueryService extends HttpServlet {
+public class LongRunningResultService /*extends HttpServlet*/ {
 	private static final long serialVersionUID = 1L;
 	protected final  Logger logger = Logger.getLogger(this.getClass());
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ResultQueryService() {
+    public LongRunningResultService() {
         super();        
     }
 

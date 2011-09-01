@@ -164,7 +164,7 @@ public class CommonAction  extends ActionSupport
 		Connection con=null;
 		ShortNameQueryDao shortNameDao= CommonDaoFactory.getInstance().getShortNameQueryDao();
 		try {
-			System.out.println(""+getJdbcDriverName()+""+getJdbcUrl()+""+getJdbcUser()+""+getJdbcPassword());
+			//System.out.println(""+getJdbcDriverName()+""+getJdbcUrl()+""+getJdbcUser()+""+getJdbcPassword());
 			//Setting jdbc driver name
 			if(getJdbcDriverName()!=null && !getJdbcDriverName().equals(""))
 				InstanceHolders.getInstance().setProperty("jdbc.driver",getJdbcDriverName());

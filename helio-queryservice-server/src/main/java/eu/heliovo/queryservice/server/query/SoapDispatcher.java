@@ -101,9 +101,9 @@ public class SoapDispatcher implements Provider<Source> {
 			 Element inputDoc=toDocument(request);
 			 MessageContext mc = wsContext.getMessageContext();
 			 HttpServletRequest req = (HttpServletRequest)mc.get(MessageContext.SERVLET_REQUEST);
-			 
+			 String namespaceURI = inputDoc.getNamespaceURI();
 		     String interfaceName = inputDoc.getLocalName().intern();
-		     logger.info("interfacename: " + interfaceName);
+		     logger.info("interfacename: " + interfaceName + " Namespaceuri = " + namespaceURI);
 		     //since this service will be used a lot, supposedly .intern() can be quicker
 	   	     //each method should return a XMLStreamReader that is streamed back to the client.
 		     comCriteriaTO=new CommonCriteriaTO(); 
@@ -111,6 +111,15 @@ public class SoapDispatcher implements Provider<Source> {
 			 pw = new PipedWriter(pr);	 
 			 if(req.getContextPath()!=null){
 				 comCriteriaTO.setContextPath(req.getContextPath().substring(req.getContextPath().indexOf("-")+1,req.getContextPath().length()));
+			 }
+			 
+			 if(namespaceURI != null && (namespaceURI.equals("http://helio-vo.eu/xml/QueryService/v1.0b") ||
+					 namespaceURI.equals("http://helio-vo.eu/xml/LongQueryService/v1.0b"))) {
+				 comCriteriaTO.setVotable1_2(true);				 
+			 }
+			 
+			 if(namespaceURI != null && namespaceURI.trim().length() > 0) {
+				 comCriteriaTO.setNamespaceURI(namespaceURI);
 			 }
 			 		
 			 // This is common for Time. interface.
@@ -202,6 +211,19 @@ public class SoapDispatcher implements Provider<Source> {
 	    			 NodeList nodeList=inputDoc.getElementsByTagNameNS("*","WHAT");
 	    			 String[] whats=new String[nodeList.getLength()];
 	    			 logger.info("WHAT size " + nodeList.getLength());
+	    			 //List Name
+			    	 for(int i=0;i<nodeList.getLength();i++){
+			    		 String value=nodeList.item(i).getFirstChild().getNodeValue();
+			    		 whats[i]=value;
+			    	 }
+			    	 comCriteriaTO.setSelections(whats);
+	    		 }
+		    	 
+		    	 if(inputDoc.getElementsByTagNameNS("*","SELECT").getLength()>0){
+	    			 //Node list
+	    			 NodeList nodeList=inputDoc.getElementsByTagNameNS("*","SELECT");
+	    			 String[] whats=new String[nodeList.getLength()];
+	    			 logger.info("SELECT size " + nodeList.getLength());
 	    			 //List Name
 			    	 for(int i=0;i<nodeList.getLength();i++){
 			    		 String value=nodeList.item(i).getFirstChild().getNodeValue();

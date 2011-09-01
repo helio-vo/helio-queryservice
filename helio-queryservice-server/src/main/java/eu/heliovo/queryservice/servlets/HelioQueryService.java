@@ -66,6 +66,12 @@ public class HelioQueryService extends HttpServlet {
 			    comCriteriaTO.setAllStartDate(sStartTime);
 			    comCriteriaTO.setAllEndDate(sEndTime);
 			    comCriteriaTO.setContextUrl(CommonUtils.getUrl(request));
+			    
+			    
+			    if(request.getServletPath().toLowerCase().endsWith("b")) {
+					 comCriteriaTO.setVotable1_2(true);
+			    }
+			    
 			   	System.out.println(" sStartTime : "+sStartTime+" sEndTime : "+sEndTime);
 			   	//Start date array list
 			   	if(sStartTime!=null && !sStartTime.equals("")){
@@ -79,8 +85,10 @@ public class HelioQueryService extends HttpServlet {
 			    if(request.getContextPath()!=null){
 					 comCriteriaTO.setContextPath(request.getContextPath().substring(request.getContextPath().indexOf("-")+1,request.getContextPath().length()));
 				 }
-			    if(sSelect!=null && !sSelect.trim().equals(""))
+			    if(sSelect!=null && !sSelect.trim().equals("")) {
 			    	comCriteriaTO.setSelect(sSelect);
+			    	comCriteriaTO.setSelections(new String[]{sSelect});
+			    }
 			    //Setting for Instrument parameter.
 			    String sInstrument=request.getParameter("INSTRUMENT");
 			    comCriteriaTO.setInstruments(sInstrument);

@@ -10,6 +10,22 @@
     service="{http://helio-vo.eu/xml/QueryService/v0.1}HelioQueryServiceService"
     port="{http://helio-vo.eu/xml/QueryService/v0.1}HelioQueryServicePort"
     url-pattern="/HelioService"/>
+    
+     <endpoint 
+    name="HelioService"                    
+    implementation="eu.heliovo.queryservice.server.query.SoapDispatcher" 
+    wsdl="WEB-INF/wsdl/helio_full_query_1_0.wsdl"
+    service="{http://helio-vo.eu/xml/QueryService/v1.0}HelioQueryServiceService"
+    port="{http://helio-vo.eu/xml/QueryService/v1.0}HelioQueryServicePort"
+    url-pattern="/HelioService1_0"/>
+    
+      <endpoint 
+    name="HelioService"                    
+    implementation="eu.heliovo.queryservice.server.query.SoapDispatcher" 
+    wsdl="WEB-INF/wsdl/helio_full_query_1_0b.wsdl"
+    service="{http://helio-vo.eu/xml/QueryService/v1.0b}HelioQueryServiceService"
+    port="{http://helio-vo.eu/xml/QueryService/v1.0b}HelioQueryServicePort"
+    url-pattern="/HelioService1_0b"/>
  
   <endpoint 
     name="HelioLongQueryService"                    
@@ -18,6 +34,22 @@
     service="{http://helio-vo.eu/xml/LongQueryService/v0.9}LongHelioQueryService"
     port="{http://helio-vo.eu/xml/LongQueryService/v0.9}LongHelioQueryServicePort"
     url-pattern="/HelioLongQueryService"/>
+    
+     <endpoint 
+    name="HelioLongQueryService"                    
+    implementation="eu.heliovo.queryservice.server.query.SoapDispatcher"
+     wsdl="WEB-INF/wsdl/long_runningquery_1_0.wsdl"
+    service="{http://helio-vo.eu/xml/LongQueryService/v1.0}LongHelioQueryService"
+    port="{http://helio-vo.eu/xml/LongQueryService/v1.0}LongHelioQueryServicePort"
+    url-pattern="/HelioLongQueryService1_0"/>
+    
+      <endpoint 
+    name="HelioLongQueryService"                    
+    implementation="eu.heliovo.queryservice.server.query.SoapDispatcher"
+     wsdl="WEB-INF/wsdl/long_runningquery_1_0b.wsdl"
+    service="{http://helio-vo.eu/xml/LongQueryService/v1.0b}LongHelioQueryService"
+    port="{http://helio-vo.eu/xml/LongQueryService/v1.0b}LongHelioQueryServicePort"
+    url-pattern="/HelioLongQueryService1_0b"/>
     
   <endpoint 
     name="HelioTavernaService"                    

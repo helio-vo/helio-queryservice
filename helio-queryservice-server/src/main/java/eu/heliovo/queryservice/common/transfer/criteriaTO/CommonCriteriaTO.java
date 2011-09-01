@@ -70,6 +70,11 @@ public class CommonCriteriaTO implements Serializable{
 	private String orderBy;
 	private ArrayList<String> warnings;
 	
+	private boolean votable1_2=false;
+	
+	private String namespaceURI;
+
+		
 	public CommonCriteriaTO(){
 		this.setIPageNumber(0);
 		this.setIRowsPerPage(10);
@@ -475,6 +480,15 @@ public class CommonCriteriaTO implements Serializable{
 		this.sqlquery=isSqlQuery;
 	}
 	
+	public void setVotable1_2(boolean votable1_2){
+		this.votable1_2=votable1_2;
+	}
+	
+	public boolean getVotable1_2() {
+		return this.votable1_2;
+	}
+
+	
 	public boolean isSqlQuery(){
 		return this.sqlquery;
 	}
@@ -493,6 +507,14 @@ public class CommonCriteriaTO implements Serializable{
 	
 	public String getOrderBy(){
 		return this.orderBy;
+	}
+	
+	public void setNamespaceURI(String namespaceURI){
+		this.namespaceURI=namespaceURI;
+	}
+	
+	public String getNamespaceURI(){
+		return this.namespaceURI;
 	}
 	
 	public void addWaring(String warn){

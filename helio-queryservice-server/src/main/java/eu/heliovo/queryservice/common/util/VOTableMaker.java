@@ -48,13 +48,28 @@ public class VOTableMaker {
     	StarTable[] tables=comCriteriaTO.getTables();
     	
     	try{    		
+    		String namespaceURI = "";
 	    	//Adding response header start for WebService VOTABLE.
 			if(status!=null && !status.equals("")  &&  (longRunning==null || longRunning.equals(""))){
-				 out.write("<helio:queryResponse xmlns:helio=\"http://helio-vo.eu/xml/QueryService/v0.1\">");
+				if(comCriteriaTO.getNamespaceURI() != null) {
+					namespaceURI = comCriteriaTO.getNamespaceURI();
+				}else {
+					namespaceURI = "http://helio-vo.eu/xml/QueryService/v0.1";
+				}
+				 out.write("<helio:queryResponse xmlns:helio=\"" + namespaceURI + "\">");
 			}else if(longRunning!=null && longRunning.equals("LongRunning")){
-				out.write("<helio:resultResponse xmlns:helio=\"http://helio-vo.eu/xml/LongQueryService/v0.1\">");
+				if(comCriteriaTO.getNamespaceURI() != null) {
+					namespaceURI = comCriteriaTO.getNamespaceURI();
+				}else {
+					namespaceURI = "http://helio-vo.eu/xml/LongQueryService/v0.9";
+				}
+				out.write("<helio:resultResponse xmlns:helio=\"" + namespaceURI + "\">");
 			}
-	        out.write( "<VOTABLE version='1.1' xmlns=\"http://www.ivoa.net/xml/VOTable/v1.1\">\n" );
+			if(comCriteriaTO.getVotable1_2()) {
+				out.write( "<VOTABLE version='1.2' xmlns=\"http://www.ivoa.net/xml/VOTable/v1.2\">\n" );
+			}else {
+				out.write( "<VOTABLE version='1.1' xmlns=\"http://www.ivoa.net/xml/VOTable/v1.1\">\n" );
+			}
 	        //
 	        if((comCriteriaTO.getStartDateTimeList()!=null && comCriteriaTO.getStartDateTimeList().length>1) || (comCriteriaTO.getListTableName()!=null && comCriteriaTO.getListTableName().length>1))
 	        	out.write("<INFO name=\"QUERY_URL\" >"+"<![CDATA["+CommonUtils.getFullRequestUrl(comCriteriaTO)+"]]>"+"</INFO>");
@@ -69,15 +84,27 @@ public class VOTableMaker {
 		        	tables[ i ].setName(comCriteriaTO.getContextPath()+"-"+tableName);
 		        	out.write( "<RESOURCE>\n" );
 		 	        out.write( "<DESCRIPTION>"+ConfigurationProfiler.getInstance().getProperty("sql.votable.head.desc")+"</DESCRIPTION>\n" );
-		 	        out.write( "<INFO name=\"QUERY_STATUS\" value=\""+comCriteriaTO.getQueryStatus()+"\"/>\n");
+		 	       out.write( "<INFO name=\"QUERY_STATUS\" value=\""+comCriteriaTO.getQueryStatus()+"\"/>\n");
 		 	        out.write( "<INFO name=\"EXECUTED_AT\" value=\""+now()+"\"/>\n");
-		 	        out.write( "<INFO name=\"MAX_RECORD_ALLOWED\" value=\""+ConfigurationProfiler.getInstance().getProperty("sql.query.maxrecord.constraint."+tableName)+"\"/>\n");
+		 	        if(comCriteriaTO.getMaxRecordsAllowed() > 0) {
+		 	        	//out.write( "<INFO name=\"MAX_RECORD_ALLOWED\" value=\""+ConfigurationProfiler.getInstance().getProperty("sql.query.maxrecord.constraint."+tableName)+"\"/>\n");
+		 	        	out.write( "<INFO name=\"MAX_RECORD_ALLOWED\" value=\""+ comCriteriaTO.getMaxRecordsAllowed() + "\"/>\n");
+		 	        }
 		 	        out.write( "<INFO name=\"QUERY_STRING\" >"+"<![CDATA["+comCriteriaTO.getQueryArray()[i]+"]]>"+"</INFO>\n");
 		 	        out.write( "<INFO name=\"QUERY_URL\" >"+"<![CDATA["+CommonUtils.getFullRequestUrl(comCriteriaTO)+"]]>"+"</INFO>\n");
 		 	        int rowCount = comCriteriaTO.getQueryReturnCountArray()[i];
-		            out.write( "<INFO name=\"RETURNED_ROWS\" value=\""+rowCount + "\"/>\n");
-		 	        if(rowCount==comCriteriaTO.getMaxRecordsAllowed() || rowCount==Integer.parseInt(comCriteriaTO.getNoOfRows())){
-		 	        	out.write( "<INFO name=\"QUERY_STATUS\" value=\"OVERFLOW\"/>\n");
+		 	        boolean overflow = false;
+		 	        if(rowCount >= 0) {
+			            out.write( "<INFO name=\"RETURNED_ROWS\" value=\""+rowCount + "\"/>\n");
+			 	        if(rowCount > comCriteriaTO.getMaxRecordsAllowed()) {
+			 	        	//Extra checks means this or statement cannot happen: || rowCount==Integer.parseInt(comCriteriaTO.getNoOfRows())){
+			 	        	out.write( "<INFO name=\"QUERY_STATUS\" value=\"OVERFLOW\"/>\n");
+			 	        	overflow = true;
+			 	        }
+		 	        }
+		 	        if(!overflow) {
+		 	        	//I suspect this is normally the 'OK' status value.
+		 	        	//re-read the spec says it is ok to have two QUERY_STATUS and the overflow can be another tag later.
 		 	        }
 		 	        if(infoKeyValuePair!=null && !infoKeyValuePair.trim().equals("")){
 		 	        	String [] infoArrayValuePair=infoKeyValuePair.split("::");
@@ -151,7 +178,9 @@ public class VOTableMaker {
 	    			}
 	    			//Setting Utypes for column
 	    			if(columnUTypes.length>0 && columnUTypes.length==tables[ i ].getColumnCount()){
-	    				Tables.setUtype( tables[ i ].getColumnInfo( j ), columnUTypes[j] );
+	    				//Tables.setUtype( tables[ i ].getColumnInfo( j ), columnUTypes[j] );
+	    				tables[ i ].getColumnInfo( j ).setUtype(columnUTypes[j]);
+
 	    			}
 	    		}
 	    	}//end of for

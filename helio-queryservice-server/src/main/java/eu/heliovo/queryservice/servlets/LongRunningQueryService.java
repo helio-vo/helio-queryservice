@@ -60,6 +60,15 @@ public class LongRunningQueryService extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/xml;charset=UTF-8");
+		
+		String sID=request.getParameter("ID");
+		String sMode=request.getParameter("MODE");
+		if(sMode != null && sMode.trim().length() > 0 && 
+		   sID != null && sID.trim().length() > 0) {			
+			LongRunningResultService lrrs = new LongRunningResultService();
+			lrrs.doPost(request,response);
+		}
+		
 		 CommonCriteriaTO comCriteriaTO=new CommonCriteriaTO();
 		 PrintWriter pw = response.getWriter(); 
 		 FileResultTO fileTO=new FileResultTO();
@@ -71,7 +80,12 @@ public class LongRunningQueryService extends HttpServlet {
 		    String sEndTime=request.getParameter("ENDTIME");
 		    //Setting SELECT parameter
 		    String sSelect=request.getParameter("SELECT");
-		   	System.out.println(" sStartTime : "+sStartTime+" sEndTime : "+sEndTime);			
+		   	System.out.println(" sStartTime : "+sStartTime+" sEndTime : "+sEndTime);
+		   	
+		    if(request.getServletPath().toLowerCase().endsWith("b")) {
+				 comCriteriaTO.setVotable1_2(true);
+		    }
+		    
 			comCriteriaTO.setStartDateTime(sStartTime);
 			comCriteriaTO.setEndDateTime(sEndTime);	
 			comCriteriaTO.setAllStartDate(sStartTime);

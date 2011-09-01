@@ -42,6 +42,11 @@
 		<url-pattern>/HelioQueryService</url-pattern>
 	</servlet-mapping>
 	
+	<servlet-mapping>
+		<servlet-name>HelioQueryService</servlet-name>
+		<url-pattern>/HelioQueryServiceB</url-pattern>
+	</servlet-mapping>
+	
 	 <servlet>
 		<description>
 		</description>
@@ -53,6 +58,11 @@
 	<servlet-mapping>
 		<servlet-name>LongRunningQueryService</servlet-name>
 		<url-pattern>/LongRunningQueryService</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>LongRunningQueryService</servlet-name>
+		<url-pattern>/LongRunningQueryServiceB</url-pattern>
 	</servlet-mapping>
 		
 	<servlet>
@@ -106,7 +116,27 @@
 	
 	<servlet-mapping>
 	   <servlet-name>jaxws-servlet</servlet-name>
+	   <url-pattern>/HelioService1_0</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+	   <servlet-name>jaxws-servlet</servlet-name>
+	   <url-pattern>/HelioService1_0b</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+	   <servlet-name>jaxws-servlet</servlet-name>
 	   <url-pattern>/HelioLongQueryService</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+	   <servlet-name>jaxws-servlet</servlet-name>
+	   <url-pattern>/HelioLongQueryService1_0</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+	   <servlet-name>jaxws-servlet</servlet-name>
+	   <url-pattern>/HelioLongQueryService1_0b</url-pattern>
 	</servlet-mapping>
 	
 	<servlet-mapping>
