@@ -272,14 +272,15 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 	{
 		String colNamesForTable="";
 		String colNames[]=null;
-		if(sSelect!=null)
+		if(sSelect!=null) {
 		  colNames=sSelect.split(",");
-		//KMB LOOK AGAIN LATER REQUIRES TABLENAME IN THE SELECT.
-		//for loop col names
-		for(int i=0;i<colNames.length;i++)
-		{
-			if(colNames[i].trim().contains(tableName)){
-				colNamesForTable=colNamesForTable+colNames[i]+",";
+			//KMB LOOK AGAIN LATER REQUIRES TABLENAME IN THE SELECT.
+			//for loop col names
+			for(int i=0;i<colNames.length;i++)
+			{
+				if(colNames[i].trim().contains(tableName)){
+					colNamesForTable=colNamesForTable+colNames[i]+",";
+				}
 			}
 		}
 		//list of column names

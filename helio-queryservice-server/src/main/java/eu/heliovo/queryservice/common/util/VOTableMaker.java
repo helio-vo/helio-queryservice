@@ -178,8 +178,8 @@ public class VOTableMaker {
 	    			}
 	    			//Setting Utypes for column
 	    			if(columnUTypes.length>0 && columnUTypes.length==tables[ i ].getColumnCount()){
-	    				//Tables.setUtype( tables[ i ].getColumnInfo( j ), columnUTypes[j] );
-	    				tables[ i ].getColumnInfo( j ).setUtype(columnUTypes[j]);
+	    				Tables.setUtype( tables[ i ].getColumnInfo( j ), columnUTypes[j] );
+	    				//tables[ i ].getColumnInfo( j ).setUtype(columnUTypes[j]);
 
 	    			}
 	    		}
