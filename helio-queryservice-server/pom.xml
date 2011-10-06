@@ -5,9 +5,10 @@
 	<groupId>eu.heliovo</groupId>
 	<artifactId>helio-queryservice-server</artifactId>
 	<version>5.0-SNAPSHOT</version>
+	<description>TODO: Add description in queryservice-server/pom.xml</description>
 	<packaging>war</packaging>
 	<name>helio-queryservice-server</name>
-	<url />
+	
 
 	<parent>
 		<artifactId>helio-queryservice</artifactId>
