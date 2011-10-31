@@ -242,6 +242,11 @@ public class SoapDispatcher implements Provider<Source> {
 					 String startRow = inputDoc.getElementsByTagNameNS("*","OFFSET").item(0).getFirstChild().getNodeValue();
 					 comCriteriaTO.setStartRow(startRow);
 				 }
+		    	 
+		    	 if(inputDoc.getElementsByTagNameNS("*","ORDER_BY").getLength()>0 && inputDoc.getElementsByTagNameNS("*","ORDER_BY").item(0).getFirstChild()!=null){
+					 String orderBy = inputDoc.getElementsByTagNameNS("*","ORDER_BY").item(0).getFirstChild().getNodeValue();
+					 comCriteriaTO.setOrderBy(orderBy);
+				 }
 		     }
 		     
 		     if(interfaceName == "CoordinateQuery".intern()) {

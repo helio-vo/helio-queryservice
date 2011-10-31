@@ -454,7 +454,7 @@ public class ShortNameQueryDaoImpl implements ShortNameQueryDao {
 		 //Appending Order By clause.
 		 String queryOrderByContraint;
 		 if(comCriteriaTO.getOrderBy()!=null && comCriteriaTO.getOrderBy().trim().length()>0){
-			 queryOrderByContraint=comCriteriaTO.getOrderBy();
+			 queryOrderByContraint="ORDER BY " + comCriteriaTO.getOrderBy();
 		 } else {
 		   queryOrderByContraint=orderByQueryConstraint(listName);
 		 }
