@@ -52,9 +52,9 @@ public class HelioQueryService extends HttpServlet {
 		    String fieldnames=request.getParameter("FIELDNAMES");
 		    
 		    if(tablenames != null){
-		    	ServiceInfo.getInstance().getTableNames(printWriter);
+		    	new ServiceInfo(printWriter).run();
 		    } else if (fieldnames != null && !fieldnames.trim().equals("")){
-		    	ServiceInfo.getInstance().getTableFields(fieldnames, printWriter);
+		    	new ServiceInfo(fieldnames, printWriter).run();
 		    } else {
 		    
 			    //Setting start time & end time parameter
