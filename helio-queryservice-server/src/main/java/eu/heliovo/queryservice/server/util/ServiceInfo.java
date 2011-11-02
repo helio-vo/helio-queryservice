@@ -7,24 +7,37 @@ import java.util.Calendar;
 import eu.heliovo.queryservice.common.util.ConfigurationProfiler;
 import eu.heliovo.queryservice.common.util.RegistryUtils;
 
-public class ServiceInfo {
+public class ServiceInfo extends Thread {
+	
 	
 	public static final String DATE_FORMAT_NOW = "yyyy-MM-dd HH:mm:ss";
-		
-	private ServiceInfo()
+	private Writer pw;
+	private String tablename=null;
+	
+	
+	public ServiceInfo(Writer writer)
 	{
-		
+		pw=writer;
+	}
+	
+	public ServiceInfo(String table, Writer writer)
+	{
+		tablename=table;
+		pw=writer;
 	}
 		
-	public static ServiceInfo getInstance() {
-		return ServiceInfoHolder.instance;
+	public void run(){
+		if(tablename==null){
+			getTableNames(pw);
+		}
+		else{
+			getTableFields(tablename,pw);
+		}
 	}
+	
+	
 
-	private static class ServiceInfoHolder {
-		private static ServiceInfo instance = new ServiceInfo();
-	}
-
-	public void getTableNames(Writer pw) {
+	private void getTableNames(Writer pw) {
 //		StarTableFactory factory = new StarTableFactory();
 		String[] tablenames;
 		try {
@@ -58,7 +71,7 @@ public class ServiceInfo {
 		
 	}
 
-	public void getTableFields(String table_name, Writer pw) {
+	private void getTableFields(String table_name, Writer pw) {
 		String name=table_name.trim();
 //		StarTableFactory factory = new StarTableFactory();
 		String[] fieldnames;
@@ -75,7 +88,7 @@ public class ServiceInfo {
 				for(int i=0; i<fieldnames.length; i++){
 				  pw.write( "  <TR>\n" );
 				  pw.write( "    <TD>" );
-				  pw.write(fieldnames[i].trim());
+				  pw.write(fieldnames[i]);
 				  pw.write( "</TD>\n" );
 				  pw.write( "  </TR>\n" );
 				}
@@ -89,9 +102,6 @@ public class ServiceInfo {
 			}
 			pw.flush();
 			pw.close();
-//			StarTable table = factory.makeStarTable( fieldnames.toString() );
-//			table.setName("TableNames");
-//			VOSerializer.makeSerializer( DataFormat.TABLEDATA, table ).writeInlineTableElement( (BufferedWriter)pw );
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -283,13 +283,12 @@ public class SoapDispatcher implements Provider<Source> {
 	    	 }
 		     
 			 if(interfaceName == "getTableNames".intern()){
-				 ServiceInfo.getInstance().getTableNames(pw);
-				 
+				 new ServiceInfo(pw).start();
 				 
 			 } else if(interfaceName == "getTableFields".intern()){
 				 if(inputDoc.getElementsByTagNameNS("*","table_name").getLength()>0 && inputDoc.getElementsByTagNameNS("*","table_name").item(0).getFirstChild()!=null){
 					 String table_name = inputDoc.getElementsByTagNameNS("*","table_name").item(0).getFirstChild().getNodeValue();
-					 ServiceInfo.getInstance().getTableFields(table_name, pw);
+					 new ServiceInfo(table_name, pw).start();
 				 }
 				 
 				 
