@@ -159,7 +159,7 @@ public class HelioQueryService extends HttpServlet {
 			    }
 			    noOfRows=request.getParameter("LIMIT");
 			    if(noOfRows!=null && noOfRows.trim().length()>0){
-			    	comCriteriaTO.setSqlQuery(true);
+			    	//comCriteriaTO.setSqlQuery(true);
 			    	comCriteriaTO.setNoOfRows(noOfRows);
 			    }
 			    //Calling generate VOTable Details.
