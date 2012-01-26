@@ -85,17 +85,7 @@ public class ResultQueryService extends HttpServlet {
 			}else if(sMode!=null && sMode.equalsIgnoreCase("file")){
 				StringBuilder fileData=null;
 				String sUrl=HsqlDbUtils.getInstance().getUrlFromHsqlDB(sID);
-				/*
-				if(sUrl == null) {
-					System.out.println("surl is null try again after a sleep");
-					Thread.sleep((long)200);
-					sUrl=HsqlDbUtils.getInstance().getUrlFromHsqlDB(sID);
-					if(sUrl == null) {
-						System.out.println("2surl is null try again");
-					}
-				}
-				*/
-				
+
 				if(sUrl.startsWith("ftp")){
 					//fttp
 					String ftpUrl=HsqlDbUtils.getInstance().getUrlFromHsqlDB(sID);
