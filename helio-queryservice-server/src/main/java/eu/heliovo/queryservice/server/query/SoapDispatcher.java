@@ -2,6 +2,7 @@ package eu.heliovo.queryservice.server.query;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileDescriptor;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -330,8 +331,11 @@ public class SoapDispatcher implements Provider<Source> {
 				 //Save the file to local system.
 				    saveFilePath=saveTo+"/votable_"+randomUUIDString+".xml";
 				    file = new File(saveFilePath);
-					bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file)));
+				    FileOutputStream fo = new FileOutputStream(file);
+				    FileDescriptor fd = fo.getFD();
+					bw = new BufferedWriter(new OutputStreamWriter(fo));
 					comCriteriaTO.setPrintWriter(bw);
+					comCriteriaTO.setLongFD(fd);
 				 }
 				
 				 //Running the service in back round
@@ -396,6 +400,16 @@ public class SoapDispatcher implements Provider<Source> {
 	    		 sID = inputDoc.getElementsByTagNameNS("*","ID").item(0).getFirstChild().getNodeValue();
 			 }
 			 String sUrl=HsqlDbUtils.getInstance().getUrlFromHsqlDB(sID);
+			    /*
+				if(sUrl == null) {
+					System.out.println("1soap-surl is null try again after a sleep");
+					Thread.sleep((long)800);
+					sUrl=HsqlDbUtils.getInstance().getUrlFromHsqlDB(sID);
+					if(sUrl == null) {
+						System.out.println("2soap-surl is null try again");
+					}
+				}
+				*/
 				if(sUrl.contains("ftp")){
 					String ftpUrl=HsqlDbUtils.getInstance().getUrlFromHsqlDB(sID);
 					fileData=FileUtils.getFileDataFromFtp(ftpUrl);

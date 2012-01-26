@@ -2,6 +2,7 @@ package eu.heliovo.queryservice.servlets;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileDescriptor;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -178,7 +179,10 @@ public class LongRunningQueryService extends HttpServlet {
 		    }else{
 		    	 saveFilePath=saveTo+"/votable_"+randomUUIDString+".xml";
 		    	 file = new File(saveFilePath);
-			     bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file)));
+		    	 FileOutputStream fo = new FileOutputStream(file);
+		    	 FileDescriptor fd = fo.getFD();
+		    	 comCriteriaTO.setLongFD(fd);
+			     bw = new BufferedWriter(new OutputStreamWriter(fo));
 		    }
 		   
 		    //Setting print writer.

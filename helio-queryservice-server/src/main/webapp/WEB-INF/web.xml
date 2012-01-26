@@ -64,6 +64,7 @@
 		<servlet-name>LongRunningQueryService</servlet-name>
 		<url-pattern>/LongRunningQueryServiceB</url-pattern>
 	</servlet-mapping>
+
 		
 	<servlet>
 		<description>
@@ -138,6 +139,12 @@
 	   <servlet-name>jaxws-servlet</servlet-name>
 	   <url-pattern>/HelioLongQueryService1_0b</url-pattern>
 	</servlet-mapping>
+	
+	<servlet-mapping>
+        <servlet-name>jaxws-servlet</servlet-name>
+        <url-pattern>/HelioLongQueryService1_1</url-pattern>
+     </servlet-mapping>
+	
 	
 	<servlet-mapping>
 	   <servlet-name>jaxws-servlet</servlet-name>

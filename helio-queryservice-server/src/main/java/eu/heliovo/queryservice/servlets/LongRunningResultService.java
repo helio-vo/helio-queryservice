@@ -96,7 +96,7 @@ public class LongRunningResultService /*extends HttpServlet*/ {
 			        Document document = builder.parse(new InputSource(new FileReader(xmlfile)));
 			        fileData=FileUtils.readDataFromFile(document);
 				}
-		        logger.info(" : File data :   "+fileData);
+		        //logger.info(" : File data :   "+fileData);
 				pw.write(fileData.toString());
 			}
 			

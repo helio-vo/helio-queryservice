@@ -37,17 +37,27 @@ public class RunService implements Runnable {
 		//if it is completed.
 		if(isCompleted){
 			try {
-				//Inserting status into HSQL database.
-				System.out.println(" Adding Status in to database... ");
-				HsqlDbUtils.getInstance().insertStatusIntoHsqlDB(randomUUIDString, "COMPLETED");
-				//Removing status from instance holder.
-				LongRunningQueryIdHolders.getInstance().removeProperty(randomUUIDString);
-				//Adding back status
-				LongRunningQueryIdHolders.getInstance().setProperty(randomUUIDString,"COMPLETED");
-				//Inserting URL into HSQLDB.
-				System.out.println(" Adding URL in to database... ");
-				HsqlDbUtils.getInstance().insertURLToHsqlDB(randomUUIDString, comCriteriaTO.getSaveto()+"/votable_"+randomUUIDString+".xml");
-				System.out.println(" Done. Returning response..!!! ");
+				/*
+				try {
+					comCriteriaTO.getLongFD().sync();
+				}catch(java.io.SyncFailedException se) {
+					se.printStackTrace();
+				}
+				*/
+
+					System.out.println(" Adding URL in to database... ");
+					//Inserting URL into HSQLDB
+					HsqlDbUtils.getInstance().insertURLToHsqlDB(randomUUIDString, comCriteriaTO.getSaveto()+"/votable_"+randomUUIDString+".xml");
+					
+					System.out.println(" Adding Status in to database... ");
+					HsqlDbUtils.getInstance().insertStatusIntoHsqlDB(randomUUIDString, "COMPLETED");
+					//Removing status from instance holder.
+					LongRunningQueryIdHolders.getInstance().removeProperty(randomUUIDString);
+					//Adding back status
+					LongRunningQueryIdHolders.getInstance().setProperty(randomUUIDString,"COMPLETED");
+					
+					System.out.println(" Done. Returning response..!!! ");
+
 			} catch (Exception e) {
 				LongRunningQueryIdHolders.getInstance().removeProperty(randomUUIDString);
 				

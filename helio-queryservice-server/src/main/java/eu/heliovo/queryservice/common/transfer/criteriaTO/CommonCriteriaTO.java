@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import uk.ac.starlink.table.StarTable;
 import eu.heliovo.queryservice.common.transfer.CommonTO;
+import java.io.FileDescriptor;
 
 public class CommonCriteriaTO implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -73,6 +74,8 @@ public class CommonCriteriaTO implements Serializable{
 	private boolean votable1_2=false;
 	
 	private String namespaceURI;
+	
+	private FileDescriptor longFD;
 
 		
 	public CommonCriteriaTO(){
@@ -99,6 +102,14 @@ public class CommonCriteriaTO implements Serializable{
 
 	public String getQueryForm() {
 		return queryForm;
+	}
+	
+	public FileDescriptor getLongFD() {
+		return longFD;
+	}
+	
+	public void setLongFD(FileDescriptor longFD) {
+		this.longFD = longFD;
 	}
 
 	public void setQueryForm(String queryForm) {

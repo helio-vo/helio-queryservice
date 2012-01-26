@@ -150,6 +150,22 @@ public class VOTableMaker {
     		throw new Exception("Couldn't create VO TABLE!!!");
 		}
         out.flush();
+        /*
+         * if out instanceof FileoutputStream  out.sync()
+         * if out instanceof OutputStreamWriter  out.sync()
+         */
+        try {
+        	if(comCriteriaTO.getLongFD() != null) {
+	        	if(comCriteriaTO.getLongFD().valid()) {
+	        		System.out.println("FileDescriptor Valid");
+	        		comCriteriaTO.getLongFD().sync();
+	        	}else {
+	        		System.out.println("FileDescriptor NOT valid");
+	        	}
+        	}
+		}catch(java.io.SyncFailedException se) {
+			se.printStackTrace();
+		}
         out.close();
     }
             
