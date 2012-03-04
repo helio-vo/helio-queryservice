@@ -7,7 +7,10 @@
 		<version>5.0-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
+    <groupId>eu.heliovo</groupId>
 	<artifactId>helio-queryservice-client</artifactId>
+    <version>5.0-SNAPSHOT</version>
+  
 	<name>helio-queryservice-client</name>
     <packaging>jar</packaging>
 	<description>TODO: Add description in queryservice-client/pom.xml</description>
