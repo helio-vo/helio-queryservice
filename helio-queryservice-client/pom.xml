@@ -7,9 +7,7 @@
 		<version>5.0-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
-	<groupId>eu.heliovo</groupId>
 	<artifactId>helio-queryservice-client</artifactId>
-	<version>5.0-SNAPSHOT</version>
 	<name>helio-queryservice-client</name>
     <packaging>jar</packaging>
 	<description>TODO: Add description in queryservice-client/pom.xml</description>
@@ -32,27 +30,27 @@
 	<build>
 	    <resources>
 	        <resource>
-	            <directory>../src/main/ws/wsdl</directory>
+	            <directory>${project.build.directory}/../../src/main/ws/wsdl</directory>
 	            <targetPath>${basedir}/target/classes/wsdl</targetPath>
 	        </resource>
 	    </resources>
-		<plugins>			
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>jaxws-maven-plugin</artifactId>
-				<version>1.12</version>
-				<executions>
-					<execution>
-						<id>generate-stubs</id>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>wsimport</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
+		<plugins>		
+            <plugin>
+                <groupId>org.jvnet.jax-ws-commons</groupId>
+                <artifactId>jaxws-maven-plugin</artifactId>
+                <version>2.1</version>
+                <executions>
+                  <execution>
+      				<id>generate-stubs</id>
+					<phase>generate-sources</phase>
+                    <goals>
+                      <goal>wsimport</goal>
+                    </goals>
+                  </execution>
+                </executions>
+            	<configuration>
 				    <verbose>true</verbose>
-					<wsdlDirectory>../src/main/ws/wsdl</wsdlDirectory>
+					<wsdlDirectory>${project.build.directory}/../../src/main/ws/wsdl</wsdlDirectory>
 					<wsdlFiles>
 					    <wsdlFile>long_runningquery.wsdl</wsdlFile>
                         <wsdlFile>helio_full_query.wsdl</wsdlFile> 
@@ -106,6 +104,35 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<pluginManagement>
+		  <plugins>
+		    <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+		    <plugin>
+		      <groupId>org.eclipse.m2e</groupId>
+		      <artifactId>lifecycle-mapping</artifactId>
+		      <version>1.0.0</version>
+		      <configuration>
+		        <lifecycleMappingMetadata>
+		          <pluginExecutions>
+		            <pluginExecution>
+		              <pluginExecutionFilter>
+		                <groupId>org.jvnet.jax-ws-commons</groupId>
+		                <artifactId>jaxws-maven-plugin</artifactId>
+		                <versionRange>[2.1,)</versionRange>
+		                <goals>
+		                  <goal>wsimport</goal>
+		                </goals>
+		              </pluginExecutionFilter>
+		              <action>
+                        <execute></execute>
+		              </action>
+		            </pluginExecution>
+		          </pluginExecutions>
+		        </lifecycleMappingMetadata>
+		      </configuration>
+		    </plugin>
+		  </plugins>
+		</pluginManagement>
 	</build>
 	
 </project>
