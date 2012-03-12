@@ -7,10 +7,27 @@
 	<xsl:template match="tab:tables">
 		<html>
 			<body>
+				<h2>Quick access</h2>
+				
+				<xsl:for-each select="table">
+				    <a> 
+					<xsl:attribute name="href">tables#<xsl:value-of select="name"/>
+					</xsl:attribute>
+					<xsl:value-of select="name"/>
+					</a>
+					<br/>
+				</xsl:for-each>
+				
 				<h2>VOSI Tables view</h2>
+				
 				<xsl:for-each select="table">
 					<h3>
+					
+					    <a>
+							<xsl:attribute name="name"><xsl:value-of select="name"/> 
+							</xsl:attribute>
 						<xsl:value-of select="name"/>
+						</a>
 					</h3>
 					<table border="1">
 						<xsl:for-each select="column">
@@ -32,4 +49,5 @@
 			</body>
 		</html>
 	</xsl:template>
+		
 </xsl:stylesheet>
