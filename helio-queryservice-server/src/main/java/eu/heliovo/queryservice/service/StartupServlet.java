@@ -12,6 +12,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.PropertyConfigurator;
+import java.util.TimeZone;
 
 import eu.heliovo.queryservice.common.dao.exception.DetailsNotFoundException;
 import eu.heliovo.queryservice.common.util.CommonUtils;
@@ -26,6 +27,8 @@ public class StartupServlet extends HttpServlet {
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 		try{
+			TimeZone.setDefault(TimeZone.getTimeZone("GMT"));
+
 			String sProfileFilePath=getServletContext().getRealPath("/");
 			if(sProfileFilePath!=null && !sProfileFilePath.equals("")){
 				 	sProfileFilePath=sProfileFilePath+ "WEB-INF";
