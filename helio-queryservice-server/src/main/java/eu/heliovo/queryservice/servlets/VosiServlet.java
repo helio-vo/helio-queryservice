@@ -15,7 +15,8 @@ import eu.heliovo.queryservice.common.util.ConfigurationProfiler;
  */
 public abstract class VosiServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    private String url=null;   
+    private String url=null;
+    private String queryString = null;
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -73,7 +74,8 @@ public abstract class VosiServlet extends HttpServlet {
 		  String contextPath = req.getContextPath(); // mywebapp 
 		  String servletPath = req.getServletPath(); // /servlet/MyServlet 
 		  String pathInfo = req.getPathInfo(); // /a/b;c=123 
-		  String queryString = req.getQueryString(); // d=789 // Reconstruct original requesting 
+		  queryString = req.getQueryString(); // d=789 // Reconstruct original requesting
+		  
 		  url = scheme+"://"+serverName+":"+serverPort+contextPath+"/"; 
 		  if (pathInfo != null) {
 			  url += pathInfo; 
@@ -88,6 +90,10 @@ public abstract class VosiServlet extends HttpServlet {
 	   */
 	  public String getUrl(){
 		  return url;
+	  }
+	  
+	  public String getQueryString(){
+		  return queryString;
 	  }
 
 }

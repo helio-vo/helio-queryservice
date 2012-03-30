@@ -28,6 +28,12 @@ public class TableServlet extends VosiServlet {
     protected void output(Writer   writer) throws ServletException {
     	
       try {
+    	  System.out.println("QS from Tableservlet: " + getQueryString());
+    	  String tableName = null;
+    	  if(getQueryString() != null && getQueryString().indexOf("table=") != -1) {
+    		  tableName = getQueryString().substring(getQueryString().indexOf("table=")+6);
+    		  System.out.println("table name: " + tableName);
+    	  }
         writer.write(
         	 "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n"+
         	 "<?xml-stylesheet type=\"text/xsl\" href=\""+ this.getUrl()+ "Style/vosi_tables.xsl\"?> \n"+
@@ -41,7 +47,7 @@ public class TableServlet extends VosiServlet {
              "      http://www.ivoa.net/xml/VOResource/v1.0 http://software.astrogrid.org/schema/vo-resource-types/VOResource/v1.0/VOResource.xsd\n" +
              "      http://www.ivoa.net/xml/VODataService/v1.0 http://software.astrogrid.org/schema/vo-resource-types/VODataService/v1.0/VODataService.xsd\n" +
              "      urn:astrogrid:schema:TableMetadata Tables.xsd'>\n");
-        writer.write(RegistryUtils.getInstance().getTableDescriptions());
+        writer.write(RegistryUtils.getInstance().getTableDescriptions(tableName));
         writer.write("</tab:tables>\n");
       }
       catch (Exception ex) {
