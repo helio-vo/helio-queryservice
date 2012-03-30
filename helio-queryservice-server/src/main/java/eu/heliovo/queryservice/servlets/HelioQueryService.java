@@ -141,6 +141,17 @@ public class HelioQueryService extends HttpServlet {
 			    if(whereClause!=null && whereClause.trim().length()>0){
 			    	comCriteriaTO.setSqlQuery(true);
 			    	comCriteriaTO.setWhereClause(whereClause);
+			    	/*
+			    	 String sListName2=request.getParameter("FROM");
+					 if(sListName2!=null && !sListName2.equals("")){
+						if(sListName2.indexOf(",") != -1) {
+							comCriteriaTO.setListTableName(sListName.split(","));
+						}else if(sListName2.indexOf("join") != -1 && sListName2.indexOf(" ") != -1 && sListName2.split("join").length > 1) {
+							comCriteriaTO.setListTableName(new String[]{sListName2.split("join")[0].split(" ")[0], sListName2.split("join")[1].split(" ")[0]});
+						}
+					 }
+					 */
+			    	
 			    }
 			    String what=request.getParameter("WHAT");
 			    if(what!=null && what.trim().length()>0){

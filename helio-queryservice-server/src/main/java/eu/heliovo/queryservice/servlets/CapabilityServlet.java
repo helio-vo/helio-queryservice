@@ -37,6 +37,14 @@ public class CapabilityServlet extends VosiServlet {
       String capabilitiesUri = getUrl() + "VOSI/capabilities";
     
       String tablesUri       = getUrl() + "VOSI/tables";
+      
+      if(getQueryString() != null && getQueryString().equals("table=none")) {
+    	  tablesUri = null;
+      }
+      if(getQueryString() != null && !getQueryString().equals("table=none")) {
+    	  capabilitiesUri += "?" + getQueryString();
+    	  tablesUri += "?" + getQueryString();
+      }
 
       
       try {
@@ -129,17 +137,22 @@ public class CapabilityServlet extends VosiServlet {
             "  <queryType>GET</queryType>\n" +
             "  <resultType>application/xml</resultType>\n" +
             "  </interface>\n" +
-            "</capability>\n" +
+            "</capability>\n");
+            
          
             // Tables capability - AstroGrid only so far as IVOA version not ready.
-            "<capability standardID=\"ivo://org.astrogrid/std/VOSI/v0.3#tables\">\n" + 
-            "   <interface xsi:type=\"vs:ParamHTTP\">\n" + 
-            "   <accessURL use=\"full\">" + tablesUri + "</accessURL>\n" + 
-            "   <queryType>GET</queryType>\n" + 
-            "   <resultType>application/xml</resultType>\n" + 
-            "   </interface>\n" + 
-            "</capability>\n" 
-           );
+            if(tablesUri != null) {
+            	writer.write(
+	            "<capability standardID=\"ivo://org.astrogrid/std/VOSI/v0.3#tables\">\n" + 
+	            "   <interface xsi:type=\"vs:ParamHTTP\">\n" + 
+	            "   <accessURL use=\"full\">" + tablesUri + "</accessURL>\n" + 
+	            "   <queryType>GET</queryType>\n" + 
+	            "   <resultType>application/xml</resultType>\n" + 
+	            "   </interface>\n" + 
+	            "</capability>\n"
+            	);
+            }
+           
         
         // End of capabilities
          writer.write("</cap:capabilities>\n");

@@ -80,12 +80,21 @@ public class RegistryUtils {
 	 * for the specified catalog.
 	 */
 	 public String getTableDescriptions()  throws Exception {
+		 return getTableDescriptions(null);
+	 }
+
+	
+	/** Generates the table descriptions for the CatalogService registration
+	 * for the specified catalog.
+	 */
+	 public String getTableDescriptions(String tableName)  throws Exception {
 
 	      StringBuffer tables = new StringBuffer();
 	      String[] catalogNames=getTableNames();
 	      ShortNameQueryDao shortNameDao= CommonDaoFactory.getInstance().getShortNameQueryDao();
 	     
 	      for (int t = 0; t < catalogNames.length; t++) {
+	    	  if(tableName == null || catalogNames[t].equals(tableName)) {
 	         tables.append(
 	           "  <table>\n" +
 	           "    <name>"+catalogNames[t]+"</name>\n" 
@@ -138,7 +147,8 @@ public class RegistryUtils {
 	            tables.append("    </column>\n");
 	         }
 	         tables.append("  </table>\n");
-	      }
+	    	  }//if
+	      }//for
 	      return tables.toString();
 	   }
 	

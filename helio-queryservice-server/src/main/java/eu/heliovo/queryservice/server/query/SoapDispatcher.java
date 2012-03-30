@@ -147,6 +147,8 @@ public class SoapDispatcher implements Provider<Source> {
 				 comCriteriaTO.setEndDateTimeList(endTime);	
     		 }
     		 
+    		 
+    		 
 	    	 //Setting for ListName parameter.
     		 if(inputDoc.getElementsByTagNameNS("*","FROM").getLength()>0){
     			 String sListName="";
@@ -181,6 +183,35 @@ public class SoapDispatcher implements Provider<Source> {
 				 String noOfRows = inputDoc.getElementsByTagNameNS("*","MAXRECORDS").item(0).getFirstChild().getNodeValue();
 				 comCriteriaTO.setNoOfRows(noOfRows);
 			 }
+			 
+			 /*
+			 if(inputDoc.getElementsByTagNameNS("*","POS").getLength()>0 && inputDoc.getElementsByTagNameNS("*","POS").item(0).getFirstChild()!=null &&
+				inputDoc.getElementsByTagNameNS("*","SIZE").getLength()>0 && inputDoc.getElementsByTagNameNS("*","SIZE").item(0).getFirstChild()!=null){
+				 NodeList nodeList=inputDoc.getElementsByTagNameNS("*","POS");
+				 String posTmp = nodeList.item(0).getFirstChild().getNodeValue();
+				 String pos = posTmp;
+				 String coordinate; // = defaultcoordinate
+				 if(posTmp.indexOf(";") != -1) {
+					 pos = posTmp.split(";")[0];
+					 coordinate = posTmp.split(";")[1];
+				 }
+				 nodeList=inputDoc.getElementsByTagNameNS("*","SIZE");
+				 String sizeTmp = nodeList.item(0).getFirstChild().getNodeValue();
+				 String size = sizeTmp;
+				 String shape; // = defaultShape
+				 if(sizeTmp.indexOf(";")) {
+					 size = sizeTmp.split(";")[0];
+					 shape = sizeTmp.split(";")[1];
+				 }
+				 
+				 String region;
+				 if(inputDoc.getElementsByTagNameNS("*","REGION").getLength()>0 && inputDoc.getElementsByTagNameNS("*","REGION").item(0).getFirstChild()!=null){
+					 NodeList nodeList=inputDoc.getElementsByTagNameNS("*","REGION");
+					 region = nodeList.item(0).getFirstChild().getNodeValue();
+					 
+				 }
+			 }
+			 */
 			 
 			//Setting for Join query status.
 			 if(inputDoc.getElementsByTagNameNS("*","JOIN").getLength()>0 && inputDoc.getElementsByTagNameNS("*","JOIN").item(0).getFirstChild()!=null){
