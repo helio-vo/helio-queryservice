@@ -39,9 +39,8 @@
                   <groupId>eu.heliovo</groupId>
                   <artifactId>helio-queryservice-contract</artifactId>
                   <version>5.0-SNAPSHOT</version>
-                  <type>jar</type>
                   <overWrite>false</overWrite>
-                  <includes>**\/*.wsdl</includes>
+                  <includes>**\/*.wsdl,**\/*.xsd</includes>
                   <outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/</outputDirectory>
                 </artifactItem>
               </artifactItems>
@@ -82,7 +81,6 @@
       </plugins>
     </pluginManagement>
   </build>
-
 
   <dependencies>
     <!-- third party libraries -->
