@@ -79,7 +79,7 @@
         </executions>
         <configuration>
           <verbose>true</verbose>
-          <wsdlDirectory>${project.build.directory}/temp/</wsdlDirectory>
+          <wsdlDirectory>${project.build.directory}/temp/wsdl</wsdlDirectory>
           <wsdlFiles>
             <wsdlFile>long_runningquery.wsdl</wsdlFile>
             <wsdlFile>helio_full_query.wsdl</wsdlFile>
