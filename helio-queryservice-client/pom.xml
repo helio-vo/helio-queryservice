@@ -84,9 +84,28 @@
             <wsdlFile>long_runningquery.wsdl</wsdlFile>
             <wsdlFile>helio_full_query.wsdl</wsdlFile>
           </wsdlFiles>
-          <sourceDestDir>${basedir}/src/main/java</sourceDestDir>
+          <sourceDestDir>${project.build.directory}/generated-sources/jaxws/</sourceDestDir>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>add-source</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>${project.build.directory}/generated-sources/jaxws/</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
     </plugins>
     <pluginManagement>
       <plugins>
