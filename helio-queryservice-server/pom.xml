@@ -20,7 +20,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   <build>
-    <finalName>helio-queryservice-server</finalName>
+    <!--  <finalName>helio-queryservice-server</finalName>-->
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

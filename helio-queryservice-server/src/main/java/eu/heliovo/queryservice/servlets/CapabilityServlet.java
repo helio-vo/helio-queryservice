@@ -36,14 +36,14 @@ public class CapabilityServlet extends VosiServlet {
       String tapLongUriWeb          = getUrl() + "HelioLongQueryService";
       String capabilitiesUri = getUrl() + "VOSI/capabilities";
     
-      String tablesUri       = getUrl() + "VOSI/tables";
+      String tablesURI       = getUrl() + "VOSI/tables";
       
       if(getQueryString() != null && getQueryString().equals("table=none")) {
-    	  tablesUri = null;
+    	  tablesURI = null;
       }
       if(getQueryString() != null && !getQueryString().equals("table=none")) {
     	  capabilitiesUri += "?" + getQueryString();
-    	  tablesUri += "?" + getQueryString();
+    	  tablesURI += "?" + getQueryString();
       }
 
       
@@ -73,60 +73,93 @@ public class CapabilityServlet extends VosiServlet {
 
 
         // Output the TAP capability.
-        writer.write("<capability standardID='ivo://helio-vo.eu/std/FullQuery/v0.2'>\n");
-        writer.write("  <interface xsi:type='vs:ParamHTTP'>\n");
-        writer.write("    <accessURL use='full'>" + tapUriHttp + "</accessURL>\n");
-        writer.write("  </interface>\n");
-        writer.write("  <interface xsi:type='vr:WebService'>\n");
-        writer.write("    <accessURL use='full'>" + tapUriWeb + "</accessURL>\n");
-        writer.write("  </interface>\n");
-        writer.write("</capability>\n");
-        
-        // Output the TAP capability.
-        writer.write("<capability standardID='ivo://helio-vo.eu/std/FullQuery/WebService/v0.9'>\n");
-        writer.write("  <interface xsi:type='vr:WebService'>\n");
-        writer.write("    <accessURL use='full'>" + tapUriWeb + "</accessURL>\n");
-        writer.write("  </interface>\n");
-        writer.write("</capability>\n");
-                
-        // Output the TAP capability.
-        writer.write("<capability standardID='ivo://helio-vo.eu/std/FullQuery/Http/v0.9'>\n");
-        writer.write("  <interface xsi:type='vs:ParamHTTP'>\n");
-        writer.write("    <accessURL use='full'>" + tapLongUriHttp + "</accessURL>\n");
-        writer.write("  </interface>\n");
-        writer.write("</capability>\n");
-        
-        writer.write("<capability standardID='ivo://helio-vo.eu/std/LongRunningQuery/v0.9'>\n");
-        writer.write("  <interface xsi:type='vr:WebService'>\n");
-        writer.write("    <accessURL use='full'>" + tapLongUriWeb + "</accessURL>\n");
-        writer.write("  </interface>\n");
-        writer.write("</capability>\n");
-        
-        //New Helio HTTP capabalities
-        writer.write("<capability standardID='ivo://helio-vo.eu/std/FullQuery/Soap/v1.0'>\n");
-        writer.write("  <interface xsi:type='vs:ParamHTTP'>\n");
-        writer.write("    <accessURL use='full'>" + tapUriHttp + "</accessURL>\n");
-        writer.write("  </interface>\n");
-        writer.write("</capability>\n");
-        
-        writer.write("<capability standardID='ivo://helio-vo.eu/std/FullQuery/Soap/v1.0'>\n");
-        writer.write("  <interface xsi:type='vr:WebService'>\n");
-        writer.write("    <accessURL use='full'>" + tapUriWeb + "</accessURL>\n");
-        writer.write("  </interface>\n");
-        writer.write("</capability>\n");
-        
-      //New Helio Long Running capabalities
-        writer.write("<capability standardID='ivo://helio-vo.eu/std/LongFullQuery/Soap/v1.0'>\n");
-        writer.write("  <interface xsi:type='vs:ParamHTTP'>\n");
-        writer.write("    <accessURL use='full'>" + tapLongUriHttp + "</accessURL>\n");
-        writer.write("  </interface>\n");
-        writer.write("</capability>\n");
-        
-        writer.write("<capability standardID='ivo://helio-vo.eu/std/LongFullQuery/Soap/v1.0'>\n");
-        writer.write("  <interface xsi:type='vr:WebService'>\n");
-        writer.write("    <accessURL use='full'>" + tapLongUriWeb + "</accessURL>\n");
-        writer.write("  </interface>\n");
-        writer.write("</capability>\n");
+        if(tablesURI == null) {
+	        writer.write("<capability standardID='ivo://helio-vo.eu/std/FullQuery/v0.2'>\n");
+	        writer.write("  <interface xsi:type='vs:ParamHTTP'>\n");
+	        writer.write("    <accessURL use='full'>" + tapUriHttp + "</accessURL>\n");
+	        writer.write("  </interface>\n");
+	        writer.write("  <interface xsi:type='vr:WebService'>\n");
+	        writer.write("    <accessURL use='full'>" + tapUriWeb + "</accessURL>\n");
+	        writer.write("  </interface>\n");
+	        writer.write("</capability>\n");
+	        
+	        // Output the TAP capability.
+	        writer.write("<capability standardID='ivo://helio-vo.eu/std/FullQuery/WebService/v0.9'>\n");
+	        writer.write("  <interface xsi:type='vr:WebService'>\n");
+	        writer.write("    <accessURL use='full'>" + tapUriWeb + "</accessURL>\n");
+	        writer.write("  </interface>\n");
+	        writer.write("</capability>\n");
+	                
+	        // Output the TAP capability.
+	        writer.write("<capability standardID='ivo://helio-vo.eu/std/FullQuery/Http/v0.9'>\n");
+	        writer.write("  <interface xsi:type='vs:ParamHTTP'>\n");
+	        writer.write("    <accessURL use='full'>" + tapLongUriHttp + "</accessURL>\n");
+	        writer.write("  </interface>\n");
+	        writer.write("</capability>\n");
+	        
+	        writer.write("<capability standardID='ivo://helio-vo.eu/std/LongRunningQuery/v0.9'>\n");
+	        writer.write("  <interface xsi:type='vr:WebService'>\n");
+	        writer.write("    <accessURL use='full'>" + tapLongUriWeb + "</accessURL>\n");
+	        writer.write("  </interface>\n");
+	        writer.write("</capability>\n");
+	        
+	        /*
+	         *       
+	         *       
+	  String tapUriHttp          = getUrl() + "HelioQueryService";
+      String tapUriWeb          = getUrl() + "HelioService";
+	         */
+	        //New Helio HTTP capabalities
+	        writer.write("<capability standardID='ivo://helio-vo.eu/std/FullQuery/Soap/v1.0'>\n");
+	        writer.write("  <interface xsi:type='vs:ParamHTTP'>\n");
+	        writer.write("    <accessURL use='full'>" + getUrl()  + "HelioQueryService1_0</accessURL>\n");
+	        writer.write("  </interface>\n");
+	        writer.write("</capability>\n");
+	        
+	        writer.write("<capability standardID='ivo://helio-vo.eu/std/FullQuery/Soap/v1.0'>\n");
+	        writer.write("  <interface xsi:type='vr:WebService'>\n");
+	        writer.write("    <accessURL use='full'>" + getUrl() + "HelioService1_0</accessURL>\n");
+	        writer.write("  </interface>\n");
+	        writer.write("</capability>\n");
+	        
+	        writer.write("<capability standardID='ivo://helio-vo.eu/std/FullQuery/Soap/v1.0b'>\n");
+	        writer.write("  <interface xsi:type='vs:ParamHTTP'>\n");
+	        writer.write("    <accessURL use='full'>" + getUrl()  + "HelioQueryService1_0b</accessURL>\n");
+	        writer.write("  </interface>\n");
+	        writer.write("</capability>\n");
+	        
+	        writer.write("<capability standardID='ivo://helio-vo.eu/std/FullQuery/Soap/v1.0b'>\n");
+	        writer.write("  <interface xsi:type='vr:WebService'>\n");
+	        writer.write("    <accessURL use='full'>" + getUrl() + "HelioService1_0b</accessURL>\n");
+	        writer.write("  </interface>\n");
+	        writer.write("</capability>\n");
+	        
+	        writer.write("<capability standardID='ivo://helio-vo.eu/std/FullQuery/Soap/v1.1'>\n");
+	        writer.write("  <interface xsi:type='vs:ParamHTTP'>\n");
+	        writer.write("    <accessURL use='full'>" + getUrl()  + "HelioQueryService1_1</accessURL>\n");
+	        writer.write("  </interface>\n");
+	        writer.write("</capability>\n");
+	        
+	        writer.write("<capability standardID='ivo://helio-vo.eu/std/FullQuery/Soap/v1.1'>\n");
+	        writer.write("  <interface xsi:type='vr:WebService'>\n");
+	        writer.write("    <accessURL use='full'>" + getUrl() + "HelioService1_1</accessURL>\n");
+	        writer.write("  </interface>\n");
+	        writer.write("</capability>\n");
+	        
+	        
+	      //New Helio Long Running capabalities
+	        writer.write("<capability standardID='ivo://helio-vo.eu/std/LongFullQuery/Soap/v1.0'>\n");
+	        writer.write("  <interface xsi:type='vs:ParamHTTP'>\n");
+	        writer.write("    <accessURL use='full'>" + tapLongUriHttp + "</accessURL>\n");
+	        writer.write("  </interface>\n");
+	        writer.write("</capability>\n");
+	        
+	        writer.write("<capability standardID='ivo://helio-vo.eu/std/LongFullQuery/Soap/v1.0'>\n");
+	        writer.write("  <interface xsi:type='vr:WebService'>\n");
+	        writer.write("    <accessURL use='full'>" + tapLongUriWeb + "</accessURL>\n");
+	        writer.write("  </interface>\n");
+	        writer.write("</capability>\n");
+        }//if
                 
          
         writer.write(
@@ -141,11 +174,11 @@ public class CapabilityServlet extends VosiServlet {
             
          
             // Tables capability - AstroGrid only so far as IVOA version not ready.
-            if(tablesUri != null) {
+            if(tablesURI != null) {
             	writer.write(
 	            "<capability standardID=\"ivo://org.astrogrid/std/VOSI/v0.3#tables\">\n" + 
 	            "   <interface xsi:type=\"vs:ParamHTTP\">\n" + 
-	            "   <accessURL use=\"full\">" + tablesUri + "</accessURL>\n" + 
+	            "   <accessURL use=\"full\">" + tablesURI + "</accessURL>\n" + 
 	            "   <queryType>GET</queryType>\n" + 
 	            "   <resultType>application/xml</resultType>\n" + 
 	            "   </interface>\n" + 

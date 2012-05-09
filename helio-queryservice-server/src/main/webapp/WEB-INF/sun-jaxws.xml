@@ -19,6 +19,14 @@
     port="{http://helio-vo.eu/xml/QueryService/v1.0}HelioQueryServicePort"
     url-pattern="/HelioService1_0"/>
     
+     <endpoint 
+    name="HelioService"                    
+    implementation="eu.heliovo.queryservice.server.query.SoapDispatcher" 
+    wsdl="WEB-INF/wsdl/helio_full_query_1_1.wsdl"
+    service="{http://helio-vo.eu/xml/QueryService/v1.1}HelioQueryServiceService"
+    port="{http://helio-vo.eu/xml/QueryService/v1.1}HelioQueryServicePort"
+    url-pattern="/HelioService1_1"/>
+    
       <endpoint 
     name="HelioService"                    
     implementation="eu.heliovo.queryservice.server.query.SoapDispatcher" 
@@ -50,6 +58,14 @@
     service="{http://helio-vo.eu/xml/LongQueryService/v1.1}LongHelioQueryService"
     port="{http://helio-vo.eu/xml/LongQueryService/v1.1}LongHelioQueryServicePort"
     url-pattern="/HelioLongQueryService1_1"/>
+    
+     <endpoint 
+    name="HelioLongQueryService"                    
+    implementation="eu.heliovo.queryservice.server.query.SoapDispatcher"
+     wsdl="WEB-INF/wsdl/long_runningquery_1_2.wsdl"
+    service="{http://helio-vo.eu/xml/LongQueryService/v1.2}LongHelioQueryService"
+    port="{http://helio-vo.eu/xml/LongQueryService/v1.2}LongHelioQueryServicePort"
+    url-pattern="/HelioLongQueryService1_2"/>
     
       <endpoint 
     name="HelioLongQueryService"                    

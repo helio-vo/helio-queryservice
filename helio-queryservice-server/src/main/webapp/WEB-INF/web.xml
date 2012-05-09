@@ -120,6 +120,11 @@
 	   <url-pattern>/HelioService1_0</url-pattern>
 	</servlet-mapping>
 	
+		<servlet-mapping>
+	   <servlet-name>jaxws-servlet</servlet-name>
+	   <url-pattern>/HelioService1_1</url-pattern>
+	</servlet-mapping>
+	
 	<servlet-mapping>
 	   <servlet-name>jaxws-servlet</servlet-name>
 	   <url-pattern>/HelioService1_0b</url-pattern>
@@ -143,6 +148,11 @@
 	<servlet-mapping>
         <servlet-name>jaxws-servlet</servlet-name>
         <url-pattern>/HelioLongQueryService1_1</url-pattern>
+     </servlet-mapping>
+     
+     	<servlet-mapping>
+        <servlet-name>jaxws-servlet</servlet-name>
+        <url-pattern>/HelioLongQueryService1_2</url-pattern>
      </servlet-mapping>
 	
 	
