@@ -83,6 +83,7 @@
           <wsdlFiles>
             <wsdlFile>long_runningquery.wsdl</wsdlFile>
             <wsdlFile>helio_full_query.wsdl</wsdlFile>
+            <!--wsdlFile>helio_full_query_1_0b.wsdl</wsdlFile-->
           </wsdlFiles>
           <sourceDestDir>${project.build.directory}/generated-sources/jaxws/</sourceDestDir>
         </configuration>
@@ -90,6 +91,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
+        <version>1.7</version>
         <executions>
           <execution>
             <id>add-source</id>

@@ -31,7 +31,7 @@
             <!-- here the phase you need -->
             <phase>prepare-package</phase>
             <goals>
-              <goal>unpack</goal>
+              <goal>copy</goal>
             </goals>
             <configuration>
               <artifactItems>
@@ -67,7 +67,7 @@
                     <artifactId>maven-dependency-plugin</artifactId>
                     <versionRange>[2.4,)</versionRange>
                     <goals>
-                      <goal>unpack</goal>
+                      <goal>copy</goal>
                     </goals>
                   </pluginExecutionFilter>
                   <action>
