@@ -3,7 +3,7 @@
 	<wsdl:types>
 		<xs:schema elementFormDefault="unqualified" targetNamespace="http://helio-vo.eu/xml/QueryService/v1.0b" version="1.0" xmlns:vot="http://www.ivoa.net/xml/VOTable/v1.2" xmlns:ins="http://helio-vo.eu/xml/Instruments/v0.1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://helio-vo.eu/xml/QueryService/v1.0b">
 			<xs:import namespace="http://www.ivoa.net/xml/VOTable/v1.2" schemaLocation="votable1_2.xsd" xmlns:vot="http://www.ivoa.net/xml/VOTable/v1.2"/>
-			<xs:import namespace="http://helio-vo.eu/xml/Instruments/v0.1" schemaLocation="http://www.helio-vo.eu/services/xml/instruments.xsd" xmlns:ins="http://helio-vo.eu/xml/Instruments/v0.1"/>
+			<xs:import namespace="http://helio-vo.eu/xml/Instruments/v0.1" schemaLocation="Instruments.xsd" xmlns:ins="http://helio-vo.eu/xml/Instruments/v0.1"/>
 			<xs:element name="Query" type="tns:Query"/>
 			<xs:element name="TimeQuery" type="tns:TimeQuery"/>
 			<xs:element name="CoordinateQuery" type="tns:CoordinateQuery"/>

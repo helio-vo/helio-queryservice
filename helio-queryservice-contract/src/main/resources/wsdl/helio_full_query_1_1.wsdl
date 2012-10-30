@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <wsdl:definitions name="HelioQueryServiceService" targetNamespace="http://helio-vo.eu/xml/QueryService/v1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://helio-vo.eu/xml/QueryService/v1.1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
 	<wsdl:types>
-		<xs:schema elementFormDefault="unqualified" targetNamespace="http://helio-vo.eu/xml/QueryService/v1.1" version="1.0" xmlns:vot="http://www.ivoa.net/xml/VOTable/v1.1" xmlns:ins="http://helio-vo.eu/xml/Instruments/v0.1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://helio-vo.eu/xml/QueryService/v1.1">
+		<xs:schema elementFormDefault="unqualified" targetNamespace="http://helio-vo.eu/xml/QueryService/v1.1" version="1.0" xmlns:vot="http://www.ivoa.net/xml/VOTable/v1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://helio-vo.eu/xml/QueryService/v1.1">
 			<xs:import namespace="http://www.ivoa.net/xml/VOTable/v1.1" schemaLocation="votable1_1.xsd" xmlns:vot="http://www.ivoa.net/xml/VOTable/v1.1"/>
-			<xs:import namespace="http://helio-vo.eu/xml/Instruments/v0.1" schemaLocation="instruments.xsd" xmlns:ins="http://helio-vo.eu/xml/Instruments/v0.1"/>
 			<xs:element name="Query" type="tns:Query"/>
 			<xs:element name="TimeQuery" type="tns:TimeQuery"/>
 			<xs:element name="CoordinateQuery" type="tns:CoordinateQuery"/>

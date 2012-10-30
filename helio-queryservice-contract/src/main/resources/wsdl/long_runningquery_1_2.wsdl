@@ -1,10 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <wsdl:definitions xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://helio-vo.eu/xml/LongQueryService/v1.2" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" name="LongHelioQueryService" targetNamespace="http://helio-vo.eu/xml/LongQueryService/v1.2">
  <wsdl:types>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ins="http://helio-vo.eu/xml/Instruments/v0.1" xmlns:tns="http://helio-vo.eu/xml/LongQueryService/v1.2" elementFormDefault="unqualified" targetNamespace="http://helio-vo.eu/xml/LongQueryService/v1.2" version="1.2">
-  
-  <xs:import xmlns:ins="http://helio-vo.eu/xml/Instruments/v0.1" namespace="http://helio-vo.eu/xml/Instruments/v0.1" schemaLocation="instruments.xsd" />   
- 
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://helio-vo.eu/xml/LongQueryService/v1.2" elementFormDefault="unqualified" targetNamespace="http://helio-vo.eu/xml/LongQueryService/v1.2" version="1.2"> 
    
 <xs:element name="LongQuery" type="tns:LongQuery" />
 <xs:element name="LongTimeQuery" type="tns:LongTimeQuery" />

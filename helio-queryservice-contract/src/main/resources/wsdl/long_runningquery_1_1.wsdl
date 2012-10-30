@@ -3,7 +3,7 @@
  <wsdl:types>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ins="http://helio-vo.eu/xml/Instruments/v0.1" xmlns:tns="http://helio-vo.eu/xml/LongQueryService/v1.1" elementFormDefault="unqualified" targetNamespace="http://helio-vo.eu/xml/LongQueryService/v1.1" version="1.1">
   
-  <xs:import xmlns:ins="http://helio-vo.eu/xml/Instruments/v0.1" namespace="http://helio-vo.eu/xml/Instruments/v0.1" schemaLocation="http://www.helio-vo.eu/services/xml/instruments.xsd" />   
+  <xs:import xmlns:ins="http://helio-vo.eu/xml/Instruments/v0.1" namespace="http://helio-vo.eu/xml/Instruments/v0.1" schemaLocation="Instruments.xsd" />   
  
    
 <xs:element name="LongQuery" type="tns:LongQuery" />
