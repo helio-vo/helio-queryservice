@@ -34,21 +34,23 @@ public class TableServlet extends VosiServlet {
     		  tableName = getQueryString().substring(getQueryString().indexOf("table=")+6);
     		  System.out.println("table name: " + tableName);
     	  }
+    	  /*<tableset
+   xmlns:vr='http://www.ivoa.net/xml/VOResource/v1.0'
+   xmlns:vs='http://www.ivoa.net/xml/VODataService/v1.1'
+   xmlns:tab='urn:astrogrid:schema:TableMetadata'
+   xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+   xsi:schemaLocation='http://www.ivoa.net/xml/VOResource/v1.0 http://software.astrogrid.org/schema/vo-resource-types/VOResource/v1.0/VOResource.xsd
+      http://www.ivoa.net/xml/VODataService/v1.0 http://software.astrogrid.org/schema/vo-resource-types/VODataService/v1.0/VODataService.xsd'>
+      <schema>
+      */
         writer.write(
         	 "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n"+
         	 "<?xml-stylesheet type=\"text/xsl\" href=\""+ this.getUrl()+ "Style/vosi_tables.xsl\"?> \n"+
-             "\n"+
-        	 "<tab:tables\n" +
-             "   xmlns:vr='http://www.ivoa.net/xml/VOResource/v1.0'\n" +
-             "   xmlns:vs='http://www.ivoa.net/xml/VODataService/v1.0'\n" +
-             "   xmlns:tab='urn:astrogrid:schema:TableMetadata'\n" +
-             "   xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'\n" +
-             "   xsi:schemaLocation='" +
-             "      http://www.ivoa.net/xml/VOResource/v1.0 http://software.astrogrid.org/schema/vo-resource-types/VOResource/v1.0/VOResource.xsd\n" +
-             "      http://www.ivoa.net/xml/VODataService/v1.0 http://software.astrogrid.org/schema/vo-resource-types/VODataService/v1.0/VODataService.xsd\n" +
-             "      urn:astrogrid:schema:TableMetadata Tables.xsd'>\n");
+             "<tableset xmlns:vr='http://www.ivoa.net/xml/VOResource/v1.0' xmlns:vs='http://www.ivoa.net/xml/VODataService/v1.1' " +
+             " xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'  xsi:schemaLocation='http://www.ivoa.net/xml/VOResource/v1.0 http://software.astrogrid.org/schema/vo-resource-types/VOResource/v1.0/VOResource.xsd " +
+             " http://www.ivoa.net/xml/VODataService/v1.0 http://software.astrogrid.org/schema/vo-resource-types/VODataService/v1.0/VODataService.xsd'> \n");
         writer.write(RegistryUtils.getInstance().getTableDescriptions(tableName));
-        writer.write("</tab:tables>\n");
+        writer.write("</tableset>\n");
       }
       catch (Exception ex) {
     	  ex.printStackTrace();

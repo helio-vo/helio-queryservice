@@ -88,14 +88,15 @@ public class RegistryUtils {
 	 * for the specified catalog.
 	 */
 	 public String getTableDescriptions(String tableName)  throws Exception {
-
+		  //System.out.println("TABLENAME IN TABLEDESCRPTIONS: " + tableName);
 	      StringBuffer tables = new StringBuffer();
 	      String[] catalogNames=getTableNames();
 	      ShortNameQueryDao shortNameDao= CommonDaoFactory.getInstance().getShortNameQueryDao();
-	     
+	      //System.out.println("catalognames length: " + catalogNames.length);
 	      for (int t = 0; t < catalogNames.length; t++) {
 	    	  if(tableName == null || catalogNames[t].equals(tableName)) {
 	         tables.append(
+	           " <schema><name>" + catalogNames[t]+"</name>\n" + 
 	           "  <table>\n" +
 	           "    <name>"+catalogNames[t]+"</name>\n" 
 	          );
@@ -105,37 +106,57 @@ public class RegistryUtils {
 	    	  String ucd[]=getUCDNames(catalogNames[t]);
 	    	  String utypes[]=getUTypes(catalogNames[t]);	  
 	    	  String units[]=getColumnUnits(catalogNames[t]);	
-	    	  
+	    	  //System.out.println("catalogNames[t]: " + catalogNames[t]);
+	    	  String dataType = null;
 	         for (int c = 0; c < columns.length; c++) {
+	        	
 	            tables.append(
 	               "    <column>\n"+
-	               "    <name>"+columns[c]+"</name>\n"+
-	               "    <description>"+columnDesc[c]+"</description>\n"+
-	               "    <datatype>"+dataTypeLookup.get(columns[c].toLowerCase())+"</datatype>\n"
-	            );
-	            //UTypes
-	            if(utypes!=null && utypes.length>0 && utypes.length==columns.length){
-		            if ((utypes[c] != null) && (utypes[c].trim().length()>0)) {
-		            tables.append(
-		                  "      <utypes>"+utypes[c]+"</utypes>\n"
-		            );
+	               "    <name>"+columns[c]+"</name>\n");
+	               if(columnDesc.length == (columns.length-1)) {
+	            	   //tables.append( "    <description> </description>\n");
+		           }else {
+		        	   tables.append( "    <description>"+columnDesc[c]+"</description>\n");
+		           }
+	               if(units!=null && units.length>0 && units.length==columns.length){
+			            if ((units[c] != null) && (units[c].trim().length()>0)) {
+			               tables.append(
+			                  "      <units>"+units[c].trim()+"</units>\n"
+			               );
+			            }
 		            }
-	            }
-	            //UCD'S
-	            if(ucd!=null && ucd.length>0 && ucd.length==columns.length){
-		            if ((ucd[c] != null) && (ucd[c].trim().length()>0)) {
-		               tables.append(
-		                  "      <ucd>"+ucd[c].trim()+"</ucd>\n"
-		               );
+	               if(ucd!=null && ucd.length>0 && ucd.length==columns.length){
+			            if ((ucd[c] != null) && (ucd[c].trim().length()>0)) {
+			               tables.append(
+			                  "      <ucd>"+ucd[c].trim()+"</ucd>\n"
+			               );
+			            }
 		            }
-	            }
-	            if(units!=null && units.length>0 && units.length==columns.length){
-		            if ((units[c] != null) && (units[c].trim().length()>0)) {
-		               tables.append(
-		                  "      <units>"+units[c].trim()+"</units>\n"
-		               );
+	               if(utypes!=null && utypes.length>0 && utypes.length==columns.length){
+			            if ((utypes[c] != null) && (utypes[c].trim().length()>0)) {
+			            tables.append(
+			                  "      <utype>"+utypes[c]+"</utype>\n"
+			            );
+			            }
 		            }
-	            }
+	               dataType = dataTypeLookup.get(columns[c].toLowerCase());
+	               if(dataType != null) {
+		               if(dataType.indexOf("float") != -1) {
+		            	   tables.append("    <dataType  arraysize=\"1\" xsi:type=\"vs:VOTableType\">float</dataType>\n");   
+		               }else if(dataType.indexOf("int") != -1) {
+		            	   tables.append("    <dataType  arraysize=\"1\" xsi:type=\"vs:VOTableType\">int</dataType>\n");   
+		               }else if(dataType.indexOf("bool") != -1) {
+		            	   tables.append("    <dataType  arraysize=\"1\" xsi:type=\"vs:VOTableType\">boolean</dataType>\n");   
+		               }else if(dataType.indexOf("serial") != -1) {
+		            	   tables.append("    <dataType  arraysize=\"1\" xsi:type=\"vs:VOTableType\">long</dataType>\n");   
+		               }else if(dataType.indexOf("char") != -1 || dataType.indexOf("time") != -1 || dataType.indexOf("date") != -1) {
+		            	   tables.append("    <dataType  arraysize=\"*\" xsi:type=\"vs:VOTableType\">char</dataType>\n");   
+		               }else {
+		            	   tables.append("    <dataType  arraysize=\"1\" xsi:type=\"vs:VOTableType\">" + dataType + "</dataType>\n");   
+		               }
+	               }
+	          
+	           
 	            //
 	            // Patch fix - Moved the xml fragment generation to VoTypes.
 	            // KONA TOFIX look at the points below
@@ -146,7 +167,7 @@ public class RegistryUtils {
 	            //);
 	            tables.append("    </column>\n");
 	         }
-	         tables.append("  </table>\n");
+	         tables.append("  </table></schema>\n");
 	    	  }//if
 	      }//for
 	      return tables.toString();

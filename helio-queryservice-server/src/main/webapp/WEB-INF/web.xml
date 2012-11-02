@@ -43,6 +43,13 @@
 	</servlet-mapping>
 	
 	<servlet-mapping>
+                <servlet-name>HelioQueryService</servlet-name>
+                <url-pattern>/sync</url-pattern>
+	</servlet-mapping>
+
+	
+	
+	<servlet-mapping>
 		<servlet-name>HelioQueryService</servlet-name>
 		<url-pattern>/HelioQueryServiceB</url-pattern>
 	</servlet-mapping>
@@ -178,6 +185,11 @@
 		<servlet-name>TableServlet</servlet-name>
 		<url-pattern>/VOSI/tables</url-pattern>
 	</servlet-mapping> 
+ 	<servlet-mapping>
+		<servlet-name>TableServlet</servlet-name>
+		<url-pattern>/tables</url-pattern>
+    </servlet-mapping>
+	
  	
 	<env-entry>
 	   <env-entry-name>property/context</env-entry-name>
