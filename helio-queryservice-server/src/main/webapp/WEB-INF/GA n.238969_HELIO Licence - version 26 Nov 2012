@@ -1,0 +1,103 @@
+HELIO LICENCE (BSD 2-Clause License)
+Copyright (c) 2009 - 2012, University College London (United Kingdom), Fachhochschule Nordwestschweiz (Switzerland), Observatoire de Paris (France), Universite Paul Sabatier Toulouse III (France), Science and Technology Facilities Council (United Kingdom), Universite Paris-Sud XI (France), Istituto Nazionale di Astrofisica (Italy), The University of Manchester (United Kingdom) The Provost, Fellows Foundation Scholars & the other members of Board of the College of the Holy & Undivided Trinity of Queen Elizabeth near Dublin (Ireland).
+All rights reserved.
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+•	Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+•	Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+OTHER LICENSES
+
+AstroGrid Licence
+This research has made use of data obtained using, or software provided by, the UK's AstroGrid Virtual Observatory Project, which is funded by the Science and Technology Facilities Council and through the EU's Framework 6 programme.  
+AstroGrid Software is licensed under the Academic Free Licence.  
+See www.astrogrid.org for more details.
+
+
+Grails 1.3.7 Licence
+Grails 1.3.7 is licensed under the Apache License (Version 2.0).  
+See http://grails.org/License for more details.
+
+
+soapUI License
+soapUI, copyright (C) 2004-2012 SmartBear Software
+soapUI is free software; you can redistribute it and/or modify it under the terms of version 2.1 of the GNU Lesser General Public License as published by the Free Software Foundation.
+
+soapUI is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+
+
+The Legion Of The Bouncy Castle Licence 
+Copyright (c) 2000 - 2011 The Legion Of The Bouncy Castle (http://www.bouncycastle.org)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+SolarSoft
+Various Licenses.
+See http://www.lmsal.com/solarsoft/ for more information.
+
+
+Apache Commons Libraries Licence
+Licensed under Apache Licence Version 2.0
+See http://commons.apache.org/ for more information.
+
+
+Starlink STIL  
+Licensed under LGPL, Version 3
+See http://www.star.bris.ac.uk/~mbt/stil/ for more information
+
+
+STILTS Licence
+Licensed under GPL.  
+See http://www.star.bris.ac.uk/~mbt/stilts/  for more information												
+
+AWStat Licence
+Licensed under GPL.
+See http://awstats.sourceforge.net/docs/awstats_license.html for more information.										
+
+Glassfish  CDDL Licence 
+Licensed under the GPL v2.  
+See http://glassfish.java.net/public/faq/GF_FAQ_2.html for more information
+
+
+Taverna Workflow Engine Licence
+Licensed under LPGL 2.1.  
+See http://www.taverna.org.uk/ for more information.
+
+
+Spring
+Licensed under Apache License, Version 2.0.
+See http://www.springsource.org/ for more information.
+
+VOMS Java API
+Licensed under Apache License, Version 2.0
+See http://www.euasiagrid.org/wiki/index.php/VOMS_Java_API#VOMS_Java_API and http://vdt.cs.wisc.edu/VOMS-documentation.html for more information.
+
+
+MyProxy Java API
+Licensed under Apache License, Version 2.0
+See http://www.cogkit.org/release/current/api/jglobus/org/globus/myproxy/package-summary.html and http://grid.ncsa.illinois.edu/myproxy/devguide.html for more information.
+
+gLite WMS API
+Licensed under Apache License, Version 2.0
+See http://www.nikhef.nl/~janjust/wms_jobs_in_java/ for more information.
+
+jLite
+Licensed under:  Apache License 2.0
+See http://code.google.com/p/jlite/ for more information.
+
+LFC for Java
+Licensed under Eclipse Open Source Licence
+See http://www.euasiagrid.org/wiki/index.php/Data_Management_Java_API and http://www.euasiagrid.org/wiki/index.php/Data_Management_Java_API for more information.
+
+gLite LFC Java API
+Licensed under: Apache License, Version 2.0
+See http://www.euasiagrid.org/wiki/index.php/Data_Management_Java_API and http://www.euasiagrid.org/wiki/index.php/Data_Management_Java_API for more information.
+
+JQuery v1.7
+Licenced under the GPL, v2
+See http://jquery.com/ for more information.
